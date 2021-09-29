@@ -3,10 +3,12 @@
 # To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
 layout: home
+title: Home
+nav_order: 0
 ---
 
 
-## Test header
+# Test header
 
 This is some text explaining the following code example.
 
