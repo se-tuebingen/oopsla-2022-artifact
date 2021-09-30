@@ -7,9 +7,9 @@ export const syntax = <ILanguage>{
   // defaultToken: 'invalid',
 
   keywords: [
-    'module', 'import', 'def', 'val', 'var', 'effect', 'type', 'match',
-    'case', 'record', 'extern', 'include', 'resume', 'with', 'if', 'try',
-    'else', 'do', 'handle', 'while', 'interface', 'box', 'unbox'
+    'module', 'import', 'def', 'val', 'var', 'type', 'match',
+    'case', 'extern', 'include', 'resume', 'with', 'if', 'try',
+    'else', 'while', 'interface', 'box', 'unbox', 'at'
   ],
 
   definitionKeywords: [

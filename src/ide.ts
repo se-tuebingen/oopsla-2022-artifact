@@ -20,9 +20,10 @@ export interface IViewModel extends monaco.editor.ITextModel {
   getFullText(): string
   modelPosition(pos: Position): Position
   viewPosition(pos: Position): Position
+  showCaptures(): Boolean
 }
 
-export function createModel(filename: string, contents: string, hiddenPrelude: string, hiddenPostlude: string): IViewModel {
+export function createModel(filename: string, contents: string, hiddenPrelude: string, hiddenPostlude: string, isRepl: Boolean): IViewModel {
   let model = monaco.editor.createModel(contents.trim(), "effekt", monaco.Uri.file(filename))
   let pre = hiddenPrelude || ""
   let post = hiddenPostlude || ""
@@ -41,17 +42,17 @@ export function createModel(filename: string, contents: string, hiddenPrelude: s
     modelPos = modelPos || { line: 0, character: 0 }
     return { line: (modelPos.line || 0) - lineOffset, character: modelPos.character || 0 }
   }
+
+  //@ts-ignore
+  model.showCaptures = function() { return !isRepl }
+
   //@ts-ignore
   return model
 }
 
-export function typecheck(model: IViewModel) {
-  updateModel(model)
-  var diagnostics = effekt.typecheck(filename(model.uri)).map( (d: Diagnostic) => {
-    d.range.start = model.viewPosition(d.range.start)
-    d.range.end = model.viewPosition(d.range.end)
-    return convertDiagnostics(d)
-  })
+export function annotateCaptures(model: IViewModel) {
+
+  if (!model.showCaptures()) return;
 
   let captures = effekt.inferredCaptures(filename(model.uri));
 
@@ -72,6 +73,16 @@ export function typecheck(model: IViewModel) {
   // we could implement something more efficient here...
   let old = model.getAllDecorations().map(d => d.id)
   model.deltaDecorations(old, decorations)
+
+}
+
+export function typecheck(model: IViewModel) {
+  updateModel(model)
+  var diagnostics = effekt.typecheck(filename(model.uri)).map( (d: Diagnostic) => {
+    d.range.start = model.viewPosition(d.range.start)
+    d.range.end = model.viewPosition(d.range.end)
+    return convertDiagnostics(d)
+  })
 
   monaco.editor.setModelMarkers(model, "effekt", diagnostics);
 }

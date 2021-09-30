@@ -69,6 +69,7 @@ export function create(container: HTMLElement, run: HTMLElement, out: HTMLElemen
   registerTypechecking(editor)
   // type check once for hover
   IDE.typecheck(model)
+  IDE.annotateCaptures(model)
 
   addRunAction(editor, run, out)
 
@@ -115,7 +116,7 @@ function registerTypechecking(editor: monaco.editor.ICodeEditor) {
   editor.onDidChangeModelContent(evt => {
     if (timeout) { clearTimeout(timeout) }
     let model = editor.getModel() as IDE.IViewModel
-    timeout = setTimeout(() => IDE.typecheck(model), 150);
+    timeout = setTimeout(() => { IDE.typecheck(model); IDE.annotateCaptures(model) }, 150);
   })
 }
 

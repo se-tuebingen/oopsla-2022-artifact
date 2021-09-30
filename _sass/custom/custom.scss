@@ -131,6 +131,7 @@ p, h1, h2, h3, h4, h5, h6, li {
 
     li {
       list-style: none;
+      &:before { content: "" }
       margin: 0;
       padding: 0;
       line-height: 1.3em;

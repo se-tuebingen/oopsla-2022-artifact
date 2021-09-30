@@ -21,7 +21,7 @@ async function enableEditing(code: HTMLElement, run: HTMLElement) {
     let postlude = code.attributes["postlude"].value || "\n"
 
     // we create a model, initialized with the contents
-    const model = IDE.createModel(filename, contents, prelude, postlude)
+    const model = IDE.createModel(filename, contents, prelude, postlude, !!run)
     IDE.updateModel(model)
     model.onDidChangeContent(e => { IDE.updateModel(model) })
 
