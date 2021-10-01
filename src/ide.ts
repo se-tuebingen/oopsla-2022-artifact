@@ -5,7 +5,7 @@
  */
 import * as effekt from "./effekt-language";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import type { Diagnostic, DiagnosticSeverity, Position } from "vscode-languageserver-types"
+import type { Diagnostic, DiagnosticSeverity, Position, Location } from "vscode-languageserver-types"
 
 // initialize:
 // load all code[module=...] elements and write them to the IDE
@@ -20,6 +20,8 @@ export interface IViewModel extends monaco.editor.ITextModel {
   getFullText(): string
   modelPosition(pos: Position): Position
   viewPosition(pos: Position): Position
+  modelLocation(loc: Location): Location
+  viewLocation(loc: Location): Location
   showCaptures(): Boolean
 }
 
@@ -28,20 +30,38 @@ export function createModel(filename: string, contents: string, hiddenPrelude: s
   let pre = hiddenPrelude || ""
   let post = hiddenPostlude || ""
   let lineOffset = (hiddenPrelude.match(/\n/g) || '').length
+
+  function modelPosition(viewPos: Position): Position {
+    viewPos = viewPos || { line: 0, character: 0 }
+    return { line: (viewPos.line || 0) + lineOffset, character: viewPos.character || 0 }
+  }
+  function viewPosition(modelPos: Position): Position {
+    modelPos = modelPos || { line: 0, character: 0 }
+    return { line: (modelPos.line || 0) - lineOffset, character: modelPos.character || 0 }
+  }
+  function modelLocation(viewLoc: Location): Location {
+    const from = viewLoc.range.start
+    const to = viewLoc.range.end
+    return { uri: viewLoc.uri, range: { start: modelPosition(from), end: modelPosition(to) } }
+  }
+  function viewLocation(modelLoc: Location): Location {
+    const from = modelLoc.range.start
+    const to = modelLoc.range.end
+    return { uri: modelLoc.uri, range: { start: viewPosition(from), end: viewPosition(to) } }
+  }
+
   //@ts-ignore
   model.getFullText = function() {
     return pre + model.getValue() + post
   }
   //@ts-ignore
-  model.modelPosition = function (viewPos: Position): Position {
-    viewPos = viewPos || { line: 0, character: 0 }
-    return { line: (viewPos.line || 0) + lineOffset, character: viewPos.character || 0 }
-  }
+  model.modelPosition = modelPosition
   //@ts-ignore
-  model.viewPosition = function (modelPos: Position): Position {
-    modelPos = modelPos || { line: 0, character: 0 }
-    return { line: (modelPos.line || 0) - lineOffset, character: modelPos.character || 0 }
-  }
+  model.viewPosition = viewPosition
+  //@ts-ignore
+  model.modelLocation = modelLocation
+  //@ts-ignore
+  model.viewLocation = viewLocation
 
   //@ts-ignore
   model.showCaptures = function() { return !isRepl }
@@ -99,7 +119,7 @@ export function evaluate(content: string) {
   return effekt.evaluate(content)
 }
 
-export const hoverProvider = {
+export const hoverProvider: monaco.languages.HoverProvider = {
   provideHover: function(model, position, token) {
     const m = model as IViewModel
     const info: string = effekt.infoAt(filename(model.uri), m.modelPosition(toLspPosition(position)))
@@ -108,6 +128,15 @@ export const hoverProvider = {
     } else {
       return null
     }
+  }
+}
+
+export const definitionProvider: monaco.languages.DefinitionProvider = {
+  provideDefinition: function(model, position, token) {
+    const m = model as IViewModel
+    const loc = effekt.definitionAt(filename(model.uri), m.modelPosition(toLspPosition(position)))
+    // TODO convert from LSP location to view location
+    return toMonacoLocation(m.viewLocation(loc))
   }
 }
 
@@ -136,6 +165,12 @@ function toMonacoPosition(position: Position): monaco.Position {
 
 function toLspPosition(position: monaco.Position): Position {
   return { line: position.lineNumber - 1, character: position.column - 1 }
+}
+
+function toMonacoLocation(loc: Location): monaco.languages.Location {
+  const from = toMonacoPosition(loc.range.start)
+  const to = toMonacoPosition(loc.range.end)
+  return { uri: monaco.Uri.parse(loc.uri), range: new monaco.Range(from.lineNumber, from.column, to.lineNumber, to.column) }
 }
 
 

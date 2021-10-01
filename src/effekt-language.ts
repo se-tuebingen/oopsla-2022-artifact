@@ -5,7 +5,7 @@
  * The API also is using vscode-types since the Effekt language server implements LSP
  */
 import { effekt } from "./effekt";
-import type { Diagnostic, Position } from "vscode-languageserver-types"
+import type { Diagnostic, Position, Location } from "vscode-languageserver-types"
 
 let Effekt = effekt.LanguageServer()
 
@@ -23,6 +23,10 @@ export function write(filename: string, content: string): void {
 
 export function infoAt(filename: string, position: Position): string {
   return Effekt.infoAt(filename, position)
+}
+
+export function definitionAt(filename: string, position: Position): Location {
+  return Effekt.definitionAt(filename, position)
 }
 
 export function load(path: string) {

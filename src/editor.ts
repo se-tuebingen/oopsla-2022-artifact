@@ -21,6 +21,7 @@ monaco.editor.defineTheme('effekt-page-theme', pageTheme);
 // TODO hover provider with XHR here:
 //   https://github.com/microsoft/monaco-editor/blob/master/test/playground.generated/extending-language-services-hover-provider-example.html
 monaco.languages.registerHoverProvider('effekt', IDE.hoverProvider);
+monaco.languages.registerDefinitionProvider('effekt', IDE.definitionProvider);
 
 
 export function create(container: HTMLElement, run: HTMLElement, out: HTMLElement, model: IDE.IViewModel): monaco.editor.ICodeEditor {
