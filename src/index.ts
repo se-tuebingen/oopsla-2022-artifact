@@ -1,7 +1,7 @@
 import * as hljs from "./highlight-effekt";
 import * as docs from "./docs";
 
-async function enableEditing(code: HTMLElement, run: HTMLElement) {
+async function enableEditing(code: HTMLElement, run: HTMLElement, typecheck: HTMLElement) {
     let parent = code.parentNode as HTMLElement
 
     parent.classList.add("editor-loading")
@@ -32,7 +32,7 @@ async function enableEditing(code: HTMLElement, run: HTMLElement) {
       parent.insertAdjacentElement("afterend", output)
     }
     // init editor
-    editor.create(code, run, output, model)
+    editor.create(code, typecheck, run, output, model)
 }
 
 
@@ -80,7 +80,7 @@ function processCode() {
       nav.append(run)
 
       run.onclick = () => {
-        enableEditing(code, run);
+        enableEditing(code, run, null);
         return false
       }
 
@@ -93,8 +93,8 @@ function processCode() {
 
       let activateEditor = () => {
         edit.onclick = () => { return false }
-        edit.classList.add("disabled");
-        enableEditing(code, null);
+        edit.textContent = "typecheck"
+        enableEditing(code, null, edit);
         return false
       }
       edit.onclick = activateEditor

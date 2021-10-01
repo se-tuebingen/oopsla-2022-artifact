@@ -24,7 +24,7 @@ monaco.languages.registerHoverProvider('effekt', IDE.hoverProvider);
 monaco.languages.registerDefinitionProvider('effekt', IDE.definitionProvider);
 
 
-export function create(container: HTMLElement, run: HTMLElement, out: HTMLElement, model: IDE.IViewModel): monaco.editor.ICodeEditor {
+export function create(container: HTMLElement, typecheck: HTMLElement, run: HTMLElement, out: HTMLElement, model: IDE.IViewModel): monaco.editor.ICodeEditor {
 
   let theme = document.body.classList.contains("docs") ? "effekt-docs-theme" : "effekt-page-theme";
 
@@ -67,12 +67,12 @@ export function create(container: HTMLElement, run: HTMLElement, out: HTMLElemen
   // autoBlur(editor)
   autoResize(editor)
 
-  registerTypechecking(editor)
   // type check once for hover
   IDE.typecheck(model)
   IDE.annotateCaptures(model)
 
   addRunAction(editor, run, out)
+  addTypecheckAction(editor, typecheck)
 
   return editor;
 }
@@ -115,6 +115,7 @@ function registerTypechecking(editor: monaco.editor.ICodeEditor) {
   var timeout;
 
   editor.onDidChangeModelContent(evt => {
+    // debouncing
     if (timeout) { clearTimeout(timeout) }
     let model = editor.getModel() as IDE.IViewModel
     timeout = setTimeout(() => { IDE.typecheck(model); IDE.annotateCaptures(model) }, 150);
@@ -124,6 +125,10 @@ function registerTypechecking(editor: monaco.editor.ICodeEditor) {
 function addRunAction(editor, run, output) {
   function evaluate(editor) {
     const log = console.log
+    let model = editor.getModel();
+
+    IDE.typecheck(model);
+
     // TODO this does not work with async or setTimeout, find another solution!
     output.innerHTML = ""
 
@@ -135,7 +140,7 @@ function addRunAction(editor, run, output) {
           logLine.innerText = msg
           output.appendChild(logLine)
         }
-        IDE.evaluate(editor.getModel().getFullText())
+        IDE.evaluate(model.getFullText())
         output.classList.remove("cleared")
       } catch (e) {
         console.log(e)
@@ -164,5 +169,32 @@ function addRunAction(editor, run, output) {
 
     // eval once after adding editor support
     evaluate(editor)
+  }
+}
+
+function addTypecheckAction(editor, typecheckButton) {
+  function typecheck(editor) {
+    let model = editor.getModel();
+    IDE.typecheck(model);
+    IDE.annotateCaptures(model);
+    return false;
+  }
+
+  if (typecheckButton) {
+    typecheckButton.onclick = () => typecheck(editor)
+
+    editor.addAction({
+      id: 'effekt-typecheck',
+      label: 'Typecheck code',
+      keybindings: [ monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter ],
+      precondition: null,
+      keybindingContext: null,
+      contextMenuGroupId: 'navigation',
+      contextMenuOrder: 1.5,
+      run: typecheck
+    });
+
+    // check once after adding editor support
+    typecheck(editor)
   }
 }
