@@ -12,7 +12,15 @@ nav_order: 0
 
 This is some text explaining the following code example.
 
+
 ```effekt
-def sayHello(): Unit =
+def sayHello(): Unit {
   println("Hello World!")
+}
+```
+
+
+
+```effekt:repl
+sayHello()
 ```
