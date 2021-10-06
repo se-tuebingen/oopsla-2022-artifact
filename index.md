@@ -8,19 +8,20 @@ nav_order: 0
 ---
 
 
-# Test header
+# System C
 
-This is some text explaining the following code example.
+Welcome to System C!  In this interactive demo we will take you through a
+brief introduction to System C and a quick tour of its capabilities.
 
-
+This is a program that prints out "Hello World!".  You can edit and typecheck
+it in your browser.
 ```effekt
 def sayHello(): Unit {
   println("Hello World!")
 }
 ```
 
-
-
+To run it, just click the run button!
 ```effekt:repl
 sayHello()
 ```
