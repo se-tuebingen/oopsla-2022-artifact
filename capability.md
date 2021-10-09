@@ -107,6 +107,8 @@ This seems unsafe -- what if `f` escaped?  However, it cannot, as by default, ca
 System C are _second class_ -- that is, they can only be passed as parameters and never returned.
 Moreover, functions which close over second class capabilities have the capability recorded on their
 binding, and by default, functions themselves are _second class_.
+Syntatically, second-class (block) parameters are denoted by `{}` instead
+of `()`.
 
 ```effekt
 def otherInvoke() {
@@ -125,3 +127,25 @@ def otherInvoke() {
 }
 
 ```
+
+## Transparent wrapping and aliasing
+Finally, capabilities can be bound and aliased to different names, and can also be wrapped
+in a way that still allows one to analyze what underlying capabilities were bound.
+
+For example, for aliased capabilities, we can bind `greeter` to `checker` but the
+binding for `checker` still reflects the underlying bound capability:
+```effekt
+def boundInvoke() {
+    try {
+        def checker = greeter;
+        checker.sayHello()
+    } with greeter : Greeter {
+        def sayHello() {
+            println("Hello World from useInvoke!");
+            resume(())
+        }
+    }
+}
+```
+
+We could have also wrapped the greeter, for example, with `def checker = {() => greeter.sayHello()}`.

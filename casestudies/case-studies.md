@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Case Studies
-nav_order: 2
+nav_order: 4
 has_children: true
 permalink: /casestudies
 ---

@@ -5,7 +5,7 @@ permalink: /intro/
 nav_order: 1
 ---
 
-
+# Basics
 System C supports basic datatypes, such as numbers, strings, functions, and booleans.
 ```effekt
 def hello(): Unit {
