@@ -129,7 +129,7 @@ def runExamples(): Unit {
   } with console: Console {
     def println[A](msg: A) { println(msg); resume(()) }
   } with time: Time {
-    def now() { resume(1137) }
+    def now() { resume(timestamp()) }
   }
 }
 ```
