@@ -22,12 +22,12 @@ datatypes; for example:
     type Color { Red() Green() Blue() }
 ```
 
-Try it out!
+You can try it out!
 ```effekt:repl
     println(Red())
 ```
 
-A more complicated datatype:
+As usual, datatypes can also take type parameteres and be recursive:
 ```effekt
 type Pair[A, B] {
   Pair(fst: A, snd: B)
@@ -39,7 +39,7 @@ type List[A] {
 }
 ```
 
-And a function which pattern-matches on it:
+Datatypes can be destructed using pattern matching:
 ```effekt
 def doPair() {
   Pair(1, 2) match {
@@ -50,7 +50,9 @@ def doPair() {
       x + y + z
   };
   println(z);
-  val z1 = [1, 2, 3] match {
+  // this is shorthand for Cons(1, Cons(2, Cons(3, Nil())))
+  val l = [1, 2, 3];
+  val z1 = l match {
     case Nil() => 0
     case Cons(x, tl) => x + 1
   };
@@ -59,7 +61,6 @@ def doPair() {
 }
 ```
 
-Try it out!
 ```effekt:repl
 doPair()
 ```
