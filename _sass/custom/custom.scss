@@ -173,4 +173,20 @@ p, h1, h2, h3, h4, h5, h6, li {
     border-radius: 20%;
     // margin: 0 0.5em;
   }
+  code.language-effekt {
+    &:before {
+      content: attr(module);
+      position: absolute;
+      top: 0;
+      font-size: 0.8em;
+      color: #ccc;
+    }
+
+    &.hasError {
+      border: 2px solid red;
+    }
+    &.hasError:before {
+      color: red;
+    }
+  }
 }

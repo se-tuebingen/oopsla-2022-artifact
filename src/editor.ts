@@ -73,6 +73,7 @@ export function create(container: HTMLElement, typecheck: HTMLElement, run: HTML
 
   addRunAction(editor, run, out)
   addTypecheckAction(editor, typecheck)
+  registerErrorDetection(editor, container)
 
   return editor;
 }
@@ -111,15 +112,16 @@ function autoResize(editor: monaco.editor.ICodeEditor) {
 }
 
 
-function registerTypechecking(editor: monaco.editor.ICodeEditor) {
-  var timeout;
-
-  editor.onDidChangeModelContent(evt => {
-    // debouncing
-    if (timeout) { clearTimeout(timeout) }
-    let model = editor.getModel() as IDE.IViewModel
-    timeout = setTimeout(() => { IDE.typecheck(model); IDE.annotateCaptures(model) }, 150);
-  })
+function registerErrorDetection(editor: monaco.editor.ICodeEditor, dom: HTMLElement) {
+  let model = editor.getModel() as IDE.IViewModel
+  editor.onDidChangeModelDecorations(() => {
+    let diagnostics = monaco.editor.getModelMarkers({ owner: "effekt", resource: model.uri });
+    if (diagnostics.filter(d => d.severity >= monaco.MarkerSeverity.Error).length > 0) {
+      dom.classList.add("hasError");
+    } else {
+      dom.classList.remove("hasError");
+    }
+  });
 }
 
 function addRunAction(editor, run, output) {
@@ -132,23 +134,20 @@ function addRunAction(editor, run, output) {
     // TODO this does not work with async or setTimeout, find another solution!
     output.innerHTML = ""
 
-    // delay evaluation to get the impression we are actually doing something
-    window.setTimeout(function() {
-      try {
-        console.log = function(msg) {
-          const logLine = document.createElement("li");
-          logLine.innerText = msg
-          output.appendChild(logLine)
-        }
-        IDE.evaluate(model.getFullText())
-        output.classList.remove("cleared")
-      } catch (e) {
-        console.log(e)
-      } finally {
-        console.log = log
-        output.classList.remove("cleared")
+    try {
+      console.log = function(msg) {
+        const logLine = document.createElement("li");
+        logLine.innerText = msg
+        output.appendChild(logLine)
       }
-    }, 150)
+      IDE.evaluate(model.getFullText())
+      output.classList.remove("cleared")
+    } catch (e) {
+      console.log(e)
+    } finally {
+      console.log = log
+      output.classList.remove("cleared")
+    }
 
     return false;
   }
