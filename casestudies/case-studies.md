@@ -93,7 +93,25 @@ def globalCapabilities { console: Console } { time: Time }: Unit {
 }
 ```
 
+#### Support Code for Running Examples
+```effekt
+def run[T] { prog : {Console} {Time} => T }: T {
+  try {
+    prog {console} {time}
+  } with console: Console {
+    def println[A](msg: A) { println(msg); resume(()) }
+  } with time: Time {
+    def now() { resume(timestamp()) }
+  }
+}
+```
+We can run the above examples
+```effekt:repl
+run {globalCapabilities}
+```
+
 ### Section 2 -- Local Capabilities and Effect Handlers
+
 ```effekt
 interface Stopwatch { def elapsed(): Int }
 def localCapabilities { console: Console } { time: Time }: Unit {
@@ -104,35 +122,99 @@ def localCapabilities { console: Console } { time: Time }: Unit {
 
   // uncomment the following example to see a type error:
   // try { return (box exc) } with exc: Exc { def throw(msg: String) { () } };
+  ()
+}
+```
+Again, we can run the above examples:
+```effekt:repl
+run {localCapabilities}
+```
 
+#### Example 2.1
+```effekt
+interface FileHandle { def readByte(pos: Int): Int }
+def withFile[T](path: String) { prog: {FileHandle} => T }: T {
+  try { prog {fh} } with fh: FileHandle {
+    def readByte(pos: Int) { resume(pos + 42) }
+  }
+}
+def fileExample() {
+  withFile("A.txt") { {fileA: FileHandle} =>
+    val offsetReader : Int => Int at {fileA} =
+      withFile("B.txt") { {fileB: FileHandle} =>
+        val offset = fileB.readByte(0);
+        return box { (pos: Int) => fileA.readByte(pos + offset) }
+      };
+      (unbox offsetReader)(10)
+  }
+}
+```
+Running the example will print 92 (0 + 42 + 42 + 10).
+```effekt:repl
+fileExample()
+```
+
+#### Effect Handlers
+```effekt
+def effectHandlers { console: Console } { time: Time }: Unit {
   val before = time.now();
   try {
-    console.println(watch.elapsed())
+    def report(t: Int) { console.println(show(t) ++ "ms") }
+    report(watch.elapsed());
+    report(watch.elapsed());
+    report(watch.elapsed())
   } with watch: Stopwatch {
     def elapsed() {
       // we can observe the capture of `resume` by boxing it:
       val k = box resume;
       resume(time.now() - before)
     }
-  };
-
-  ()
-}
-```
-
-### Support Code for Running
-```effekt
-def runExamples(): Unit {
-  try {
-    globalCapabilities {console} {time};
-    localCapabilities {console} {time}
-  } with console: Console {
-    def println[A](msg: A) { println(msg); resume(()) }
-  } with time: Time {
-    def now() { resume(timestamp()) }
   }
 }
 ```
 ```effekt:repl
-runExamples()
+run {effectHandlers}
+```
+
+### Section 4.2 -- Mutable State
+```effekt
+interface State[S] {
+  def get(): S
+  def set(v: S): Unit
+}
+def handleState[S, R](init: S) { prog: {State[S]} => R }: R {
+  val stateFun: S => R at {prog} =
+    try { val res = prog { state }; return box {prog} { (s: S) => res } }
+    with state: State[S] {
+      def get() { box { (s: S) => (unbox resume(s))(s) } }
+      def set(v: S) { box { (_: S) => (unbox resume(()))(v) } }
+    };
+  return (unbox stateFun)(init)
+}
+```
+```effekt:repl
+handleState(0) { {s: State[Int]} => println(s.get()); s.set(2); println(s.get()) }
+```
+
+For more details on regions, also see the corresponding [regions case study](regions).
+```effekt
+def regions1() {
+  region r {
+    var x in r = 42;
+    val t = x;
+    x = (t + 1)
+  }
+}
+```
+```effekt
+def regions2() {
+  region r {
+    var x in r = 42;
+    val f: () => Int at {r} = box { () => x };
+    (unbox f)()
+  }
+}
+```
+```effekt:repl
+regions2()
 ```
