@@ -23,7 +23,7 @@ def sayHello(): Unit {
   println("Hello World!")
 }
 ```
-The editor comes with basic support for System C, maybe try hovering over `println`.
+The editor comes with basic support for System C -- try hovering over `println`!
 
 You can also modify the program and then click _typecheck and run_ again to run the typechecker.
 Alternatively, in the editor you can also use the keybinding `<CTRL+Enter>` on Windows or `<CMD+Enter>` on MacOS.
@@ -33,4 +33,4 @@ Sometimes you will also find REPL windows. To run the code example, just click t
 ```effekt:repl
 sayHello()
 ```
-Like with editors, you can freely change the REPL input. Since REPLs are always single-line, you can simply press `<ENTER>` instead of clicking _run_.
+Like with other editors, you can freely change the REPL input. Since REPLs are always single-line, you can simply press `<ENTER>` instead of clicking _run_.

@@ -70,8 +70,7 @@ interface Bank {
 }
 ```
 
-Here is a small example which implements the `Bank` interface (perhaps not very well,
-though, as it does nothing and your balance is always $0):
+Here is a small example which implements the `Bank` interface:
 ```effekt
 def simpleAccount(): Unit {
   var balance = 0;
@@ -95,7 +94,8 @@ def simpleAccount(): Unit {
 }
 ```
 
-We can abstract over the handler for `Bank` and also add exceptions:
+We can abstract over the handler for `Bank` and also add exceptions, for example,
+when you would overdraft your account.
 
 ```effekt
 interface AccountExc { def outOfMoney[A](): A }
