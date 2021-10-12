@@ -6,14 +6,15 @@ nav_order: 2
 ---
 ## Scheduling Tasks and Continuations
 
-Writing a safe, co-operatively threaded scheduler can be hard, as continuations can leak, and one does not want handles to the
-scheduler (with the capability to fork new threads and yield within the scheduler) to leak outside of the scheduler itself.
+Writing a safe, co-operatively threaded scheduler in an effect safe manner can be hard, as it requires treating continuations
+as first-class values.
+Continuations might indirectly close over other capabilities and we want to prevent that capabilities leave their defining scope indirectly through continuations.
 System C can safely express this though -- the following is a skeleton of a scheduler.
 
 ```effekt
 import immutable/list
-interface Proc { def fork(): Boolean }
 
+// we first draft a naive implementation of a queue
 def emptyQueue[T]() { Nil[T]() }
 def enqueue[T](q: List[T], el: T): List[T] { Cons(el, q) }
 def nonEmpty[T](q: List[T]) { size(q) > 0 }
