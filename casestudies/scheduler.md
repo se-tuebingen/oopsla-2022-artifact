@@ -83,3 +83,6 @@ these capabilities may be captured on the continuation term `resume`.  However, 
 are second class, they cannot leak through the resumption and the entire program is safe --
 in particular, the resumption cannot leak even though it is stored in the mutable cell `q`, as
 `q` is second-class itself and valid only within the context of the `scheduler` region.
+
+In the example above, calling `exc.abort()` not only terminates one "thread", but the scheduler as a whole.
+This is the expected behavior: The handler for exceptions is located _outside_ of the scheduler and thus the continuation captured and discarded by `abort` also includes the scheduler itself.
