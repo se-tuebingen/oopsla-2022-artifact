@@ -50,3 +50,20 @@ def indirectMyGreeter { greeter: Greeter }: Unit {
 }
 ```
 Hovering over `capturedGreeter` shows how the capture is reflected in the type.
+
+## Reasoning about Purity
+Boxes reflect capture of tracked variables in their types. Let us assume the following function
+in the standard library:
+```effekt
+// def setTimeout(callback: () => Unit at {}, duration: Int): Unit
+```
+Its implementation uses the FFI to JavaScript.
+System C is implemented as a compiler to JavaScript and requires a monadic runtime. The value passed to
+the JavaScript builtin `window.setTimeout` should not make use of any control effects or effect handlers
+since it will be called later outside of all possible handlers.
+To express this, we require the callback to be "pure" (i.e. `() => Unit at {}`).
+
+We can still use the unsafe `println` function, as illustrated in the following example
+```effekt:repl
+setTimeout(box { () => println("Hello after 2 seconds!") }, 2000)
+```
