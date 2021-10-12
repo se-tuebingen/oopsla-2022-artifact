@@ -19,12 +19,12 @@ def hello(): Unit {
 In addition to these basic datatypes, it also has support for inductive
 datatypes; for example:
 ```effekt
-    type Color { Red() Green() Blue() }
+type Color { Red() Green() Blue() }
 ```
 
 You can try it out!
 ```effekt:repl
-    println(Red())
+println(Red())
 ```
 
 As usual, datatypes can also take type parameteres and be recursive:
