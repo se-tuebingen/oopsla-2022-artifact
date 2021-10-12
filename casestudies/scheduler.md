@@ -4,6 +4,7 @@ title: Scheduling (with continuations and mutable cells)
 parent: Case Studies
 nav_order: 2
 ---
+## Scheduling Tasks and Continuations
 
 Writing a safe, co-operatively threaded scheduler can be hard, as continuations can leak, and one does not want handles to the
 scheduler (with the capability to fork new threads and yield within the scheduler) to leak outside of the scheduler itself.

@@ -207,3 +207,45 @@ def boundInvoke() {
     }
 }
 ```
+
+## Complex capabilities
+Here is an example with nested effect handlers.
+```effekt
+def multipleGreeter() {
+  try {
+    try {
+      try {
+        g3.sayHello();
+        g2.sayHello();
+        g1.sayHello();
+        g3.sayHello()
+      } with g3 : Greeter {
+        def sayHello() {
+          val f = resume;
+          println("Hello from 3");
+          g2.sayHello();
+          f(())
+        }
+      }
+    } with g2 : Greeter {
+      def sayHello() {
+        val g = resume;
+        println("Hello from 2");
+        g1.sayHello();
+        g(())
+      }
+    }
+  } with g1 : Greeter {
+    def sayHello() {
+      val h = resume;
+      println("Hello from 1");
+      h(())
+    }
+  }
+}
+```
+
+Run it!
+```effekt:repl
+multipleGreeter()
+```
