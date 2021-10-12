@@ -230,7 +230,15 @@ def continuations() {
   } with g1 : Greeter {
     // here the capability set on h is empty, since neither the handled
     // program, nor the body of sayHello close over anything:
-    def sayHello() { val h = resume; h(()) }
+    def sayHello() {
+      val h = resume;
+
+      // even in this nested handler, the continuation has capability {},
+      // since the program doesn't close over anything and the handler only
+      // closes over the outer continuation h, which itself has set {}.
+      try { () }
+      with g4: Greeter { def sayHello() { val i = resume; h(()); i(()) }}
+    }
   }
 }
 ```
