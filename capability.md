@@ -208,44 +208,29 @@ def boundInvoke() {
 }
 ```
 
-## Complex capabilities
-Here is an example with nested effect handlers.
+## Capability-sets on Continuations
+Here is a more complex example with nested effect handlers that illustrates how capability sets on continuations are computed.
 ```effekt
-def multipleGreeter() {
+def continuations() {
   try {
     try {
       try {
-        g3.sayHello();
-        g2.sayHello();
         g1.sayHello();
         g3.sayHello()
       } with g3 : Greeter {
-        def sayHello() {
-          val f = resume;
-          println("Hello from 3");
-          g2.sayHello();
-          f(())
-        }
+        // here the capability set on f is {g1, g2}, since the program closes over
+        // g1 and the handler closes over g2.
+        def sayHello() { val f = resume; g2.sayHello(); f(()) }
       }
     } with g2 : Greeter {
-      def sayHello() {
-        val g = resume;
-        println("Hello from 2");
-        g1.sayHello();
-        g(())
-      }
+      // here the capability set on g is {g1}, since the handler itself closes
+      // over g1
+      def sayHello() { val g = resume; g1.sayHello(); g(()) }
     }
   } with g1 : Greeter {
-    def sayHello() {
-      val h = resume;
-      println("Hello from 1");
-      h(())
-    }
+    // here the capability set on h is empty, since neither the handled
+    // program, nor the body of sayHello close over anything:
+    def sayHello() { val h = resume; h(()) }
   }
 }
-```
-
-Run it!
-```effekt:repl
-multipleGreeter()
 ```
