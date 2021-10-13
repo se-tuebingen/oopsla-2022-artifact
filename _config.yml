@@ -20,7 +20,7 @@
 
 title: "System C"
 description: >- # this means to ignore newlines until "baseurl:"
-  This is the artifact acompanying the paper on System C.
+  This is the artifact acompanying paper #53 on System C.
 
 
 # Build settings
