@@ -106,7 +106,7 @@
   !*** ./node_modules/monaco-editor/esm/vs/editor/common/services/editorSimpleWorker.js + 4 modules ***!
   \****************************************************************************************************/
 /*! exports provided: MirrorModel, EditorSimpleWorker, create */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/monaco-editor/esm/vs/base/common/diff/diff.js because of ./node_modules/monaco-editor/esm/vs/base/browser/ui/tree/indexTreeModel.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/monaco-editor/esm/vs/base/common/diff/diff.js because of ./node_modules/monaco-editor/esm/vs/editor/contrib/inlineCompletions/inlineCompletionToGhostText.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/monaco-editor/esm/vs/base/common/platform.js (<- Module uses injected variables (global, process)) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/monaco-editor/esm/vs/base/common/stopwatch.js because of ./node_modules/monaco-editor/esm/vs/editor/editor.api.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/monaco-editor/esm/vs/base/common/strings.js because of ./node_modules/monaco-editor/esm/vs/editor/common/modes/languageFeatureRegistry.js */
