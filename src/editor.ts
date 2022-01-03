@@ -23,7 +23,6 @@ monaco.editor.defineTheme('effekt-page-theme', pageTheme);
 monaco.languages.registerHoverProvider('effekt', IDE.hoverProvider);
 monaco.languages.registerDefinitionProvider('effekt', IDE.definitionProvider);
 
-
 export function create(container: HTMLElement, typecheck: HTMLElement, run: HTMLElement, out: HTMLElement, model: IDE.IViewModel): monaco.editor.ICodeEditor {
 
   let theme = document.body.classList.contains("docs") ? "effekt-docs-theme" : "effekt-page-theme";
@@ -35,7 +34,7 @@ export function create(container: HTMLElement, typecheck: HTMLElement, run: HTML
     // set language and theme
     language: "effekt",
     theme: theme,
-    fontSize: 13,
+    fontSize: 14, // fontsize was 13 for the artifact!
     fontFamily: "'Fira Mono', monospace",
 
     // minimal mode: disable most features

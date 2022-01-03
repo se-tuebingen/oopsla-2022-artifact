@@ -21,7 +21,7 @@ module.exports = {
     filename: "[name].bundle.js",
     chunkFilename: "[name].chunk.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/dist/"
+    publicPath: "/research/systemc/js/" // change this back to /dist/ to publish artifact
   },
   module: {
     rules: [
