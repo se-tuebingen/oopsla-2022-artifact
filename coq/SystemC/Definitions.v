@@ -6,12 +6,27 @@ Require Export Coq.Program.Equality.
 (** This file contains the definitions for System C. We include snippets of the paper
     as images to facilitate comparison.
 
-    _Table of Contents_:
+    ** Table of Contents
 
     #<a href="##syntax">Syntax</a>#
     - #<a href="##syntax-types">Syntax of Types</a>#
     - #<a href="##syntax-terms">Syntax of Terms</a>#
 
+    #<a href="##env">Environments and Signatures</a>#
+
+    #<a href="##typing">Typing</a>#
+    - #<a href="##typing-expression">Expression Typing</a>#
+    - #<a href="##typing-block">Block Typing</a>#
+    - #<a href="##typing-statement">Statement Typing</a>#
+
+    #<a href="##semantics">Operational Semantics</a>#
+    - #<a href="##values">Values</a>#
+    - #<a href="##redexes">Machine Redexes</a>#
+    - #<a href="##semantics-trivial">Trivial Reduction</a>#
+    - #<a href="##stacks">Stacks, Contexts, and their Typing</a>#
+    - #<a href="##abstract-machine">Abstract Machine</a>#
+    - #<a href="##machine-reduction">Machine Reduction</a>#
+    - #<a href="##machine-typing">Abstract Machine Typing</a>#
 *)
 
 (** * #<a name="syntax"></a>#  Syntax
@@ -22,7 +37,10 @@ Require Export Coq.Program.Equality.
     #<a href="https://www.cis.upenn.edu/~plclub/popl08-tutorial/code/coqdoc/Fsub_Definitions.html">locally nameless representation</a>#.
 
     In consequence, there are always two types of variables, free variables
-    (such as [typ_fvar]) and locally bound variables (such as [typ_bvar]). *)
+    (such as [typ_fvar]) and locally bound variables (such as [typ_bvar]).
+
+    Capture sets [cap] are records, containing sets of free variables, sets of bound variables, and sets of labels.
+    *)
 
 
 (** ** #<a name="syntax-types"></a># Syntax of Types
@@ -810,7 +828,7 @@ Reserved Notation "E @ R ; Q |-stm s ~: T" (at level 70, R at next level, Q at n
 
 (** Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in coqdoc. *)
 
-(** ** Expression Typing
+(** ** #<a name="typing-expression"></a># Expression Typing
 
     #<img src="img/typing-expressions.png" alt="Typing of expressions" class="fig" /># *)
 Inductive etyping : env -> sig -> exp -> vtyp -> Prop :=
@@ -838,7 +856,7 @@ where "E ; Q |-exp e ~: T" := (etyping E Q e T)
     conditions explicit, which are left implicit in the paper. *)
 
 
-(** ** Block Typing
+(** ** #<a name="typing-block"></a># Block Typing
 
     #<img src="img/typing-blocks.png" alt="Typing of blocks" class="fig" /># *)
 with btyping : env -> cap -> sig -> blk -> btyp -> Prop :=
@@ -924,7 +942,7 @@ with btyping : env -> cap -> sig -> blk -> btyp -> Prop :=
 
 where "E @ R ; Q |-blk b ~: S" := (btyping E R Q b S)
 
-(** ** Statement Typing
+(** ** #<a name="typing-statement"></a># Statement Typing
 
     #<img src="img/typing-statements.png" alt="Typing of statements" class="fig" /># *)
 with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
@@ -993,6 +1011,14 @@ with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
 
       E @ R ; Q |-stm (stm_try C T2 T1 b h) ~: T
 
+(** **** Differences to the paper
+    As mentioned above, handling statements are annotated with a capture set [C].
+    Also, we use the special type constructor [typ_exc] instead of a function type.
+    Otherwise, the definition is a straightforward translation to Coq in locally nameless. *)
+
+(** The following rule for [typing_reset] is a variation of [typing_try], not binding the capability
+    anymore and with a singleton set [{l}] instead of [C]. *)
+
   | typing_reset : forall L E R Q C l b h T T1 T2,
       R |= C ->
       wf_cap E C ->
@@ -1028,8 +1054,26 @@ Scheme etyping_mutind := Induction for etyping Sort Prop
 
 Combined Scheme typing_ind from etyping_mutind, styping_mutind, btyping_mutind.
 
-(* ********************************************************************** *)
-(** * #<a name="values"></a># Values *)
+(** * #<a name="semantics"></a># Operational Semantics
+    As described in the appendix of the paper, we mechanize the operational semantics
+    in form of an abstract machine.
+
+    However, the operational semantics is of a hybrid form: We _only_ use the abstract
+    machine semantics for _statements_ and only if they affect the evaluation context / stack.
+
+    For all other "trivial" reductions, we use a substitution based semantics with congruence rules.
+
+    This separation makes it easier in the soundness proof to separate the "interesting" cases from
+    the trivial ones.
+
+    #<img src="img/machine-semantics.png" alt="Semantics" class="fig" /># *)
+
+
+(** ** #<a name="values"></a># Values
+    Values are defined in the paper in the appendix.
+
+    #<img src="img/values.png" alt="Values" class="fig" />#
+    *)
 
 Inductive evalue : exp -> Prop :=
   | value_const :
@@ -1038,6 +1082,7 @@ Inductive evalue : exp -> Prop :=
       bvalue b ->
       capt C ->
       evalue (exp_box C b)
+
 with bvalue : blk -> Prop :=
   | value_vfun : forall T s,
       block (blk_vabs T s) ->
@@ -1051,7 +1096,10 @@ with bvalue : blk -> Prop :=
   | value_handler : forall l,
       bvalue (blk_handler l).
 
-(* Redex in a context *)
+ (** ** #<a name="redexes"></a># Machine Redexes
+    Since we mechanize the operational semantics in terms of an abstract machine, we also
+    define a predicate that describes when a statement can only be reduced in a larger context. *)
+
 Inductive machine_redex : stm -> Prop :=
   | redex_ret : forall e,
       evalue e ->
@@ -1066,19 +1114,18 @@ Inductive machine_redex : stm -> Prop :=
       evalue e ->
       machine_redex (stm_throw (blk_handler l) e).
 
-(* ********************************************************************** *)
-(** * #<a name="reduction"></a># Reduction *)
+(** ** #<a name="semantics-trivial"></a># Trivial Reduction *)
+
 
 Reserved Notation "e1 -->b e2" (at level 69).
 Reserved Notation "e1 -->e e2" (at level 69).
 Reserved Notation "e1 -->s e2" (at level 69).
 
+(** *** #<a name="semantics-blocks"></a># Reduction of Blocks
+    Blocks can always be reduced regardless of the context. In fact,
+    the only reduction is box-unbox elimination ([bred_box]) and block substitution ([bred_box]).
+  *)
 Inductive bred : blk -> blk -> Prop :=
-  (* Q: Why don't we need a congruence here?
-     A: expressions can be either constants, variables, or boxes.
-        Constants are never boxed blocks and variables will be substited with boxed blocks,
-        so this should suffice.
-    *)
   | bred_box  : forall C b,
      blk_unbox (exp_box C b) -->b b
 
@@ -1090,21 +1137,27 @@ Inductive bred : blk -> blk -> Prop :=
      blk_tapp (blk_tabs s) T -->b (open_tb s T)
 where "b1 -->b b2" := (bred b1 b2).
 
+(** *** #<a name="semantics-blocks"></a># Reduction of Expressions
+    Reduction on expressions is even simpler. Only boxed blocks can be reduced at all.
+  *)
 Inductive ered : exp -> exp -> Prop :=
-  (* Q: Why don't we need exp_box (exp_unbox e) -> e ?
-     A: Since we have the congruence, at some point `(exp_unbox e)` will reduce
-     to a block value. The reduction in `bred` will perform the box/unbox reduction.
-   *)
   | ered_box : forall C b b',
       b -->b b' ->
       (exp_box C b) -->e (exp_box C b')
 where "e1 -->e e2" := (ered e1 e2).
 
+
+(** *** #<a name="semantics-statements"></a># Reduction of Statements  *)
 Inductive sred : stm -> stm -> Prop :=
   | sred_ret : forall e e',
      e -->e e' ->
      stm_ret e -->s stm_ret e'
 
+  | sred_vapp_3 : forall T s e,
+      evalue e ->
+      stm_vapp (blk_vabs T s) e -->s (open_es s e)
+
+(** The remaining rules are congruences, omitted in the appendix of the paper. *)
   | sred_def_1 : forall C S1 b b' s,
       b -->b b' ->
       stm_def C S1 b s -->s stm_def C S1 b' s
@@ -1120,10 +1173,6 @@ Inductive sred : stm -> stm -> Prop :=
   | sred_vapp_2 : forall b e e',
       e -->e e' ->
       stm_vapp b e -->s stm_vapp b e'
-
-  | sred_vapp_3 : forall T s e,
-      evalue e ->
-      stm_vapp (blk_vabs T s) e -->s (open_es s e)
 
   | sred_bapp_1 : forall b1 b1' C b2,
       b1 -->b b1' ->
@@ -1149,24 +1198,27 @@ Inductive sred : stm -> stm -> Prop :=
 where "b1 -->s b2" := (sred b1 b2)
 .
 
-(** ******************************************* **)
-(** Stacks / Contexts                           **)
-(** ******************************************* **)
+
+
+(** ** #<a name="stacks"></a># Stacks / Contexts
+
+    #<img src="img/contexts.png" alt="contexts" class="fig" />#  **)
+
 
 Inductive frame : Type :=
   (* val _ : T = []; s  *)
   | K : vtyp -> stm -> frame
   (* invariant: all elements in cap are bound in the tail of the ctx *)
-  (* reset_l [] h *)
   | H : label -> cap -> stm -> frame
 .
 
 (** We use the following abbreviation to denote runtime stacks *)
 Notation ctx := (list frame).
 
-(** the toplevel / empty runtime stack  *)
+(** The toplevel / empty runtime stack.  *)
 Notation top := (@nil frame).
 
+(** The following definition extracts labels, bound by the context. *)
 Fixpoint bound_labels (c : ctx) : labels :=
   match c with
   | nil => {}L
@@ -1174,6 +1226,7 @@ Fixpoint bound_labels (c : ctx) : labels :=
   | H l C h :: c => LabelSet.F.union (bound_labels c) (LabelSet.F.singleton l)
   end.
 
+(** We need to be able to plug an expression into a context. *)
 Fixpoint plug (c : ctx) (e : exp) {struct c} : stm :=
   match c with
   | nil => stm_ret e
@@ -1184,7 +1237,14 @@ Fixpoint plug (c : ctx) (e : exp) {struct c} : stm :=
 Reserved Notation "R ; Q |-cnt k ~: T1 ~> T2" (at level 70, Q at next level).
 Reserved Notation "R ; Q |-ctx c ~: T" (at level 70, Q at next level).
 
-(** * Context typing *)
+(** *** Context typing
+    The following definition models the context typing from Appendix A.3 in the paper.
+
+    #<img src="img/context-typing.png" alt="context typing" class="fig" />#
+
+    It can be thought of as a variant of statement typing, flipped inside-out.
+    [typing_ctx C Q K T] is parametrized by a set [C] of capabilities _bound_ in the
+    context, global signatures [Q], the context [K] itself, and the type [T] at the hole. *)
 Inductive typing_ctx : cap -> sig -> ctx -> vtyp -> Prop :=
   | typing_ctx_empty : forall Q T,
       wf_sig Q ->
@@ -1208,7 +1268,11 @@ Inductive typing_ctx : cap -> sig -> ctx -> vtyp -> Prop :=
 
 where "R ; Q |-ctx K ~: T" := (typing_ctx R Q K T).
 
-(** * Continuation typing *)
+(** *** Continuation typing
+    Continuations are reversed contexts, so the typing rules are very similar.
+    The rendering [R ; Q |-cnt K ~: T1 ~> T2] shows that continuations [K]
+    have a function-like type. The hole has type [T1] and they are delimited at [T2].
+    *)
 Inductive typing_cnt : cap -> sig -> ctx -> vtyp -> vtyp -> Prop :=
   | typing_cnt_empty : forall R Q T,
       wf_cap empty R ->
@@ -1234,13 +1298,13 @@ Inductive typing_cnt : cap -> sig -> ctx -> vtyp -> vtyp -> Prop :=
 
 where "R ; Q |-cnt K ~: T1 ~> T2" := (typing_cnt R Q K T1 T2).
 
-(** ******************************************* **)
-(** State Machines                              **)
-(** ******************************************* **)
 
+(** ** #<a name="abstract-machine"></a># Abstract Machine
+    The abstract machine can be in one of two states.
+    - either we simply step within a context [state_step],
+    - or we unwind the stack to search for a delimiter [state_wind]. *)
 Inductive state : Type :=
   | state_step (s : stm) (c : ctx) (Q : sig) : state
-  (* Maybe we need to add the type of the effect operation here as well... *)
   | state_wind (l : label) (v : exp) (c : ctx) (k : ctx) (Q : sig) : state
 .
 
@@ -1250,54 +1314,66 @@ Notation "〈 e | Q 〉" := (state_step (stm_ret e) top Q).
 
 Reserved Notation "st1 --> st2" (at level 69).
 
+(** The following predicate corresponds to values, but for machine states. *)
 Inductive done : state -> Prop :=
   | done_ret : forall Q e,
       evalue e ->
       done 〈 e | Q 〉
 .
 
+(** *** #<a name="machine-reduction"></a># Reduction Steps
+    For better comparison, we label the rules with the names from the paper. *)
 
 Inductive step : state -> state -> Prop :=
+
+(** (cong) *)
   | step_cong : forall Q s s' c,
       s -->s s' ->
       〈 s | c | Q 〉 --> 〈 s' | c | Q 〉
 
+(** (pop) *)
   | step_pop_1 : forall Q v T s c,
       evalue v ->
       〈 stm_ret v | K T s :: c | Q 〉 --> 〈 open_es s v | c | Q 〉
 
+(** (ret) *)
   | step_pop_2 : forall Q v l C s c,
       evalue v ->
       〈 stm_ret v | H l C s :: c | Q 〉 --> 〈 stm_ret v | c | Q 〉
 
+(** (push) *)
   | step_push : forall Q s T b c,
       stmt (stm_val T b s) ->
       〈 stm_val T b s | c | Q 〉 --> 〈 b | K T s :: c | Q 〉
 
+(** (try) *)
   | step_try : forall Q s h l C T2 T1 c,
       ~ LabelSet.F.In l (bound_labels c) ->
       ~ LabelSet.F.In l (Signatures.dom Q) ->
       〈 stm_try C T2 T1 s h | c | Q 〉-->
       〈 open_cs s (blk_handler l) (cset_lvar l) | H l C h :: c | [(l , bind_sig T2 T1)] ++ Q 〉
 
+(** (reset) *)
   | step_reset : forall Q s h l C T1 T c,
       Signatures.binds l (bind_sig T1 T) Q ->
       〈 stm_reset l C s h | c | Q 〉--> 〈 s | H l C h :: c | Q 〉
 
-  (* switch to search mode *)
+(** (try), switch to search mode *)
   | step_throw : forall Q l v c,
        evalue v ->
       〈 stm_throw (blk_handler l) v | c | Q 〉-->
       〈throw l # v | c • top | Q 〉
 
+(** (unwind) *)
   | step_unwind_1 : forall Q l v T s c k,
       〈throw l # v | K T s :: c • k | Q 〉--> 〈throw l # v | c • K T s :: k | Q 〉
 
+(** (forward) *)
   | step_unwind_2 : forall Q l v l2 C h c k,
       l <> l2 ->
       〈throw l # v | H l2 C h :: c • k | Q 〉--> 〈throw l # v | c • H l2 C h :: k | Q 〉
 
-  (* switch back to step mode *)
+(** (handle), switch back to step mode *)
   | step_handle : forall Q l v T T1 C h c k,
     (* the continuation: (y : T1) => reset l c h E[y]  *)
     Signatures.binds l (bind_sig T T1) Q ->
@@ -1307,12 +1383,21 @@ Inductive step : state -> state -> Prop :=
 
 where "st1 --> st2" := (step st1 st2).
 
+(** *** #<a name="machine-typing"></a># Abstract Machine Typing
+    A machine state is simply by composing the previously defined typing judgements.
+
+    For [typ_state], a the statement has to have the same type [T] that is expected
+    by the context. *)
 
 Inductive typing_state : state -> Prop :=
   | typ_step : forall R Q s c T,
       R ; Q |-ctx c ~: T ->
       nil @ R ; Q |-stm s ~: T ->
       typing_state〈 s | c | Q 〉
+
+(** For [typ_wind] the signature bound at label [l] has to be [T3 -> T1],
+    the value has to have the expected type [T3], and the types of the
+    continuation and stack have to align at [T2].  *)
   | typ_wind : forall R Q l v c k T1 T2 T3,
       cset_references_lvar l R ->
       Signatures.binds l (bind_sig T3 T1) Q ->
