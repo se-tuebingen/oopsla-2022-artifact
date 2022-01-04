@@ -25,6 +25,14 @@ jobs:
       working-directory: demo-sources
       run: bundle exec jekyll build --baseurl /oopsla-2022-artifact
 
+    - name: Install JavaScript Dependencies
+      working-directory: demo-sources
+      run: npm install
+
+    - name: Run Webpack to bundle JS files (Monaco and compiler)
+      working-directory: demo-sources
+      run: webpack --output-public-path /oopsla-2022-artifact/dist/
+
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.6
       with:
