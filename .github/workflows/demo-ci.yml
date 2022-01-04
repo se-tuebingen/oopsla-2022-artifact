@@ -7,13 +7,15 @@ on:
 jobs:
   build:
 
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/demo-sources/Gemfile
+
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
 
     - name: Set up Ruby
-      working-directory: demo-sources
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7
