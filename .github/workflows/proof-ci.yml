@@ -1,8 +1,9 @@
 name: Compiling the proofs
 
 on:
-  push:
-    branches: [ main ]
+  ## Disabled since it consumes about 20min CI time each run.
+  # push:
+  #  branches: [ main ]
 
 jobs:
   build:
