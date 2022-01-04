@@ -7,7 +7,7 @@ module.exports = {
   watch: false,
 
   mode: "development",
-  watch: true,
+  watch: false,
 
   entry: {
     app: "./src/index.ts",
