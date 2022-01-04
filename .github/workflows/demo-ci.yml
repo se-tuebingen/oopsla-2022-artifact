@@ -19,9 +19,11 @@ jobs:
         bundler-cache: true
 
     - name: Install dependencies
+      working-directory: demo-sources
       run: bundle install
 
     - name: Build page
+      working-directory: demo-sources
       run: bundle exec jekyll build
 
     - name: Deploy to GitHub Pages
