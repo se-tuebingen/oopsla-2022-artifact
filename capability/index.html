@@ -1,0 +1,154 @@
+<!DOCTYPE html> <html lang="en-US"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=Edge"> <title>Capabilities - System C</title> <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"> <link rel="stylesheet" href="/assets/css/just-the-docs-default.css"> <link rel="stylesheet" href="/highlight/styles/github-gist.css"> <script type="text/javascript" src="/assets/js/just-the-docs.js"></script> <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Begin Jekyll SEO tag v2.7.1 --> <title>Capabilities | System C</title> <meta name="generator" content="Jekyll v4.0.1" /> <meta property="og:title" content="Capabilities" /> <meta property="og:locale" content="en_US" /> <meta name="description" content="This is the artifact acompanying paper #53 on System C." /> <meta property="og:description" content="This is the artifact acompanying paper #53 on System C." /> <meta property="og:site_name" content="System C" /> <meta name="twitter:card" content="summary" /> <meta property="twitter:title" content="Capabilities" /> <script type="application/ld+json"> {"description":"This is the artifact acompanying paper #53 on System C.","url":"/capability/","@type":"WebPage","headline":"Capabilities","@context":"https://schema.org"}</script> <!-- End Jekyll SEO tag --> </head> <body> <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"> <symbol id="svg-link" viewBox="0 0 24 24"> <title>Link</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"> <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path> </svg> </symbol> <symbol id="svg-search" viewBox="0 0 24 24"> <title>Search</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"> <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line> </svg> </symbol> <symbol id="svg-menu" viewBox="0 0 24 24"> <title>Menu</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"> <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line> </svg> </symbol> <symbol id="svg-arrow-right" viewBox="0 0 24 24"> <title>Expand</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"> <polyline points="9 18 15 12 9 6"></polyline> </svg> </symbol> <symbol id="svg-doc" viewBox="0 0 24 24"> <title>Document</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"> <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline> </svg> </symbol> </svg> <div class="side-bar"> <div class="site-header"> <a href="/" class="site-title lh-tight"> System C </a> <a href="#" id="menu-button" class="site-button"> <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg> </a> </div> <nav role="navigation" aria-label="Main" id="site-nav" class="site-nav"> <ul class="nav-list"><li class="nav-list-item"><a href="/" class="nav-list-link">Home</a></li><li class="nav-list-item"><a href="/intro/" class="nav-list-link">Basics</a></li><li class="nav-list-item active"><a href="/capability/" class="nav-list-link active">Capabilities</a></li><li class="nav-list-item"><a href="/boxing/" class="nav-list-link">Boxing and Unboxing</a></li><li class="nav-list-item"><a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/paper.html" class="nav-list-link">Paper Examples</a><ul class="nav-list "><li class="nav-list-item "><a href="/paper/section1.html" class="nav-list-link">Section 1</a></li><li class="nav-list-item "><a href="/paper/section2.html" class="nav-list-link">Section 2</a></li><li class="nav-list-item "><a href="/paper/section4.html" class="nav-list-link">Section 4</a></li></ul></li><li class="nav-list-item"><a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/casestudies.html" class="nav-list-link">Case Studies</a><ul class="nav-list "><li class="nav-list-item "><a href="/casestudies/passthrough.html" class="nav-list-link">Use and Mention</a></li><li class="nav-list-item "><a href="/casestudies/regions.html" class="nav-list-link">Region-based Local State</a></li><li class="nav-list-item "><a href="/casestudies/scheduler.html" class="nav-list-link">Scheduling (with continuations and mutable cells)</a></li></ul></li></ul> </nav> <footer class="site-footer"> This artifact uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll. </footer> </div> <div class="main" id="top"> <div id="main-header" class="main-header"> </div> <div id="main-content-wrap" class="main-content-wrap"> <div id="main-content" class="main-content" role="main"> <h1 id="capabilities-and-effects"> <a href="#capabilities-and-effects" class="anchor-heading" aria-labelledby="capabilities-and-effects"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Capabilities and Effects </h1> <h2 id="interfaces"> <a href="#interfaces" class="anchor-heading" aria-labelledby="interfaces"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Interfaces </h2> <p>Capability (and effect) types in System C are introduced with the <code class="highlighter-rouge">interface</code> keyword. For example, the following introduces the capability type <code class="highlighter-rouge">Greeter</code> which has an operation <code class="highlighter-rouge">sayHello</code> associated with it.</p><pre><code class="language-effekt">interface Greeter {
+  def sayHello(): Unit
+}
+</code></pre><p>To use it, we can require an instance of the <code class="highlighter-rouge">Greeter</code> capability type:</p><pre><code class="language-effekt">def useGreeter { g: Greeter } {
+  g.sayHello()
+}
+</code></pre><p>Notice how interfaces and capabilities are <em>block types</em> enclosed in curly braces. They are second-class.</p> <p>Finally, to actually call <code class="highlighter-rouge">useGreeter</code>, we need to handle it with a concrete handler which implements the <code class="highlighter-rouge">Greeter</code> interface and produces an concrete instance of the <code class="highlighter-rouge">Greeter</code> interface:</p><pre><code class="language-effekt">def myGreeter() {
+  try {
+    useGreeter {greeter}
+  } with greeter: Greeter {
+    def sayHello() {
+      println("Hello World!");
+      resume(())
+    }
+  }
+}
+</code></pre><p>System C features effect handlers: after printing <code class="highlighter-rouge">"Hello World"</code>, we resume evaluation at the point of the call to <code class="highlighter-rouge">sayHello</code>.</p><pre><code class="language-effekt:repl">myGreeter()
+</code></pre><h3 id="side-effects"> <a href="#side-effects" class="anchor-heading" aria-labelledby="side-effects"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Side-Effects </h3> <p>While capabilities can be used to precisely track side effects, in our draft implementation we chose to expose the (unsafe) builtin function <code class="highlighter-rouge">println</code>, which is not tracked. We can simply track access to the console by defining:</p><pre><code class="language-effekt">interface Console { def println(msg: String): Unit }
+def myFunction { console: Console } {
+  console.println("hello");
+  def nested() { console.println("world") }
+  nested()
+}
+</code></pre><p>Type checking the example we can see that for <code class="highlighter-rouge">nested</code>, we infer a capability set of <code class="highlighter-rouge">{console}</code>.</p> <h2 id="using-multiple-effects-and-capabilities"> <a href="#using-multiple-effects-and-capabilities" class="anchor-heading" aria-labelledby="using-multiple-effects-and-capabilities"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Using Multiple Effects and Capabilities </h2> <p>A capability type can have more than one operation, and these operations can also return values; for example:</p><pre><code class="language-effekt">interface Bank {
+  def debit(amount: Int): Unit
+  def credit(amount: Int): Unit
+  def balance(): Int
+}
+</code></pre><p>Here is a small example which implements the <code class="highlighter-rouge">Bank</code> interface:</p><pre><code class="language-effekt">def simpleAccount(): Unit {
+  var balance = 0;
+  try {
+    bank.debit(10);
+    bank.credit(5);
+    println(bank.balance())
+  } with bank: Bank {
+    def debit(amount: Int) {
+      balance = balance - amount;
+      resume(())
+    }
+    def credit(amount: Int) {
+      balance = balance + amount;
+      resume(())
+    }
+    def balance() {
+      resume(balance)
+    }
+  }
+}
+</code></pre><p>We can abstract over the handler for <code class="highlighter-rouge">Bank</code> and also add exceptions, for example, when you would overdraft your account.</p><pre><code class="language-effekt">interface AccountExc { def outOfMoney[A](): A }
+def account[T] { exc: AccountExc } { prog: {Bank} =&gt; T } : T {
+  var balance = 0;
+  try { prog {bank} }
+  with bank : Bank {
+    def debit(amount : Int) {
+      if (amount &gt; balance) {
+        exc.outOfMoney()
+      } else {
+        balance = balance - amount;
+        resume(())
+      }
+    }
+    def credit(amount : Int) {
+      balance = balance + amount;
+      resume(())
+    }
+    def balance() {
+      resume(balance)
+    }
+  }
+}
+
+def userProgram(): Unit {
+  try {
+    account {exc} { {bank:Bank} =&gt;
+      bank.credit(10);
+      bank.debit(5);
+      println(bank.balance())
+    }
+  } with exc: AccountExc {
+    def outOfMoney[A]() { println("Too bad.") }
+  }
+}
+</code></pre><pre><code class="language-effekt:repl">userProgram()
+</code></pre><p>You can try changing the argument of <code class="highlighter-rouge">debit</code> from <code class="highlighter-rouge">5</code> to something larger then <code class="highlighter-rouge">10</code> and then rerun the program.</p> <h2 id="polymorphism-through-second-class-capabilities"> <a href="#polymorphism-through-second-class-capabilities" class="anchor-heading" aria-labelledby="polymorphism-through-second-class-capabilities"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Polymorphism through Second Class Capabilities </h2> <p>System C supports effect polymorphism through capability polymorphism. For example, here is a function which calls a second function which may perform some effectful operation.</p><pre><code class="language-effekt">def invoke { f : () =&gt; Unit }: Unit { f() }
+
+def useInvoke() {
+  try {
+    invoke { () =&gt; useGreeter {greeter} }
+  } with greeter: Greeter {
+    def sayHello() {
+      println("Hello World from useInvoke!");
+      resume(())
+    }
+  }
+}
+</code></pre><p>Contextual effect polymorphism means: In the block passed to <code class="highlighter-rouge">invoke</code>, we can simply use any capability that is lexically in scope.</p><pre><code class="language-effekt:repl">useInvoke()
+</code></pre><p>This seems unsafe – what if <code class="highlighter-rouge">f</code> escaped? However, it cannot, as by default, capabilities in System C are <em>second class</em> – that is, they can only be passed as parameters and never returned. Moreover, functions which close over second class capabilities have the capability recorded on their binding, and by default, functions themselves are <em>second class</em>. Syntatically, second-class (block) parameters are denoted by <code class="highlighter-rouge">{}</code> instead of <code class="highlighter-rouge">()</code>.</p><pre><code class="language-effekt">def otherInvoke() {
+  try {
+    // here inner closes over greeter, which is recorded on the binding
+    def inner() {
+      greeter.sayHello()
+    }
+    inner()
+  } with greeter : Greeter {
+    def sayHello() {
+      println("Hello World from useInvoke!");
+      resume(())
+    }
+  }
+}
+
+</code></pre><h2 id="transparent-wrapping-and-aliasing"> <a href="#transparent-wrapping-and-aliasing" class="anchor-heading" aria-labelledby="transparent-wrapping-and-aliasing"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Transparent wrapping and aliasing </h2> <p>Finally, capabilities and blocks can be bound to different names. However, our type system records which <em>tracked</em> capabilities each block binder closes over, effectively performing some form of aliasing analysis.</p> <p>For example, for aliased capabilities, we can bind <code class="highlighter-rouge">greeter</code> to <code class="highlighter-rouge">checker</code> but the binding for <code class="highlighter-rouge">checker</code> still reflects the underlying bound capability:</p><pre><code class="language-effekt">def boundInvoke() {
+    try {
+        def checker1 = greeter;
+        def checker2 = { () =&gt; greeter.sayHello() };
+        checker1.sayHello()
+    } with greeter : Greeter {
+        def sayHello() {
+            println("Hello World from useInvoke!");
+            resume(())
+        }
+    }
+}
+</code></pre><h2 id="capability-sets-on-continuations"> <a href="#capability-sets-on-continuations" class="anchor-heading" aria-labelledby="capability-sets-on-continuations"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Capability-sets on Continuations </h2> <p>Here is a more complex example with nested effect handlers that illustrates how capability sets on continuations are computed.</p><pre><code class="language-effekt">def continuations() {
+  try {
+    try {
+      try {
+        g1.sayHello();
+        g3.sayHello()
+      } with g3 : Greeter {
+        // here the capability set on f is {g1, g2}, since the program closes over
+        // g1 and the handler closes over g2.
+        def sayHello() { val f = resume; g2.sayHello(); f(()) }
+      }
+    } with g2 : Greeter {
+      // here the capability set on g is {g1}, since the handler itself closes
+      // over g1
+      def sayHello() { val g = resume; g1.sayHello(); g(()) }
+    }
+  } with g1 : Greeter {
+    // here the capability set on h is empty, since neither the handled
+    // program, nor the body of sayHello close over anything:
+    def sayHello() {
+      val h = resume;
+
+      // even in this nested handler, the continuation has capability {},
+      // since the program doesn't close over anything and the handler only
+      // closes over the outer continuation h, which itself has set {}.
+      try { () }
+      with g4: Greeter { def sayHello() { val i = resume; h(()); i(()) }}
+    }
+  }
+}
+</code></pre></div> </div> </div> <script src="/highlight/highlight.pack.js"></script> <script src="/dist/app.bundle.js"></script> </body> </html>
