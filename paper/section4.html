@@ -12,7 +12,7 @@ def handleState[S, R](init: S) { prog: {State[S]} =&gt; R }: R {
   return (unbox stateFun)(init)
 }
 </code></pre><pre><code class="language-effekt:repl">handleState(0) { {s: State[Int]} =&gt; println(s.get()); s.set(2); println(s.get()) }
-</code></pre><p>For more details on regions, also see the corresponding <a href="regions">regions case study</a>.</p><pre><code class="language-effekt">def regions1() {
+</code></pre><p>For more details on regions, also see the corresponding <a href="../casestudies/regions.html">regions case study</a>.</p><pre><code class="language-effekt">def regions1() {
   region r {
     var x in r = 42;
     val t = x;
