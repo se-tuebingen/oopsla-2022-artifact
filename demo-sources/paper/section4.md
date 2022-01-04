@@ -49,10 +49,10 @@ regions2()
 ```
 
 ## Example 4.1
-See the [scheduler case study](/casestudies/scheduler.html)
+See the [scheduler case study](.../casestudies/scheduler.html)
 
 ## Section 4.4 -- Effect Handlers and Object Orientation
-Similar examples can be found in the [regions case study](/casestudies/regions.html#regions).
+Similar examples can be found in the [regions case study](../casestudies/regions.html#regions).
 
 Support code to run the example from Section 2.
 ```effekt

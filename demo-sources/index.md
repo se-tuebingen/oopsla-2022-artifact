@@ -13,7 +13,7 @@ nav_order: 0
 Welcome to System C!  In this interactive demo we will take you through a
 brief introduction to System C and a quick tour of its features.
 
-> _You can find all examples from the paper on [this page](/paper.html)._
+> _You can find all examples from the paper on [this page](paper.html)._
 
 
 ### Editors
