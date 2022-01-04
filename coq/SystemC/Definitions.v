@@ -1064,9 +1064,7 @@ Combined Scheme typing_ind from etyping_mutind, styping_mutind, btyping_mutind.
     For all other "trivial" reductions, we use a substitution based semantics with congruence rules.
 
     This separation makes it easier in the soundness proof to separate the "interesting" cases from
-    the trivial ones.
-
-    #<img src="img/machine-semantics.png" alt="Semantics" class="fig" /># *)
+    the trivial ones. *)
 
 
 (** ** #<a name="values"></a># Values
@@ -1114,7 +1112,9 @@ Inductive machine_redex : stm -> Prop :=
       evalue e ->
       machine_redex (stm_throw (blk_handler l) e).
 
-(** ** #<a name="semantics-trivial"></a># Trivial Reduction *)
+(** ** #<a name="semantics-trivial"></a># Trivial Reduction
+
+    #<img src="img/machine-semantics-trivial.png" alt="Semantics" class="fig" /># *)
 
 
 Reserved Notation "e1 -->b e2" (at level 69).
@@ -1322,7 +1322,9 @@ Inductive done : state -> Prop :=
 .
 
 (** *** #<a name="machine-reduction"></a># Reduction Steps
-    For better comparison, we label the rules with the names from the paper. *)
+    For better comparison, we label the rules with the names from the paper.
+
+    #<img src="img/machine-semantics-serious.png" alt="Semantics" class="fig" /># *)
 
 Inductive step : state -> state -> Prop :=
 
