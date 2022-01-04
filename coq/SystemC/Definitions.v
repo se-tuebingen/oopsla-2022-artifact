@@ -941,7 +941,6 @@ with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
       E @ R ; Q |-stm (stm_val T1 b s) ~: T2
 
   | typing_def : forall L E R Q b s (C : cap) S1 T2,
-      R |= C ->
       wf_cap E C ->
       E @ C ; Q |-blk b ~: S1 ->
       (* This is a transparent binding (not tracked), we do not open types. *)

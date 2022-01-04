@@ -986,8 +986,8 @@ Proof with eauto.
     notin_solve.
   * pick_fresh_fill; simpl_env in *.
     notin_clear. unfold open_bs in *.
-    eapply notin_fv_es_open_bs in H3.
-    eapply notin_fv_eb_btyping with (x := x) in H1; notin_solve.
+    eapply notin_fv_es_open_bs in H2.
+    eapply notin_fv_eb_btyping with (x := x) in H0; notin_solve.
   * pick_fresh_fill. pick_fresh_fill. simpl_env in *.
     notin_clear.
     eapply notin_fv_es_open_bs in H5.
@@ -1063,8 +1063,8 @@ Proof with eauto.
     notin_solve.
   * pick_fresh_fill; simpl_env in *.
     notin_clear. unfold open_bs in *.
-    eapply notin_fv_bs_open_bs in H3.
-    eapply notin_fv_bb_btyping with (x := x) in H1; notin_solve.
+    eapply notin_fv_bs_open_bs in H2.
+    eapply notin_fv_bb_btyping with (x := x) in H0; notin_solve.
   * pick_fresh_fill. pick_fresh_fill. simpl_env in *.
     notin_clear.
     eapply notin_fv_bs_open_bs in H5.
@@ -1345,13 +1345,13 @@ Proof with solve_regular.
     (* by z notin T2 *)
     rewrite_env (empty ++ E).
     eapply wf_vtyp_strengthening...
-  - destruct (btyping_regular _ _ _ _ _ H1) as [WfEnv [Block [WfS1 [WfRes WfSig]]]]...
+  - destruct (btyping_regular _ _ _ _ _ H0) as [WfEnv [Block [WfS1 [WfRes WfSig]]]]...
     pick fresh z.
-    destruct (H3 z ltac:(notin_solve)) as [_ [Block2 [WfS12 [WfRes2 WfSig2]]]].
+    destruct (H2 z ltac:(notin_solve)) as [_ [Block2 [WfS12 [WfRes2 WfSig2]]]].
     repeat split...
     + pick fresh y and apply stmt_def...
       eauto using btype_from_wf_btyp.
-      destruct (H3 y ltac:(notin_solve)) as [_ [Stmt [_ _]]]...
+      destruct (H2 y ltac:(notin_solve)) as [_ [Stmt [_ _]]]...
     + rewrite_env (empty ++ E).
       eapply wf_vtyp_strengthening_blk...
     + rewrite_env (empty ++ E). (* by WfRes2 and z notin R *)

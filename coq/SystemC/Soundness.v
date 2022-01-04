@@ -1,16 +1,301 @@
 Require Import Taktiks.
 Require Export SystemC.Substitution.
 Require Import Signatures.
-
-
-(* ********************************************************************** *)
-(** * #<a name="preservation"></a># Preservation *)
-
-
-(* ********************************************************************** *)
-(** ** Preservation (20) *)
-
 Require Import Coq.Program.Tactics.
+
+
+(* begin hide *)
+
+(** Some auxiliary lemmas *)
+Lemma empty_cset_closed : capt {}C.
+Proof.
+  unfold capt; simpl; fnsetdec.
+Qed.
+
+Lemma cset_in_empty_env : forall C,
+  wf_cap empty C ->
+    exists ls, C = cset_set {} {}N ls.
+Proof with eauto.
+  intros * Wf.
+  inversion Wf.
+  destruct (AtomSet.F.choose xs) as [x |] eqn:Eq.
+  - apply AtomSet.F.choose_1 in Eq.
+    destruct (H x Eq) as [S0 Binds].
+    inversion Binds.
+  - apply AtomSet.F.choose_2 in Eq.
+    assert (xs = {}) by fsetdec; subst...
+Qed.
+
+Lemma cnt_typing_weaken_restriction : forall C1 C2 Q k T1 T2,
+  wf_cap empty C2 ->
+  C1; Q |-cnt k ~: T1 ~> T2 ->
+  C2 |= C1 ->
+  C2; Q |-cnt k ~: T1 ~> T2.
+Proof with eauto using styping_weaken_restriction, wf_cap_weaken_head.
+  intros * WfC2 C1TypingQ Subsumption.
+  generalize dependent C2.
+  dependent induction C1TypingQ; intros C2 WfC2 Subsumption...
+  - pick fresh X and apply typing_cnt_frame...
+    pose proof (styping_regular _ _ _ _ _ (H X ltac:(notin_solve)))...
+    eapply styping_weaken_restriction...
+    rewrite_env ([(X, bind_val T2)] ++ empty)...
+  - pick fresh f and apply typing_cnt_handler...
+    eapply subset_trans...
+Qed.
+
+Lemma signature_binds_weaken : forall Q M N l (T1 T : vtyp),
+  Signatures.ok (Q ++ M ++ N) ->
+  Signatures.binds l (bind_sig T1 T) (Q ++ N) ->
+  Signatures.binds l (bind_sig T1 T) (Q ++ M ++ N).
+Proof with eauto.
+  intros * Ok SgnBinds.
+  Signatures.binds_cases SgnBinds...
+  * rewrite_env ((Q ++ M) ++ N). eapply Signatures.binds_concat_ok...
+    Signatures.simpl_env...
+Qed.
+
+Lemma signatures_ok_from_wf_sig : forall S,
+  wf_sig S -> Signatures.ok S.
+Proof with eauto.
+  intros S Wf.
+  induction Wf...
+Qed.
+
+Lemma notin_fv_be_substed_ee : forall x y s1 s2,
+  x <> y ->
+  x `notin` fv_be s1 ->
+  x `notin` fv_be s2 ->
+  x `notin` fv_be (subst_ee y s2 s1)
+with notin_fv_bs_substed_es : forall x y s1 s2,
+  x <> y ->
+  x `notin` fv_bs s1 ->
+  x `notin` fv_be s2 ->
+  x `notin` fv_bs (subst_es y s2 s1)
+with notin_fv_bb_substed_eb : forall x y s1 s2,
+  x <> y ->
+  x `notin` fv_bb s1 ->
+  x `notin` fv_be s2 ->
+  x `notin` fv_bb (subst_eb y s2 s1).
+Proof with eauto.
+------
+  intros * Fry Frs1 Frs2.
+  induction s1; simpl; f_equal...
+  destruct (a == y)...
+------
+  intros * Fry Frs1 Frs2.
+  induction s1; simpl in *; f_equal...
+------
+  intros * Fry Frs1 Frs2.
+  induction s1; simpl in *; f_equal...
+Qed.
+
+
+(** Signatures are unique. If we have two bindings for the same label, the
+    types have to align. *)
+Lemma signature_binds_unique : forall l T1 T2 Q,
+  Signatures.binds l T1 Q ->
+  Signatures.binds l T2 Q ->
+  wf_sig Q ->
+  T1 = T2.
+Proof.
+  intros * Bind1 Bind2 Wf.
+  unfold Signatures.binds in *.
+  rewrite Bind1 in Bind2.
+  inversion Bind2.
+  trivial.
+Qed.
+
+(* end hide *)
+
+
+(** * #<a name="weakening-restriction"></a># Weakening of Restrictions *)
+
+Ltac solve_weakening := simpl_env;
+  eauto 5 using wf_cap_weakening,
+              wf_vtyp_weakening,
+              wf_btyp_weakening,
+              wf_cap_weaken_head,
+              wf_vtyp_from_wf_env_typ,
+              wf_btyp_from_wf_env_blk,
+              wf_cap_subset,
+              wf_cap_bind_head,
+              signature_binds_weaken,
+              signatures_ok_from_wf_sig.
+
+(** Here we show that subsumption is admissible. We inlined subset inclusion
+    into each individual typing rule. *)
+Lemma etyping_weaken_signature : forall Q M N E e T,
+  wf_sig (Q ++ M ++ N) ->
+  E ; Q ++ N |-exp e ~: T ->
+  E ; Q ++ M ++ N |-exp e ~: T
+with btyping_weaken_signature : forall Q M N E R b S1,
+  wf_sig (Q ++ M ++ N) ->
+  E @ R ; Q ++ N |-blk b ~: S1 ->
+  E @ R ; Q ++ M ++ N |-blk b ~: S1
+with styping_weaken_signature : forall Q M N E R s T,
+  wf_sig (Q ++ M ++ N) ->
+  E @ R ; Q ++ N |-stm s ~: T ->
+  E @ R ; Q ++ M ++ N |-stm s ~: T.
+Proof with solve_weakening.
+------
+  intros * Wf Typ.
+  dependent induction Typ; try solve [ econstructor; solve_weakening ].
+------
+  intros * Wf Typ.
+  dependent induction Typ.
+  - try solve [ clear btyping_weaken_signature styping_weaken_signature; econstructor; solve_weakening ].
+  - try solve [ clear btyping_weaken_signature styping_weaken_signature; econstructor; solve_weakening ].
+  - try solve [ clear btyping_weaken_signature styping_weaken_signature; econstructor; solve_weakening ].
+  - pick fresh x and apply typing_vabs...
+  - pick fresh x and apply typing_babs...
+  - pick fresh x and apply typing_tabs...
+  - try solve [ clear btyping_weaken_signature styping_weaken_signature; econstructor; solve_weakening ].
+  - try solve [ clear btyping_weaken_signature styping_weaken_signature; econstructor; solve_weakening ].
+------
+  intros * Wf Typ.
+  dependent induction Typ.
+  - try solve [ econstructor; solve_weakening ].
+  - pick fresh x and apply typing_val...
+  - pick fresh x and apply typing_def...
+  - try solve [ econstructor; solve_weakening ].
+  - try solve [ econstructor; solve_weakening ].
+  - pick fresh x and apply typing_try...
+  - pick fresh x and apply typing_reset...
+  - try solve [ econstructor; solve_weakening ].
+Qed.
+
+(** We can show that weakening the signature context does not affect welltyped-ness. *)
+Lemma ctx_typing_weaken_signature : forall Q M N R c T,
+  wf_sig (Q ++ M ++ N) ->
+  R ; Q ++ N |-ctx c ~: T ->
+  R ; Q ++ M ++ N |-ctx c ~: T.
+Proof with eauto using etyping_weaken_signature, btyping_weaken_signature, styping_weaken_signature,
+  signatures_ok_from_wf_sig.
+  intros * WfS H.
+  dependent induction H...
+  - pick fresh x and apply typing_ctx_frame...
+  - pick fresh x and apply typing_ctx_try...
+    eapply signature_binds_weaken...
+Qed.
+
+
+(** * #<a name="plugging"></a># Context Plugging *)
+
+(** This helper lemma is important: it says that given a continuation
+    and some variable x, plugging the variable in the position of the hole
+    is well-typed. *)
+Lemma unwind_step : forall L Q x C T1 T2 k,
+  wf_vtyp empty T1 ->
+  wf_cap empty C ->
+  C ; Q |-cnt k ~: T1 ~> T2 ->
+  x `notin` L ->
+  [(x, bind_val T1)] @ C ; Q |-stm (plug k x) ~: T2.
+Proof with eauto using
+  wf_cap_weaken_head, wf_btyp_weaken_head, wf_vtyp_weaken_head, wf_btyp_weakening.
+  intros * WfT WfC Cnt Fr.
+  generalize dependent C.
+  generalize dependent T2.
+  dependent induction k; intros T2 C WfC Cnt...
+  - inversion Cnt; subst... repeat (simpl; try econstructor)...
+    rewrite_env ([(x, bind_val T2)] ++ empty)...
+  - inversion Cnt; subst...
+    * assert (wf_vtyp empty T3). {
+        pick fresh y.
+        specialize (H6 y ltac:(notin_solve)).
+        apply styping_regular in H6 as (Wf & _).
+        inversion Wf; subst...
+      }
+      simpl.
+      pick fresh y and apply typing_val...
+      rewrite_env ([(y, bind_val T3)] ++ [(x, bind_val T1)] ++ empty).
+      apply styping_weakening; simpl_env...
+      econstructor...
+      econstructor...
+      rewrite_env ([(x, bind_val T1)] ++ empty)...
+    * simpl.
+      pick fresh y and apply typing_reset...
+      apply wf_cap_subset with (R := C)...
+      rewrite_env ([(x, bind_val T1)] ++ empty)...
+      rewrite_env ([(x, bind_val T1)] ++ empty)...
+      specialize (H9 y ltac:(notin_solve)).
+      intros kont kontFr.
+      rewrite_env ([(kont, bind_blk (typ_vfun T T2) (capture C0))] ++ [(y, bind_val T4)] ++ [(x, bind_val T1)] ++ empty).
+      assert (wf_env ([(kont, bind_blk (typ_vfun T T2) (capture C0))] ++ [(y, bind_val T4)] ++ [(x, bind_val T1)])). {
+        assert (wf_env [(x, bind_val T1)]). {
+          econstructor...
+        }
+        assert (wf_env ([(y, bind_val T4)] ++ [(x, bind_val T1)])). {
+          econstructor...
+          rewrite_env ([(x, bind_val T1)] ++ empty)...
+          apply wf_vtyp_weaken_head...
+          eapply wf_vtyp_from_sig_binds_val...
+          pose proof (typing_cnt_regular _ _ _ _ _ Cnt)...
+        }
+        econstructor...
+        * econstructor...
+          + eapply wf_vtyp_weaken_head...
+            rewrite_env ([(x, bind_val T1)] ++ empty)...
+            eapply wf_vtyp_weaken_head...
+            eapply wf_vtyp_from_sig_binds...
+            pose proof (typing_cnt_regular _ _ _ _ _ Cnt)...
+          + eapply wf_vtyp_weaken_head...
+            pose proof (styping_regular _ _ _ _ _ (IHk WfT Fr T2 (cset_union C0 (cset_lvar l))
+              (proj1 (typing_cnt_regular _ _ _ _ _ H2)) H2)) as [_ [_ [WfT2 _]]]...
+        * rewrite_env (([(y, bind_val T4)] ++ [(x, bind_val T1)]) ++ empty).
+          eapply wf_cap_weaken_head...
+          eapply wf_cap_subset...
+      }
+      rewrite <- concat_assoc.
+      apply styping_weakening; simpl_env...
+Qed.
+
+(** Helper lemma showing that plug doesn't introduce binders. *)
+Lemma plugging : forall (x : atom) k C Q T1 T2,
+  C ; Q |-cnt k ~: T1 ~> T2 ->
+  open_es (plug k 0) x = plug k x.
+Proof with eauto*.
+  intros * Cnt.
+  unfold open_es.
+  dependent induction k...
+  cbv [plug].
+  fold plug. simpl.
+  destruct a;
+  cbv [open_es_rec]; fold open_es_rec; subst...
+  (* s is closed *)
+  * inversion Cnt; subst...
+    pick fresh X. specialize (H7 X ltac:(fsetdec)).
+    pose proof (styping_regular _ _ _  _ _ H7) as [_ [Closed [_ _]]].
+    unfold open_es in Closed.
+    assert ((open_es_rec 0 X s) = (open_es_rec 1 x (open_es_rec 0 X s))).
+    { apply open_es_rec_stmt... }
+    eapply open_es_rec_expr_aux in H... rewrite <- H; erewrite IHk...
+  * inversion Cnt; subst...
+    pick fresh v. pick fresh kont.
+    specialize (H11 v ltac:(notin_solve) kont ltac:(notin_solve)).
+    pose proof (styping_regular _ _ _  _ _ H11) as [_ [Closed [_ _]]].
+    unfold open_bs, open_es in Closed.
+    assert ((open_bs_rec 0 kont (open_es_rec 0 v s)) = (open_es_rec 1 x (open_bs_rec 0 kont (open_es_rec 0 v s)))).
+    { eapply open_es_rec_stmt... }
+    eapply open_es_rec_block_aux in H.
+    eapply open_es_rec_expr_aux in H...
+    rewrite <- H; erewrite IHk...
+Qed.
+
+
+(** * #<a name="preservation"></a># Preservation
+
+    As discussed in [SystemC.Definitions], the operational semantics of SystemC is
+    mechanized as an abstract machine, separating redexes that depend on the evaulation
+    context from those that do not.
+
+    In consequence, the preservation Theorem 3.4 from the paper, maps to two
+    separate theorems in the mechanization:
+
+    - [preservation_stmt] shows that reducing statement regardless of the context preserves the type.
+    - [preservation_step] shows that stepping from one state to another preserves the typability of the machine state.
+
+    Further more, the pure reductions for expressions ([preservation_expr]) and
+    blocks ([preservation_block]) also preserve types, correspondingly. *)
 
 Lemma preservation_block : forall E R Q b b' S1,
   btyping E R Q b S1 ->
@@ -85,418 +370,6 @@ Proof with simpl_env; eauto using btyping_weaken_restriction, preservation_block
     rewrite <- subst_cset_fresh...
   - Case "typing_throw".
     inversion Red; subst...
-Qed.
-
-
-
-(* ********************************************************************** *)
-(** * #<a name="progress"></a># Progress *)
-
-
-(* ********************************************************************** *)
-(** ** Canonical forms (14) *)
-
-
-Lemma canonical_form_tabs : forall e T R Q,
-  bvalue e ->
-  btyping empty R Q e (typ_tfun T) ->
-  exists e1, e = blk_tabs e1.
-Proof.
-  intros * Val Typ.
-  remember empty.
-  remember (typ_tfun T).
-  revert T Heqb Heql.
-  induction Typ; intros T' EQT EQE; subst;
-    try solve [ inversion Val | inversion EQT | eauto ].
-Qed.
-
-Lemma canonical_form_vabs : forall e U1 U2 R Q,
-  bvalue e ->
-  btyping empty R Q e (typ_vfun U1 U2) ->
-  exists V, exists e1, e = blk_vabs V e1.
-Proof.
-  intros * Val Typ.
-  remember empty.
-  remember (typ_vfun U1 U2).
-  revert U1 U2 Heqb Heql.
-  induction Typ; intros U1 U2 EQT EQE; subst;
-    try solve [ inversion Val | inversion EQT | eauto ].
-Qed.
-
-Lemma canonical_form_babs : forall e U1 U2 R Q,
-  bvalue e ->
-  btyping empty R Q e (typ_bfun U1 U2) ->
-  exists V, exists e1, e = blk_babs V e1.
-Proof.
-  intros * Val Typ.
-  remember empty.
-  remember (typ_bfun U1 U2).
-  revert U1 U2 Heqb Heql.
-  induction Typ; intros U1 U2 EQT EQE; subst;
-    try solve [ inversion Val | inversion EQT | eauto ].
-Qed.
-
-Lemma canonical_form_box : forall e R Q C,
-  evalue e ->
-  etyping empty Q e (typ_capt R C) ->
-  exists s, e = exp_box C s.
-Proof.
-  intros * Val Typ.
-  remember empty.
-  remember (typ_capt R C).
-  revert R Heqv Heql.
-  induction Typ; intros R4 EQT EQE; subst;
-    try solve [ inversion Val | inversion EQT | eauto ].
-  inversion EQT; subst.
-  exists b. trivial.
-Qed.
-
-Lemma canonical_form_exc : forall b R Q T1 T,
-  bvalue b ->
-  empty @ R ; Q |-blk b ~: (typ_exc T1 T) ->
-  exists l, b = blk_handler l /\ Signatures.binds l (bind_sig T1 T) Q.
-Proof.
-  intros * Val Typ.
-  dependent induction Typ; try solve [inversion Val; eauto].
-Qed.
-
-(* ********************************************************************** *)
-(** ** Progress (16) *)
-
-Lemma progress_block : forall b S1 R Q,
-  empty @ R ; Q |-blk b ~: S1 ->
-  bvalue b \/ exists b', b -->b b'.
-Proof with eauto.
-  intros * Typ.
-  remember empty. generalize dependent Heql.
-  assert (Typ' : l @ R ; Q |-blk b ~: S1)...
-  induction Typ; intros EQ; subst...
-  - Case "typing_var_mono".
-    inversion select (binds _ _ empty).
-  - Case "typing_var_poly".
-    inversion select (binds _ _ empty).
-  - inversion H; subst.
-    + inversion select (binds _ _ empty).
-    + right. exists b...
-  - Case "typing_tapp".
-    destruct (IHTyp Typ ltac:(trivial)); right...
-    * destruct (canonical_form_tabs _ _ _ _ H0 Typ); subst.
-      eexists.
-      apply bred_tapp.
-    * destruct H0 as [b Red].
-      exists (blk_tapp b T1).
-      apply bred_tapp_cong...
-Qed.
-
-Lemma empty_cset_closed : capt {}C.
-Proof.
-  unfold capt; simpl; fnsetdec.
-Qed.
-
-Lemma cset_in_empty_env : forall C,
-  wf_cap empty C ->
-    exists ls, C = cset_set {} {}N ls.
-Proof with eauto.
-  intros * Wf.
-  inversion Wf.
-  destruct (AtomSet.F.choose xs) as [x |] eqn:Eq.
-  - apply AtomSet.F.choose_1 in Eq.
-    destruct (H x Eq) as [S0 Binds].
-    inversion Binds.
-  - apply AtomSet.F.choose_2 in Eq.
-    assert (xs = {}) by fsetdec; subst...
-Qed.
-
-Lemma progress_expr : forall Q e T,
-  empty ; Q |-exp e ~: T ->
-  evalue e \/ exists e', e -->e e'.
-Proof with eauto using empty_cset_closed.
-  intros * Typ.
-  remember empty. generalize dependent Heql.
-  assert (Typ' : l ; Q |-exp e ~: T)...
-  induction Typ; intros EQ; subst...
-  - Case "typing_var".
-    inversion select (binds _ _ empty).
-  - destruct (cset_in_empty_env C H) as [ls EQ]; subst...
-    destruct (progress_block _ _ _ _ H0) as [Val | [b' Step]].
-    left. constructor...
-    right. exists (exp_box (cset_set {} {}N ls) b'). constructor...
-Qed.
-
-Lemma progress_stmt : forall s T R Q,
-  empty @ R ; Q |-stm s ~: T ->
-  machine_redex s \/ exists s', s -->s s'.
-Proof with eauto using vtype_from_wf_vtyp, btype_from_wf_btyp, empty_cset_closed.
-  intros * Typ.
-  remember empty. remember R. generalize dependent Heql.
-  assert (Typ' : l @ c ; Q |-stm s ~: T)...
-  dependent induction Typ; intros EQ; subst...
-  - Case "typing_ret".
-    destruct (progress_expr _ _ _ H) as [Val | [e' Step]]...
-  - Case "typing_def".
-    right.
-    destruct (progress_block _ _ _ _ H1) as [Val | [b' Step]]...
-  - Case "typing_vapp".
-    right.
-    destruct (progress_block _ _ _ _ H) as [Val1 | [e1' Rede1']]...
-    SCase "Val1".
-      destruct (progress_expr _ _ _ H0) as [Val2 | [e2' Rede2']]...
-      SSCase "Val2".
-        destruct (canonical_form_vabs _ _ _ _ _ Val1 H) as [S [e3 EQ]].
-        subst.
-        exists (open_es e3 e)...
-  - Case "typing_bapp".
-    right.
-    destruct C.
-    destruct (progress_block _ _ _ _ H1) as [Val1 | [e1' Rede1']]...
-    SCase "Val1".
-      destruct (progress_block _ _ _ _ H2) as [Val2 | [e2' Rede2']]...
-      SSCase "Val2".
-        destruct (canonical_form_babs _ _ _ _ _ Val1 H1) as [S [e3 EQ]].
-        subst.
-        exists (open_cs e3 b2 (cset_set t t0 t1))...
-  - Case "typing_throw".
-    destruct (progress_block _ _ _ _ H) as [Val1 | [e1' Rede1']]...
-    destruct (canonical_form_exc _ _ _ _ _ Val1 H) as [l [EQ Binds]]; subst.
-    destruct (progress_expr _ _ _ H0) as [Val2 | [e2' Rede2']]...
-Qed.
-
-Lemma cnt_typing_weaken_restriction : forall C1 C2 Q k T1 T2,
-  wf_cap empty C2 ->
-  C1; Q |-cnt k ~: T1 ~> T2 ->
-  C2 |= C1 ->
-  C2; Q |-cnt k ~: T1 ~> T2.
-Proof with eauto using styping_weaken_restriction, wf_cap_weaken_head.
-  intros * WfC2 C1TypingQ Subsumption.
-  generalize dependent C2.
-  dependent induction C1TypingQ; intros C2 WfC2 Subsumption...
-  - pick fresh X and apply typing_cnt_frame...
-    pose proof (styping_regular _ _ _ _ _ (H X ltac:(notin_solve)))...
-    eapply styping_weaken_restriction...
-    rewrite_env ([(X, bind_val T2)] ++ empty)...
-  - pick fresh f and apply typing_cnt_handler...
-    eapply subset_trans...
-Qed.
-
-Lemma unwind_step : forall L Q x C T1 T2 k,
-  wf_vtyp empty T1 ->
-  wf_cap empty C ->
-  C ; Q |-cnt k ~: T1 ~> T2 ->
-  x `notin` L ->
-  [(x, bind_val T1)] @ C ; Q |-stm (plug k x) ~: T2.
-Proof with eauto using
-  wf_cap_weaken_head, wf_btyp_weaken_head, wf_vtyp_weaken_head, wf_btyp_weakening.
-  intros * WfT WfC Cnt Fr.
-  generalize dependent C.
-  generalize dependent T2.
-  dependent induction k; intros T2 C WfC Cnt...
-  - inversion Cnt; subst... repeat (simpl; try econstructor)...
-    rewrite_env ([(x, bind_val T2)] ++ empty)...
-  - inversion Cnt; subst...
-    * assert (wf_vtyp empty T3). {
-        pick fresh y.
-        specialize (H6 y ltac:(notin_solve)).
-        apply styping_regular in H6 as (Wf & _).
-        inversion Wf; subst...
-      }
-      simpl.
-      pick fresh y and apply typing_val...
-      rewrite_env ([(y, bind_val T3)] ++ [(x, bind_val T1)] ++ empty).
-      apply styping_weakening; simpl_env...
-      econstructor...
-      econstructor...
-      rewrite_env ([(x, bind_val T1)] ++ empty)...
-    * simpl.
-      pick fresh y and apply typing_reset...
-      apply wf_cap_subset with (R := C)...
-      rewrite_env ([(x, bind_val T1)] ++ empty)...
-      rewrite_env ([(x, bind_val T1)] ++ empty)...
-      specialize (H9 y ltac:(notin_solve)).
-      intros kont kontFr.
-      rewrite_env ([(kont, bind_blk (typ_vfun T T2) (capture C0))] ++ [(y, bind_val T4)] ++ [(x, bind_val T1)] ++ empty).
-      assert (wf_env ([(kont, bind_blk (typ_vfun T T2) (capture C0))] ++ [(y, bind_val T4)] ++ [(x, bind_val T1)])). {
-        assert (wf_env [(x, bind_val T1)]). {
-          econstructor...
-        }
-        assert (wf_env ([(y, bind_val T4)] ++ [(x, bind_val T1)])). {
-          econstructor...
-          rewrite_env ([(x, bind_val T1)] ++ empty)...
-          apply wf_vtyp_weaken_head...
-          eapply wf_vtyp_from_sig_binds_val...
-          pose proof (typing_cnt_regular _ _ _ _ _ Cnt)...
-        }
-        econstructor...
-        * econstructor...
-          + eapply wf_vtyp_weaken_head...
-            rewrite_env ([(x, bind_val T1)] ++ empty)...
-            eapply wf_vtyp_weaken_head...
-            eapply wf_vtyp_from_sig_binds...
-            pose proof (typing_cnt_regular _ _ _ _ _ Cnt)...
-          + eapply wf_vtyp_weaken_head...
-            pose proof (styping_regular _ _ _ _ _ (IHk WfT Fr T2 (cset_union C0 (cset_lvar l))
-              (proj1 (typing_cnt_regular _ _ _ _ _ H2)) H2)) as [_ [_ [WfT2 _]]]...
-        * rewrite_env (([(y, bind_val T4)] ++ [(x, bind_val T1)]) ++ empty).
-          eapply wf_cap_weaken_head...
-          eapply wf_cap_subset...
-      }
-      rewrite <- concat_assoc.
-      apply styping_weakening; simpl_env...
-Qed.
-
-(** show that plug doesn't introduce binders *)
-Lemma plugging : forall (x : atom) k C Q T1 T2,
-  C ; Q |-cnt k ~: T1 ~> T2 ->
-  open_es (plug k 0) x = plug k x.
-Proof with eauto*.
-  intros * Cnt.
-  unfold open_es.
-  dependent induction k...
-  cbv [plug].
-  fold plug. simpl.
-  destruct a;
-  cbv [open_es_rec]; fold open_es_rec; subst...
-  (** s is closed *)
-  * inversion Cnt; subst...
-    pick fresh X. specialize (H7 X ltac:(fsetdec)).
-    pose proof (styping_regular _ _ _  _ _ H7) as [_ [Closed [_ _]]].
-    unfold open_es in Closed.
-    assert ((open_es_rec 0 X s) = (open_es_rec 1 x (open_es_rec 0 X s))).
-    { apply open_es_rec_stmt... }
-    eapply open_es_rec_expr_aux in H... rewrite <- H; erewrite IHk...
-  * inversion Cnt; subst...
-    pick fresh v. pick fresh kont.
-    specialize (H11 v ltac:(notin_solve) kont ltac:(notin_solve)).
-    pose proof (styping_regular _ _ _  _ _ H11) as [_ [Closed [_ _]]].
-    unfold open_bs, open_es in Closed.
-    assert ((open_bs_rec 0 kont (open_es_rec 0 v s)) = (open_es_rec 1 x (open_bs_rec 0 kont (open_es_rec 0 v s)))).
-    { eapply open_es_rec_stmt... }
-    eapply open_es_rec_block_aux in H.
-    eapply open_es_rec_expr_aux in H...
-    rewrite <- H; erewrite IHk...
-Qed.
-
-Lemma signature_binds_weaken : forall Q M N l (T1 T : vtyp),
-  Signatures.ok (Q ++ M ++ N) ->
-  Signatures.binds l (bind_sig T1 T) (Q ++ N) ->
-  Signatures.binds l (bind_sig T1 T) (Q ++ M ++ N).
-Proof with eauto.
-  intros * Ok SgnBinds.
-  Signatures.binds_cases SgnBinds...
-  * rewrite_env ((Q ++ M) ++ N). eapply Signatures.binds_concat_ok...
-    Signatures.simpl_env...
-Qed.
-
-Lemma signatures_ok_from_wf_sig : forall S,
-  wf_sig S -> Signatures.ok S.
-Proof with eauto.
-  intros S Wf.
-  induction Wf...
-Qed.
-
-Ltac solve_weakening := simpl_env;
-  eauto 5 using wf_cap_weakening,
-              wf_vtyp_weakening,
-              wf_btyp_weakening,
-              wf_cap_weaken_head,
-              wf_vtyp_from_wf_env_typ,
-              wf_btyp_from_wf_env_blk,
-              wf_cap_subset,
-              wf_cap_bind_head,
-              signature_binds_weaken,
-              signatures_ok_from_wf_sig.
-
-Lemma etyping_weaken_signature : forall Q M N E e T,
-  wf_sig (Q ++ M ++ N) ->
-  E ; Q ++ N |-exp e ~: T ->
-  E ; Q ++ M ++ N |-exp e ~: T
-with btyping_weaken_signature : forall Q M N E R b S1,
-  wf_sig (Q ++ M ++ N) ->
-  E @ R ; Q ++ N |-blk b ~: S1 ->
-  E @ R ; Q ++ M ++ N |-blk b ~: S1
-with styping_weaken_signature : forall Q M N E R s T,
-  wf_sig (Q ++ M ++ N) ->
-  E @ R ; Q ++ N |-stm s ~: T ->
-  E @ R ; Q ++ M ++ N |-stm s ~: T.
-Proof with solve_weakening.
-------
-  intros * Wf Typ.
-  dependent induction Typ; try solve [ econstructor; solve_weakening ].
-------
-  intros * Wf Typ.
-  dependent induction Typ.
-  - try solve [ clear btyping_weaken_signature styping_weaken_signature; econstructor; solve_weakening ].
-  - try solve [ clear btyping_weaken_signature styping_weaken_signature; econstructor; solve_weakening ].
-  - try solve [ clear btyping_weaken_signature styping_weaken_signature; econstructor; solve_weakening ].
-  - pick fresh x and apply typing_vabs...
-  - pick fresh x and apply typing_babs...
-  - pick fresh x and apply typing_tabs...
-  - try solve [ clear btyping_weaken_signature styping_weaken_signature; econstructor; solve_weakening ].
-  - try solve [ clear btyping_weaken_signature styping_weaken_signature; econstructor; solve_weakening ].
-------
-  intros * Wf Typ.
-  dependent induction Typ.
-  - try solve [ econstructor; solve_weakening ].
-  - pick fresh x and apply typing_val...
-  - pick fresh x and apply typing_def...
-  - try solve [ econstructor; solve_weakening ].
-  - try solve [ econstructor; solve_weakening ].
-  - pick fresh x and apply typing_try...
-  - pick fresh x and apply typing_reset...
-  - try solve [ econstructor; solve_weakening ].
-Qed.
-
-Lemma ctx_typing_weaken_signature : forall Q M N R c T,
-  wf_sig (Q ++ M ++ N) ->
-  R ; Q ++ N |-ctx c ~: T ->
-  R ; Q ++ M ++ N |-ctx c ~: T.
-Proof with eauto using etyping_weaken_signature, btyping_weaken_signature, styping_weaken_signature,
-  signatures_ok_from_wf_sig.
-  intros * WfS H.
-  dependent induction H...
-  - pick fresh x and apply typing_ctx_frame...
-  - pick fresh x and apply typing_ctx_try...
-    eapply signature_binds_weaken...
-Qed.
-
-Lemma signature_binds_unique : forall l T1 T2 Q,
-  Signatures.binds l T1 Q ->
-  Signatures.binds l T2 Q ->
-  wf_sig Q ->
-  T1 = T2.
-Proof.
-  intros * Bind1 Bind2 Wf.
-  unfold Signatures.binds in *.
-  rewrite Bind1 in Bind2.
-  inversion Bind2.
-  trivial.
-Qed.
-
-Lemma notin_fv_be_substed_ee : forall x y s1 s2,
-  x <> y ->
-  x `notin` fv_be s1 ->
-  x `notin` fv_be s2 ->
-  x `notin` fv_be (subst_ee y s2 s1)
-with notin_fv_bs_substed_es : forall x y s1 s2,
-  x <> y ->
-  x `notin` fv_bs s1 ->
-  x `notin` fv_be s2 ->
-  x `notin` fv_bs (subst_es y s2 s1)
-with notin_fv_bb_substed_eb : forall x y s1 s2,
-  x <> y ->
-  x `notin` fv_bb s1 ->
-  x `notin` fv_be s2 ->
-  x `notin` fv_bb (subst_eb y s2 s1).
-Proof with eauto.
-------
-  intros * Fry Frs1 Frs2.
-  induction s1; simpl; f_equal...
-  destruct (a == y)...
-------
-  intros * Fry Frs1 Frs2.
-  induction s1; simpl in *; f_equal...
-------
-  intros * Fry Frs1 Frs2.
-  induction s1; simpl in *; f_equal...
 Qed.
 
 Lemma preservation_step : forall s1 s2,
@@ -631,8 +504,7 @@ Proof with eauto 5 using styping_weaken_restriction, wf_vtyp_from_sig_binds.
       rewrite subst_es_open_bs_var...
       rewrite_env (empty ++ empty).
 
-      (* substitution commutes, assuming some wellformedness conditions that we need
-          to prove. *)
+      (* substitution commutes, assuming some wellformedness conditions that we need to prove. *)
       rewrite subst_es_through_subst_bs.
       2 : {
         simpl. repeat rewrite notin_union_split; repeat split; try notin_solve.
@@ -669,6 +541,167 @@ Proof with eauto 5 using styping_weaken_restriction, wf_vtyp_from_sig_binds.
         econstructor...
 Qed.
 
+
+(** * #<a name="progress"></a># Progress
+    Like with preservation, for progress, we have two lemmas:
+
+    - [progress_stmt] shows that a well-typed statement can take a step
+    - [progress_step] shows that a well-typed machine can take a step *)
+
+
+
+(** ** Canonical forms
+    We start by proving the usual canonical forms lemmas. *)
+
+Lemma canonical_form_tabs : forall e T R Q,
+  bvalue e ->
+  btyping empty R Q e (typ_tfun T) ->
+  exists e1, e = blk_tabs e1.
+Proof.
+  intros * Val Typ.
+  remember empty.
+  remember (typ_tfun T).
+  revert T Heqb Heql.
+  induction Typ; intros T' EQT EQE; subst;
+    try solve [ inversion Val | inversion EQT | eauto ].
+Qed.
+
+Lemma canonical_form_vabs : forall e U1 U2 R Q,
+  bvalue e ->
+  btyping empty R Q e (typ_vfun U1 U2) ->
+  exists V, exists e1, e = blk_vabs V e1.
+Proof.
+  intros * Val Typ.
+  remember empty.
+  remember (typ_vfun U1 U2).
+  revert U1 U2 Heqb Heql.
+  induction Typ; intros U1 U2 EQT EQE; subst;
+    try solve [ inversion Val | inversion EQT | eauto ].
+Qed.
+
+Lemma canonical_form_babs : forall e U1 U2 R Q,
+  bvalue e ->
+  btyping empty R Q e (typ_bfun U1 U2) ->
+  exists V, exists e1, e = blk_babs V e1.
+Proof.
+  intros * Val Typ.
+  remember empty.
+  remember (typ_bfun U1 U2).
+  revert U1 U2 Heqb Heql.
+  induction Typ; intros U1 U2 EQT EQE; subst;
+    try solve [ inversion Val | inversion EQT | eauto ].
+Qed.
+
+Lemma canonical_form_box : forall e R Q C,
+  evalue e ->
+  etyping empty Q e (typ_capt R C) ->
+  exists s, e = exp_box C s.
+Proof.
+  intros * Val Typ.
+  remember empty.
+  remember (typ_capt R C).
+  revert R Heqv Heql.
+  induction Typ; intros R4 EQT EQE; subst;
+    try solve [ inversion Val | inversion EQT | eauto ].
+  inversion EQT; subst.
+  exists b. trivial.
+Qed.
+
+(** Note that due to the slightly different representation of capability-types,
+    we also have canonical forms for those *)
+Lemma canonical_form_exc : forall b R Q T1 T,
+  bvalue b ->
+  empty @ R ; Q |-blk b ~: (typ_exc T1 T) ->
+  exists l, b = blk_handler l /\ Signatures.binds l (bind_sig T1 T) Q.
+Proof.
+  intros * Val Typ.
+  dependent induction Typ; try solve [inversion Val; eauto].
+Qed.
+
+
+(** ** Progress *)
+
+Lemma progress_block : forall b S1 R Q,
+  empty @ R ; Q |-blk b ~: S1 ->
+  bvalue b \/ exists b', b -->b b'.
+Proof with eauto.
+  intros * Typ.
+  remember empty. generalize dependent Heql.
+  assert (Typ' : l @ R ; Q |-blk b ~: S1)...
+  induction Typ; intros EQ; subst...
+  - Case "typing_var_mono".
+    inversion select (binds _ _ empty).
+  - Case "typing_var_poly".
+    inversion select (binds _ _ empty).
+  - inversion H; subst.
+    + inversion select (binds _ _ empty).
+    + right. exists b...
+  - Case "typing_tapp".
+    destruct (IHTyp Typ ltac:(trivial)); right...
+    * destruct (canonical_form_tabs _ _ _ _ H0 Typ); subst.
+      eexists.
+      apply bred_tapp.
+    * destruct H0 as [b Red].
+      exists (blk_tapp b T1).
+      apply bred_tapp_cong...
+Qed.
+
+
+Lemma progress_expr : forall Q e T,
+  empty ; Q |-exp e ~: T ->
+  evalue e \/ exists e', e -->e e'.
+Proof with eauto using empty_cset_closed.
+  intros * Typ.
+  remember empty. generalize dependent Heql.
+  assert (Typ' : l ; Q |-exp e ~: T)...
+  induction Typ; intros EQ; subst...
+  - Case "typing_var".
+    inversion select (binds _ _ empty).
+  - destruct (cset_in_empty_env C H) as [ls EQ]; subst...
+    destruct (progress_block _ _ _ _ H0) as [Val | [b' Step]].
+    left. constructor...
+    right. exists (exp_box (cset_set {} {}N ls) b'). constructor...
+Qed.
+
+Lemma progress_stmt : forall s T R Q,
+  empty @ R ; Q |-stm s ~: T ->
+  machine_redex s \/ exists s', s -->s s'.
+Proof with eauto using vtype_from_wf_vtyp, btype_from_wf_btyp, empty_cset_closed.
+  intros * Typ.
+  remember empty. remember R. generalize dependent Heql.
+  assert (Typ' : l @ c ; Q |-stm s ~: T)...
+  dependent induction Typ; intros EQ; subst...
+  - Case "typing_ret".
+    destruct (progress_expr _ _ _ H) as [Val | [e' Step]]...
+  - Case "typing_def".
+    right.
+    destruct (progress_block _ _ _ _ H0) as [Val | [b' Step]]...
+  - Case "typing_vapp".
+    right.
+    destruct (progress_block _ _ _ _ H) as [Val1 | [e1' Rede1']]...
+    SCase "Val1".
+      destruct (progress_expr _ _ _ H0) as [Val2 | [e2' Rede2']]...
+      SSCase "Val2".
+        destruct (canonical_form_vabs _ _ _ _ _ Val1 H) as [S [e3 EQ]].
+        subst.
+        exists (open_es e3 e)...
+  - Case "typing_bapp".
+    right.
+    destruct C.
+    destruct (progress_block _ _ _ _ H1) as [Val1 | [e1' Rede1']]...
+    SCase "Val1".
+      destruct (progress_block _ _ _ _ H2) as [Val2 | [e2' Rede2']]...
+      SSCase "Val2".
+        destruct (canonical_form_babs _ _ _ _ _ Val1 H1) as [S [e3 EQ]].
+        subst.
+        exists (open_cs e3 b2 (cset_set t t0 t1))...
+  - Case "typing_throw".
+    destruct (progress_block _ _ _ _ H) as [Val1 | [e1' Rede1']]...
+    destruct (canonical_form_exc _ _ _ _ _ Val1 H) as [l [EQ Binds]]; subst.
+    destruct (progress_expr _ _ _ H0) as [Val2 | [e2' Rede2']]...
+Qed.
+
+
 Lemma progress_step : forall s1,
   typing_state s1 ->
   done s1 \/ exists s2, s1 --> s2.
@@ -684,7 +717,7 @@ Proof with eauto.
         * right. destruct f...
       + right.
         pick fresh label l for (LabelSet.F.union (Signatures.dom Q) (bound_labels c)).
-        (* Here we will have to show that T0 is wellformed in the empty env *)
+        (* Here we have to show that T0 is wellformed in the empty env *)
         eexists 〈 open_cs b (blk_handler l) (cset_lvar l) |
             SystemC.Definitions.H l C s0 :: c | _ ++ Q 〉...
         econstructor...
