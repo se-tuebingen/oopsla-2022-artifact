@@ -168,6 +168,7 @@ Proof.
   repeat split; try fsetdec; try fnsetdec; try lsetdec.
 Qed.
 
+(** Here we show that capture subsumption on blocks and statements is admissible. *)
 Lemma btyping_weaken_restriction : forall C E R Q b S1,
   R |= C ->
   wf_cap E R ->

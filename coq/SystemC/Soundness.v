@@ -3,10 +3,23 @@ Require Export SystemC.Substitution.
 Require Import Signatures.
 Require Import Coq.Program.Tactics.
 
+(** * Soundness
+
+    The proof of soundness is split the following aspects:
+    - _Substitution._ See file [SystemC.Substitution].
+      For instance [etyping_through_subst_ee] shows that substituting an expression in
+      an expression preserves expression-typing, and [styping_through_subst_bs] shows that
+      substituting a block into a statement preserves statement-typing).
+    - _Plugging_. Lemma 3.4 in the paper is proven (in a variation) by [unwind_step].
+    - _Preservation._ We show type preservation of reducing statements ([preservation_stmt])
+      and machine states ([preservation_step]).
+    - _Progress._ We show type progress for statements ([progress_stmt])
+      and machine states ([progress_step]).
+*)
 
 (* begin hide *)
 
-(** Some auxiliary lemmas *)
+(** First, some auxiliary lemmas. *)
 Lemma empty_cset_closed : capt {}C.
 Proof.
   unfold capt; simpl; fnsetdec.
@@ -105,10 +118,8 @@ Proof.
   trivial.
 Qed.
 
-(* end hide *)
 
-
-(** * #<a name="weakening-restriction"></a># Weakening of Restrictions *)
+(** * #<a name="weakening-signatures"></a># Weakening of Signatures *)
 
 Ltac solve_weakening := simpl_env;
   eauto 5 using wf_cap_weakening,
@@ -122,8 +133,6 @@ Ltac solve_weakening := simpl_env;
               signature_binds_weaken,
               signatures_ok_from_wf_sig.
 
-(** Here we show that subsumption is admissible. We inlined subset inclusion
-    into each individual typing rule. *)
 Lemma etyping_weaken_signature : forall Q M N E e T,
   wf_sig (Q ++ M ++ N) ->
   E ; Q ++ N |-exp e ~: T ->
@@ -178,12 +187,18 @@ Proof with eauto using etyping_weaken_signature, btyping_weaken_signature, stypi
     eapply signature_binds_weaken...
 Qed.
 
+(* end hide *)
+
+
+
 
 (** * #<a name="plugging"></a># Context Plugging *)
 
 (** This helper lemma is important: it says that given a continuation
     and some variable x, plugging the variable in the position of the hole
-    is well-typed. *)
+    is well-typed.
+
+    This lemma roughly corresponds to Lemma 3.6 in the paper. *)
 Lemma unwind_step : forall L Q x C T1 T2 k,
   wf_vtyp empty T1 ->
   wf_cap empty C ->
