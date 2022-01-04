@@ -13,14 +13,11 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Set up Ruby
+      working-directory: demo-sources
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7
         bundler-cache: true
-
-    - name: Install dependencies
-      working-directory: demo-sources
-      run: bundle install
 
     - name: Build page
       working-directory: demo-sources
