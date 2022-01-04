@@ -3,7 +3,7 @@ var coqdocjs = coqdocjs || {};
 coqdocjs.repl = {
     // specific to this paper
     "E" : "Γ",
-    "Q" : "Σ",
+    "Q" : "Ξ",
     "--->": "⟶",
 
     "forall": "∀",

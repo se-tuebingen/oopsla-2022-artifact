@@ -39,6 +39,16 @@ div + br {
 
 div:empty{ display: none;}
 
+img {
+    display: block;
+    max-width: 80%;
+    margin: 1em auto;
+}
+img.fig {
+    box-shadow: 4px 4px 6px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+}
+
 div.paragraph {
   margin-top: 0.5em;
 }

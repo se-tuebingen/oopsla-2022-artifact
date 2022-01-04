@@ -3,7 +3,8 @@ Require Export CaptureSets.
 Require Import Signatures.
 Require Export Coq.Program.Equality.
 
-(** This file contains the definitions for System C.
+(** This file contains the definitions for System C. We include snippets of the paper
+    as images to facilitate comparison.
 
     _Table of Contents_:
 
@@ -24,7 +25,10 @@ Require Export Coq.Program.Equality.
     (such as [typ_fvar]) and locally bound variables (such as [typ_bvar]). *)
 
 
-(** ** #<a name="syntax-types"></a># Syntax of Types *)
+(** ** #<a name="syntax-types"></a># Syntax of Types
+  Here, we define the syntax of types, as defined in Figure 1 in the paper.
+
+  #<img src="img/syntax-types.png" alt="Syntax of types" class="fig" />#  *)
 
 (** *** Value Types *)
 Inductive vtyp : Type :=
@@ -65,7 +69,9 @@ with btyp : Type :=
 
 
 (** ** #<a name="syntax-terms"></a># Syntax of Terms
-    In the following, we define the syntax of expressions, statements, and blocks. *)
+    In the following, we define the syntax of expressions, statements, and blocks.
+
+    #<img src="img/syntax-terms.png" alt="Syntax of terms" class="fig" /># *)
 
 (** *** Expressions *)
 Inductive exp : Type :=
@@ -459,24 +465,32 @@ with block : blk -> Prop :=
 
 
 
-(** * #<a name="env"></a># Environments *)
+(** * #<a name="env"></a># Environments and Signatures *)
 
-(** We use a single environment for value, type, and region abstraction. We
-    formalize environments by representing them as association lists
+(** ** Environments
+    Like in the paper, we use a single environment for value, block, and type abstraction.
+    We formalize environments by representing them as association lists
     (lists of pairs of keys and values) whose keys are atoms.
 
-    The [Metatheory] and [Environment] libraries provide functions,
-    predicates, tactics, notations and lemmas that simplify working
-    with environments.  The [Environment] library treats environments
-    as lists of type [list (atom * A)].
+    #<img src="img/environments.png" alt="Syntax of environments" class="fig" />#
 
-    Since environments map [atom]s, the type [A] should encode whether
-    a particular binding is a typing or region assumption.  Thus,
-    we instantiate [A] with the type [binding], defined below. *)
+    Instead of having two forms of block bindings, we index them by a coeffect defined below: *)
 
 Inductive coeffect : Type :=
   | tracked : coeffect
   | capture : cap -> coeffect.
+
+(** Basing our mechanization on an existing locally nameless proof, we
+    reuse the infrastructure for environments.
+
+    [Util.Metatheory], [Util.Environment], and [Util.Signatures] libraries provide functions,
+    predicates, tactics, notations and lemmas that simplify working
+    with environments.  The [Util.Environment] library treats environments
+    as lists of type [list (atom * A)].
+
+    Since environments map [atom]s, the type [A] should encode whether
+    a particular binding is a typing or region assumption.  Thus,
+    we instantiate [A] with the type [binding], defined below *)
 
 Inductive binding : Type :=
   (*  x : T   *)
@@ -485,16 +499,23 @@ Inductive binding : Type :=
   (* X *)
   | bind_typ : binding.
 
+Notation env := (list (atom * binding)).
+Notation empty := (@nil (atom * binding)).
+
+(** ** Signatures
+    As a proof device, each runtime label (Figure 3 in the paper) is associated with a
+    signature (that is the argument type and the result type of an effect operation).
+
+    #<img src="img/signatures.png" alt="Syntax of signatures" class="fig" />#
+
+    The tooling in [Util.Signatures] is a plain copy of [Util.Environment]. *)
+
 Inductive signature : Type :=
   (* label : T1 (param type) T (result type)*)
   | bind_sig : vtyp -> vtyp -> signature.
 
-  (* Notation env := (list (atom * binding) * atoms). *)
-Notation env := (list (atom * binding)).
-
 Notation sig := (list (label * signature)).
 
-Notation empty := (@nil (atom * binding)).
 
 (* begin hide *)
 
@@ -774,49 +795,52 @@ Inductive wf_sig : sig -> Prop :=
 
 (* end hide *)
 
-(* ********************************************************************** *)
-(** * #<a name="typing_doc"></a># Typing *)
 
-(** The definition of typing uses the [binds] relation from the [Environment]
-    library (in the [typing_var] case) and cofinite quantification in the cases
-    involving binders (e.g., [typing_abs], [typing_tabs], and [typing_rabs]). *)
+(** * #<a name="typing"></a># Typing
 
+    Like in the paper, we model typing as three mutually inductive relations.
 
-  (* match C with
-  | cset_set A N => AtomSet.F.Subset A xs
-  end. *)
-
+    Note that we use notation [C |= D] (pronounced "C admits D") instead
+    of subset inclusion [D <= C] as it is used in the paper. *)
 Notation "C |= D" := (cset_subset_prop D C) (at level 68).
 
 Reserved Notation "E ; Q |-exp e ~: T" (at level 70, Q at next level).
 Reserved Notation "E @ R ; Q |-blk b ~: S" (at level 70, R at next level, Q at next level).
 Reserved Notation "E @ R ; Q |-stm s ~: T" (at level 70, R at next level, Q at next level).
 
+(** Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in coqdoc. *)
+
+(** ** Expression Typing
+
+    #<img src="img/typing-expressions.png" alt="Typing of expressions" class="fig" /># *)
 Inductive etyping : env -> sig -> exp -> vtyp -> Prop :=
   | typing_base : forall E Q,
       wf_env E ->
       wf_sig Q ->
       E ; Q |-exp exp_const ~: typ_base
+
   | typing_evar : forall E Q x T,
       wf_env E ->
       wf_sig Q ->
-      (* TODO should we add an extended well-formedness statement here: E @ R |- T wf ? *)
       binds x (bind_val T) E ->
       E ; Q |-exp (exp_fvar x) ~: T
 
   | typing_box : forall E Q (C : cap) S1 b,
-      (* wf_cap E R C
-        OR *)
-      (* this enforces monotonicity of restrictions, but maybe it prevents us from showing substitution? *)
-      (* R |= (cset_fvars C) -> *)
-      (*  this probably can be dropped due to regularity *)
       wf_cap E C ->
-
       (E @ C ; Q |-blk b ~: S1) ->
       E ; Q |-exp (exp_box C b) ~: (typ_capt S1 C)
 
 where "E ; Q |-exp e ~: T" := (etyping E Q e T)
 
+(** **** Differences to the paper
+    The three rules directly correspond to rules LIT, VAR, and BOXINTRO in
+    the paper. As can be seen (all) typing judgements in Coq make wellformedness
+    conditions explicit, which are left implicit in the paper. *)
+
+
+(** ** Block Typing
+
+    #<img src="img/typing-blocks.png" alt="Typing of blocks" class="fig" /># *)
 with btyping : env -> cap -> sig -> blk -> btyp -> Prop :=
 
   | typing_bvar_tracked : forall E R Q f S1,
@@ -826,6 +850,7 @@ with btyping : env -> cap -> sig -> blk -> btyp -> Prop :=
       binds f (bind_blk S1 tracked) E ->
       R |= cset_fvar f ->
       E @ R ; Q |-blk (blk_fvar f) ~: S1
+
   | typing_bvar_capture : forall E R Q f S1 (C : cap),
       wf_env E ->
       wf_sig Q ->
@@ -833,20 +858,44 @@ with btyping : env -> cap -> sig -> blk -> btyp -> Prop :=
       R |= C ->
       binds f (bind_blk S1 (capture C)) E ->
       E @ R ; Q |-blk (blk_fvar f) ~: S1
+
   | typing_unbox : forall E R Q e S1 C,
       E ; Q |-exp e ~: (typ_capt S1 C) ->
       wf_cap E R ->
 
       R |= C ->
       E @ R ; Q |-blk (blk_unbox e) ~: S1
+
   | typing_vabs : forall L E R Q T1 s T2,
       (forall x : atom, x `notin` L ->
         ([(x, bind_val T1)] ++ E) @ R ; Q |-stm (open_es s x) ~: T2) ->
       E @ R ; Q |-blk (blk_vabs T1 s) ~: (typ_vfun T1 T2)
+
   | typing_babs : forall L E R Q S1 s T2,
       (forall x : atom, x `notin` L ->
         ([(x, bind_blk S1 tracked)] ++ E) @ cset_union R (cset_fvar x) ; Q |-stm (open_cs s x (cset_fvar x)) ~: (open_cvt T2 (cset_fvar x))) ->
       E @ R ; Q |-blk (blk_babs S1 s) ~: (typ_bfun S1 T2)
+
+
+(** **** Differences to the paper
+    Note that we build in subsumption on blocks (rule BSUB in the paper)
+    into the rules as additional premises, instead of having one additional
+    rule. This allows us to omit having to prove inversion of subeffecting.
+
+    Instead, in [SystemC.Substitution.btyping_weaken_restriction] we show
+    that rule SUB is admissible (and similar for subsumption on statements).
+
+    In the paper, we use [C] for capture sets, but in the mechanization we
+    speak of restrictions and use the metavariable [R]
+
+    Rules from the paper map in the following way to the mechanization:
+    - <<TRACKED>> maps to [typing_bvar_tracked]
+    - <<TRANSPARENT>> maps to [typing_bvar_capture]
+    - <<BLOCK>> maps to [typing_vabs] and [typing_babs]
+    - <<BOXELIM>> maps to [typing_unbox]
+
+    *** Additional Rules for Type Polymorphism *)
+
 
   | typing_tabs : forall L E R Q s T,
       (forall X : atom, X `notin` L ->
@@ -857,6 +906,10 @@ with btyping : env -> cap -> sig -> blk -> btyp -> Prop :=
       wf_vtyp E T1 ->
       E @ R ; Q |-blk s ~: (typ_tfun T) ->
       E @ R ; Q |-blk (blk_tapp s T1) ~: (open_tbt T T1)
+
+(** *** Typing Effect Handlers
+    #<img src="img/typing-cap.png" alt="Typing of handlers" class="fig" />#
+    Like in the other rules, we bake subsumption into this rule. *)
 
   | typing_handler : forall E R Q l T1 T,
       wf_env E ->
@@ -871,16 +924,22 @@ with btyping : env -> cap -> sig -> blk -> btyp -> Prop :=
 
 where "E @ R ; Q |-blk b ~: S" := (btyping E R Q b S)
 
+(** ** Statement Typing
+
+    #<img src="img/typing-statements.png" alt="Typing of statements" class="fig" /># *)
 with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
+
   | typing_ret : forall E R Q e T,
       E ; Q |-exp e ~: T ->
       wf_cap E R ->
       E @ R ; Q |-stm (stm_ret e) ~: T
+
   | typing_val : forall L E R Q b s T1 T2,
       E @ R ; Q |-stm b ~: T1 ->
       (forall x : atom, x `notin` L ->
         ([(x, bind_val T1)] ++ E) @ R ; Q |-stm (open_es s x) ~: T2) ->
       E @ R ; Q |-stm (stm_val T1 b s) ~: T2
+
   | typing_def : forall L E R Q b s (C : cap) S1 T2,
       R |= C ->
       wf_cap E C ->
@@ -889,10 +948,12 @@ with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
       (forall x : atom, x `notin` L ->
         ([(x, bind_blk S1 (capture C))] ++ E) @ R ; Q |-stm (open_bs s x) ~: T2) ->
       E @ R ; Q |-stm (stm_def C S1 b s) ~: T2
+
   | typing_vapp : forall E R Q b e T1 T2,
       E @ R ; Q |-blk b ~: (typ_vfun T1 T2) ->
       E ; Q |-exp e ~: T1 ->
       E @ R ; Q |-stm (stm_vapp b e) ~: T2
+
   | typing_bapp : forall E R Q b1 b2 (C : cap) S1 T2,
       R |= C ->
       wf_cap E C ->
@@ -900,6 +961,20 @@ with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
       E @ C ; Q |-blk b2 ~: S1 ->
       E @ R ; Q |-stm (stm_bapp b1 C b2) ~: (open_cvt T2 C)
 
+(** **** Differences to the paper
+    The rules correspond to the paper with the following mapping:
+    - <<RET>> maps to [typing_ret]
+    - <<VAL>> maps to [typing_val]
+    - <<DEF>> maps to [typing_def]
+    - <<APP>> maps to [typing_vapp] and [typing_bapp]
+
+    In rule [typing_val], for simplicity we do not compute the union, but
+    instead require both restrictions to be the same. This does not affect
+    expressivity, since we can always use subsumption. *)
+
+
+(** *** Typing Handling of Effects
+    #<img src="img/typing-try.png" alt="Typing of handlers" class="fig" />#  *)
   | typing_try : forall L E R Q C b h T T1 T2,
       R |= C ->
       wf_cap E C ->
@@ -941,6 +1016,12 @@ with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
       E @ R ; Q |-stm (stm_throw b e) ~: T
 
 where "E @ R ; Q |-stm s ~: T" := (styping E R Q s T).
+
+(** Since we use locally nameless, the definition of typing uses the [binds] relation
+    from the [Environment] library (in the [typing_var] case) and cofinite quantification
+    in the cases involving binders (e.g., [typing_vabs], [typing_tabs], ...). *)
+
+(** We have to define our own induction scheme to convince the termination checker *)
 
 Scheme etyping_mutind := Induction for etyping Sort Prop
   with styping_mutind := Induction for styping Sort Prop
