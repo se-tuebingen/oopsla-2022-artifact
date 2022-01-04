@@ -1,6 +1,6 @@
 name: Compiling the proofs
 
-on:
+on: []
   ## Disabled since it consumes about 20min CI time each run.
   # push:
   #  branches: [ main ]
