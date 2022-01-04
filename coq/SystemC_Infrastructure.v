@@ -1,9 +1,9 @@
 Require Import Taktiks.
-Require Export Rho_Definitions.
+Require Export SystemC_Definitions.
 
 (*  Free Variables *)
 Fixpoint fv_ee (e : exp) {struct e} : atoms :=
-  match e with  
+  match e with
   | exp_bvar i => {}
   | exp_fvar x => singleton x
   | exp_const => {}
@@ -67,7 +67,7 @@ with fv_bb (b : blk) {struct b} : atoms :=
 Fixpoint fv_cvt (T : vtyp) {struct T} : atoms :=
   match T with
   | typ_base => {}
-  | typ_capt S1 C1 => (fv_cbt S1) `union` (cset_fvars C1) 
+  | typ_capt S1 C1 => (fv_cbt S1) `union` (cset_fvars C1)
   | typ_fvar a => {}
   | typ_bvar n => {}
   end
@@ -84,7 +84,7 @@ Fixpoint fv_ce (e : exp) {struct e} : atoms :=
   | exp_bvar i => {}
   | exp_fvar x => {}
   | exp_const => {}
-  | exp_box C1 b => (cset_fvars C1) `union` (fv_cb b) 
+  | exp_box C1 b => (cset_fvars C1) `union` (fv_cb b)
   end
 
 with fv_cs (s : stm) {struct s} : atoms :=
@@ -125,9 +125,9 @@ with fv_tbt (S1 : btyp) {struct S1} : atoms :=
   | typ_exc T1 T => (fv_tvt T1) `union` (fv_tvt T)
   | typ_tfun T => (fv_tbt T)
   end.
-  
+
 Fixpoint fv_te (e : exp) {struct e} : atoms :=
-  match e with  
+  match e with
   | exp_bvar i => {}
   | exp_fvar x => {}
   | exp_const => {}
@@ -167,7 +167,7 @@ Definition fv_bbind (b : binding) : atoms :=
 Ltac gather_atoms :=
   let A := gather_atoms_with (fun x : atoms => x) in
   let B := gather_atoms_with (fun x : atom => singleton x) in
-  
+
   let C := gather_atoms_with (fun x : exp => fv_ee x) in
   let D := gather_atoms_with (fun x : exp => fv_be x) in
   let E := gather_atoms_with (fun x : exp => fv_ce x) in
@@ -186,13 +186,13 @@ Ltac gather_atoms :=
   let O := gather_atoms_with (fun x : vtyp => fv_tvt x) in
   let P := gather_atoms_with (fun x : btyp => fv_tbt x) in
 
-  let Q := gather_atoms_with (fun x : exp => fv_te x) in 
+  let Q := gather_atoms_with (fun x : exp => fv_te x) in
   let R := gather_atoms_with (fun x : stm => fv_ts x) in
   let S := gather_atoms_with (fun x : blk => fv_tb x) in
 
   let Z := gather_atoms_with (fun x : env => dom x) in
-  
-  constr:(A `union` B `union` C `union` D `union` E `union` F `union` G `union` H `union` I `union` J `union` K `union` L `union` M `union` N 
+
+  constr:(A `union` B `union` C `union` D `union` E `union` F `union` G `union` H `union` I `union` J `union` K `union` L `union` M `union` N
           `union` O `union` P `union` Q `union` R `union` S `union` Z).
 
 (** The second step in defining "[pick fresh]" is to define the tactic
@@ -359,9 +359,9 @@ with subst_cs_intro_rec : forall x e u C k,
 with subst_cb_intro_rec : forall x e u C k,
   x `notin` fv_cb e ->
   open_cb_rec k u C e = subst_cb x u C (open_cb_rec k x (cset_fvar x) e).
-Proof with eauto using 
-  subst_cvt_intro_rec, 
-  subst_cc_intro_rec, 
+Proof with eauto using
+  subst_cvt_intro_rec,
+  subst_cc_intro_rec,
   subst_cbt_intro_rec.
 ------
   induction e; intros; simpl in *; f_equal...
@@ -369,11 +369,11 @@ Proof with eauto using
   induction e; intros; simpl in *; f_equal...
 ------
   induction e; intros; try solve [simpl in *; f_equal; eauto using subst_cvt_intro_rec, subst_cc_intro_rec, subst_cbt_intro_rec].
-  - simpl in *. 
+  - simpl in *.
     destruct (k === n); subst...
     unfold subst_cb.
     destruct (x == x)... fsetdec.
-  - simpl in *. 
+  - simpl in *.
     destruct (a == x)... fsetdec.
 Qed.
 
@@ -467,7 +467,7 @@ Proof with eauto.
     + unfold disjoint. fsetdec.
     + unfold labels_disjoint. clear Fr H IHHtyp. lsetdec.
   - unfold open_tbt in *.
-    pick fresh X. 
+    pick fresh X.
     eapply open_cbt_rec_type_aux with (j := 0) (U := X)...
 Qed.
 
@@ -778,7 +778,7 @@ Proof with eauto using open_cvt_rec_vtype, open_cbt_rec_btype.
     eapply open_cs_rec_expr_aux with (j := 0) (u := v); intuition.
     eapply open_cs_rec_block_aux with (j := 0) (u := kont); intuition.
     solve using assumption and notin_solve.
-Qed.  
+Qed.
 
 Lemma open_ee_rec_expr : forall e U k,
   expr e ->
@@ -830,7 +830,7 @@ Proof with auto*.
     eapply open_es_rec_block_aux with (j := 0) (u := kont); intuition.
     solve using assumption and notin_solve.
 Qed.
- 
+
 
 Lemma open_be_rec_expr : forall e U k,
   expr e ->
@@ -907,7 +907,7 @@ Proof with auto*.
   - Case "exp_bvar".
     destruct (k === n); subst...
   - Case "exp_fvar".
-    destruct (a == x); subst... apply open_ee_rec_expr...  
+    destruct (a == x); subst... apply open_ee_rec_expr...
 ------
   intros * WP. revert k.
   induction e1; intros k; simpl; f_equal...
@@ -993,7 +993,7 @@ Proof with auto*.
   intros * WP. revert k.
   induction e; intros k; simpl; f_equal...
   - Case "exp_fvar".
-    destruct (a == x); subst... apply open_ce_rec_expr...  
+    destruct (a == x); subst... apply open_ce_rec_expr...
 ------
   intros * WP. revert k.
   induction e; intros k; simpl; f_equal...
@@ -1065,7 +1065,7 @@ Proof with auto*.
   intros * WP. revert k.
   induction e; intros k; simpl; f_equal...
   - Case "exp_fvar".
-    destruct (a == x); subst... apply open_be_rec_expr...  
+    destruct (a == x); subst... apply open_be_rec_expr...
 ------
   intros * WP. revert k.
   induction e; intros k; simpl; f_equal...
@@ -1545,7 +1545,7 @@ Proof with auto*.
 ------
   intros.
   rewrite subst_cbt_open_cbt...
-  rewrite subst_cset_fresh_id...  
+  rewrite subst_cset_fresh_id...
 Qed.
 
 Lemma subst_ce_open_ce_rec : forall e1 e2 Z P C D k,
@@ -2106,7 +2106,7 @@ with subst_ts_open_cs : forall e1 e2 C X U,
     open_cs (subst_ts X U e1) (subst_tb X U e2) C.
 Proof with eauto using subst_tbt_open_cbt_rec, subst_tvt_open_cvt_rec.
 ------
-  intros * H. 
+  intros * H.
   apply subst_te_open_ce_rec...
 ------
   intros * H.
@@ -2203,18 +2203,18 @@ Qed.
 Lemma subst_te_open_te : forall e1 W X U,
   vtype U ->
   subst_te X U (open_te e1 W) =
-    open_te (subst_te X U e1) (subst_tvt X U W) 
+    open_te (subst_te X U e1) (subst_tvt X U W)
 with subst_tb_open_tb : forall e1 W X U,
   vtype U ->
   subst_tb X U (open_tb e1 W) =
-    open_tb (subst_tb X U e1) (subst_tvt X U W) 
+    open_tb (subst_tb X U e1) (subst_tvt X U W)
 with subst_ts_open_ts : forall e1 W X U,
   vtype U ->
   subst_ts X U (open_ts e1 W) =
     open_ts (subst_ts X U e1) (subst_tvt X U W).
 Proof with eauto using subst_tvt_open_tvt_rec, subst_tbt_open_tbt_rec.
 ------
-  intros * WU. 
+  intros * WU.
   apply subst_te_open_te_rec...
 ------
   intros * WU.
@@ -2366,7 +2366,7 @@ Proof with eauto using open_tvt_rec_vtype, open_tbt_rec_btype.
     unfold open_es in *.
     eapply open_ts_rec_expr_aux with (j := 0) (v := x).
     solve using assumption and notin_solve.
-  * pick fresh x. 
+  * pick fresh x.
     unfold open_cs in *.
     eapply open_ts_rec_capt_aux with (j := 0) (v := x) (C := cset_fvar x).
     solve using assumption and notin_solve.
@@ -2374,7 +2374,7 @@ Proof with eauto using open_tvt_rec_vtype, open_tbt_rec_btype.
     unfold open_tb in *.
     eapply open_tb_rec_type_aux with (j := 0) (U := X)...
 Qed.
-  
+
 Lemma subst_ee_open_te_rec : forall e T x u k,
   expr u ->
   subst_ee x u (open_te_rec k T e) =
@@ -2392,7 +2392,7 @@ Proof with auto*.
   intros * WP. revert k.
   induction e; intros k; simpl; f_equal...
   - Case "exp_fvar".
-    destruct (a == x); subst... apply open_te_rec_expr...  
+    destruct (a == x); subst... apply open_te_rec_expr...
 ------
   intros * WP. revert k.
   induction e; intros k; simpl; f_equal...
@@ -2421,7 +2421,7 @@ Proof with auto*.
   intros * WP.
   eapply subst_eb_open_tb_rec...
 ------
-  intros * WP. 
+  intros * WP.
   eapply subst_es_open_ts_rec...
 Qed.
 
@@ -2473,7 +2473,7 @@ Proof with auto*.
   intros * WP. revert k.
   induction e; intros k; simpl; f_equal...
   - Case "block_fvar".
-    destruct (a == x); subst... apply open_tb_rec_block...  
+    destruct (a == x); subst... apply open_tb_rec_block...
 ------
   intros * WP. revert k.
   induction e; intros k; simpl; f_equal...
@@ -2499,7 +2499,7 @@ Proof with auto*.
   intros * WP.
   eapply subst_bb_open_tb_rec...
 ------
-  intros * WP. 
+  intros * WP.
   eapply subst_bs_open_ts_rec...
 Qed.
 
@@ -2583,7 +2583,7 @@ Proof with auto*.
   intros * WC WP.
   eapply subst_cb_open_tb_rec...
 ------
-  intros * WC WP. 
+  intros * WC WP.
   eapply subst_cs_open_ts_rec...
 Qed.
 

@@ -13,7 +13,7 @@ Lemma capt_from_wf_cap : forall E T,
   wf_cap E T -> capt T.
 Proof.
   intros * H; induction H; eauto.
-  unfold capt. unfold cset_bvars. fnsetdec. 
+  unfold capt. unfold cset_bvars. fnsetdec.
 Qed.
 
 Lemma vtype_from_wf_vtyp : forall E T,
@@ -183,7 +183,7 @@ Proof with simpl_env; eauto using wf_cap_strengthening.
   - pick fresh y and apply wf_typ_tfun...
     rewrite <- concat_assoc.
     eapply wf_btyp_strengthening...
-  - constructor... 
+  - constructor...
 Qed.
 
 Lemma wf_cap_strengthening_blk : forall E F x U C T,
@@ -237,7 +237,7 @@ Proof with simpl_env; eauto using wf_cap_strengthening_blk.
   - pick fresh y and apply wf_typ_tfun...
     rewrite <- concat_assoc.
     eapply wf_btyp_strengthening_blk...
-  - constructor... 
+  - constructor...
 Qed.
 
 Lemma wf_cap_strengthening_blk_tracked : forall E F x U T,
@@ -253,10 +253,10 @@ Proof with simpl_env; eauto.
   binds_cases Bind.
   - exists S0. apply binds_tail...
   - simpl in Notin. fsetdec.
-  - exists S0. apply binds_head... 
+  - exists S0. apply binds_head...
 Qed.
 
-Lemma notin_fvars_open_cset : forall x k T C, 
+Lemma notin_fvars_open_cset : forall x k T C,
   x `notin` (cset_fvars T `union` cset_fvars C) ->
   x `notin` cset_fvars (open_cset k T C).
 Proof.
@@ -266,17 +266,17 @@ Proof.
   destruct_set_mem k t0; csetsimpl. fsetdec.
 Qed.
 
-Lemma notin_fv_cvt_open_cvt : forall x k T C, 
+Lemma notin_fv_cvt_open_cvt : forall x k T C,
   x `notin` (fv_cvt T `union` cset_fvars C) ->
   x `notin` fv_cvt (open_cvt_rec k C T)
-with notin_fv_cbt_open_cbt : forall x k T C, 
+with notin_fv_cbt_open_cbt : forall x k T C,
   x `notin` (fv_cbt T `union` cset_fvars C) ->
   x `notin` fv_cbt (open_cbt_rec k C T).
 Proof with auto; try notin_solve.
 ------
   intros * H.
   induction T; try solve [simpl in *; notin_solve].
-  - simpl in *. 
+  - simpl in *.
     pose proof (notin_fv_cbt_open_cbt x k b C ltac:(notin_solve)).
     pose proof (notin_fvars_open_cset x k C c ltac:(notin_solve))...
 ------
@@ -628,12 +628,12 @@ Proof with auto.
 Qed.
 
 Lemma notin_fv_cvt_wf : forall E (X : atom) T,
-  wf_vtyp E T -> 
-  X `notin` dom E ->  
+  wf_vtyp E T ->
+  X `notin` dom E ->
   X `notin` fv_cvt T
 with notin_fv_cbt_wf : forall E (X : atom) T,
-  wf_btyp E T -> 
-  X `notin` dom E ->  
+  wf_btyp E T ->
+  X `notin` dom E ->
   X `notin` fv_cbt T.
 Proof with eauto using notin_fv_cap_wf.
 ------
@@ -648,13 +648,13 @@ Proof with eauto using notin_fv_cap_wf.
       specialize (H Y ltac:(notin_solve)).
       revert H0.
       eapply notin_fv_cvt_open_cvt_rec...
-  - pick fresh Y.  
+  - pick fresh Y.
     specialize (H0 Y ltac:(notin_solve) ltac:(simpl_env; notin_solve)).
     eapply notin_fv_cbt_open_tbt_rec...
 Qed.
 
 Lemma subst_cvt_fresh_wf_vtyp : forall T x C,
-  wf_vtyp empty T -> 
+  wf_vtyp empty T ->
   T = subst_cvt x C T.
 Proof with eauto.
   intros * Wf.
@@ -698,7 +698,7 @@ Lemma map_subst_cvt_id : forall G Z P,
 Qed.
 
 Ltac convert_binds_to_in :=
-  multimatch goal with 
+  multimatch goal with
   | H : binds _ _ _ |- _ =>
     apply binds_In in H
   end.
@@ -725,7 +725,7 @@ Proof.
 Qed.
 
 Ltac split_hyps :=
-  repeat match goal with 
+  repeat match goal with
   | H : _ /\ _ |- _ => destruct H
   end.
 
@@ -989,13 +989,13 @@ Proof with eauto.
     eapply notin_fv_es_open_bs in H3.
     eapply notin_fv_eb_btyping with (x := x) in H1; notin_solve.
   * pick_fresh_fill. pick_fresh_fill. simpl_env in *.
-    notin_clear. 
+    notin_clear.
     eapply notin_fv_es_open_bs in H5.
     eapply notin_fv_es_open_es in H5.
     eapply notin_fv_es_open_cs in H3.
     notin_solve.
   * pick_fresh_fill. pick_fresh_fill. simpl_env in *.
-    notin_clear. 
+    notin_clear.
     eapply notin_fv_es_open_bs in H4.
     eapply notin_fv_es_open_es in H4.
     notin_solve.
@@ -1066,13 +1066,13 @@ Proof with eauto.
     eapply notin_fv_bs_open_bs in H3.
     eapply notin_fv_bb_btyping with (x := x) in H1; notin_solve.
   * pick_fresh_fill. pick_fresh_fill. simpl_env in *.
-    notin_clear. 
+    notin_clear.
     eapply notin_fv_bs_open_bs in H5.
     eapply notin_fv_bs_open_es in H5.
     eapply notin_fv_bs_open_cs in H3.
     notin_solve.
   * pick_fresh_fill. pick_fresh_fill. simpl_env in *.
-    notin_clear. 
+    notin_clear.
     eapply notin_fv_bs_open_bs in H4.
     eapply notin_fv_bs_open_es in H4.
     notin_solve.
@@ -1126,12 +1126,12 @@ Proof with auto.
 Qed.
 
 Lemma notin_fv_tvt_wf : forall E (X : atom) T,
-  wf_vtyp E T -> 
-  X `notin` dom E ->  
+  wf_vtyp E T ->
+  X `notin` dom E ->
   X `notin` fv_tvt T
 with notin_fv_tbt_wf : forall E (X : atom) T,
-  wf_btyp E T -> 
-  X `notin` dom E ->  
+  wf_btyp E T ->
+  X `notin` dom E ->
   X `notin` fv_tbt T.
 Proof with eauto.
 ------
@@ -1147,7 +1147,7 @@ Proof with eauto.
       specialize (H Y ltac:(notin_solve)).
       revert H0.
       eapply notin_fv_tvt_open_cvt_rec...
-  - pick fresh Y.  
+  - pick fresh Y.
     specialize (H0 Y ltac:(notin_solve) ltac:(simpl_env; notin_solve)).
     eapply notin_fv_tbt_open_tbt_rec...
 Qed.
@@ -1250,7 +1250,7 @@ Qed.
 (* ********************************************************************** *)
 (** * #<a name="regularity"></a># Regularity of relations *)
 
-Ltac solve_regular := simpl_env; eauto using 
+Ltac solve_regular := simpl_env; eauto using
   wf_vtyp_from_binds_typ,
   wf_vtyp_from_sig_binds_val,
   wf_vtyp_from_sig_binds,
@@ -1284,7 +1284,7 @@ Proof with solve_regular.
     destruct (styping_regular _ _ _ _ _ (H y ltac:(notin_solve))) as [WfEnv [Block [WfS1 [WfRes WfSig]]]].
     inversion WfEnv; subst...
     repeat split...
-    + pick fresh z and apply block_vabs. 
+    + pick fresh z and apply block_vabs.
       eauto using vtype_from_wf_vtyp.
       destruct (styping_regular _ _ _ _ _ (H z ltac:(notin_solve))) as [_ [SBlock [_ _]]]...
     + apply wf_typ_vfun...
@@ -1297,7 +1297,7 @@ Proof with solve_regular.
     destruct (styping_regular _ _ _ _ _ (H y ltac:(notin_solve))) as [WfEnv [Block [WfS1 [WfRes WfSig]]]].
     inversion WfEnv; subst...
     repeat split; try assumption.
-    + pick fresh z and apply block_babs. 
+    + pick fresh z and apply block_babs.
       eauto using btype_from_wf_btyp.
       destruct (styping_regular _ _ _ _ _ (H z ltac:(notin_solve))) as [_ [SBlock [_ _]]]...
     + pick fresh z and apply wf_typ_bfun; trivial.
@@ -1327,10 +1327,10 @@ Proof with solve_regular.
     repeat split; try intuition.
     * econstructor...
       eauto using vtype_from_wf_vtyp.
-    * apply wf_typ_open... 
+    * apply wf_typ_open...
   - repeat split...
     constructor;
-    rewrite_env (empty ++ E ++ empty); apply wf_vtyp_weakening... 
+    rewrite_env (empty ++ E ++ empty); apply wf_vtyp_weakening...
 ------
   intros * H; induction H; try solve [repeat split; solve_regular].
   - destruct (etyping_regular _ _ _ _ H) as [WfEnv [Block [WfS1 WfSig]]].
@@ -1389,7 +1389,7 @@ Proof with solve_regular.
       * destruct (H3 x ltac:(notin_solve)) as [Wf [StmtH [TypT CapR]]]...
       * intros kont Hfr.
         destruct (H5 x ltac:(notin_solve) kont ltac:(notin_solve)) as [Wf [StmtH [TypT CapR]]]...
-    + pick fresh kont. 
+    + pick fresh kont.
       destruct (H5 y ltac:(notin_solve) kont ltac:(notin_solve)) as [Wf [StmtH [TypT CapR]]]...
       rewrite_env (empty ++ ([(kont, bind_blk (typ_vfun T1 T) (capture C))] ++
         [(y, bind_val T2)]) ++ E) in TypT.

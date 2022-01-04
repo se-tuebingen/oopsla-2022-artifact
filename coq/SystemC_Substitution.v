@@ -32,10 +32,10 @@ Proof with solve_weakening.
   dependent induction Typ ; try solve [ econstructor; solve_weakening ].
 ------
   intros * Typ Wf.
-  dependent induction Typ. 
+  dependent induction Typ.
   - try solve [ econstructor; solve_weakening ].
   - try solve [ econstructor; solve_weakening ].
-  - try solve [ econstructor; solve_weakening ].  
+  - try solve [ econstructor; solve_weakening ].
   (* try solve [ econstructor; solve_weakening ]. *)
   - Case "typing_vabs".
     pick fresh x and apply typing_vabs.
@@ -183,7 +183,7 @@ Proof with solve_weakening; eauto using restriction_transitive.
   intros * Sub Wf Typ.
   assert (ok E) as Ok by auto.
   dependent induction Typ.
-  - eapply typing_bvar_tracked... 
+  - eapply typing_bvar_tracked...
   - eapply typing_bvar_capture with (C := C)...
   - eapply typing_unbox...
   - pick fresh x and apply typing_vabs...
@@ -201,14 +201,14 @@ Proof with solve_weakening; eauto using restriction_transitive.
   - econstructor...
   - econstructor...
   - pick fresh x and apply typing_try...
-  - econstructor...    
+  - econstructor...
   - econstructor...
 Qed.
 
 (************************************************************************ *)
 (** ** Substitution preserves typing (8) *)
 
-Ltac solve_substitution := simpl_env; eauto 4 using 
+Ltac solve_substitution := simpl_env; eauto 4 using
   wf_vtyp_strengthening,
   wf_btyp_strengthening,
   wf_env_strengthening,
@@ -264,7 +264,7 @@ Proof with solve_substitution.
     eapply btyping_through_subst_eb...
   - simpl. econstructor...
   - simpl. econstructor...
------- 
+------
   intros * TypT TypU.
   dependent induction TypT.
   - econstructor...
@@ -300,7 +300,7 @@ Proof with solve_substitution.
   - econstructor...
 Qed.
 
-Ltac solve_substitution_blk := simpl_env; eauto 4 using 
+Ltac solve_substitution_blk := simpl_env; eauto 4 using
   wf_vtyp_strengthening_blk,
   wf_btyp_strengthening_blk,
   wf_env_strengthening_blk,
@@ -327,8 +327,8 @@ Proof with solve_substitution_blk.
   - simpl. destruct (x0 == x); subst.
     + select (binds _ _ _) (fun H => binds_get H)...
     + select (binds _ _ _) (fun H => binds_cases H); econstructor...
-  - econstructor... 
------- 
+  - econstructor...
+------
   intros * TypT TypU.
   dependent induction TypT.
   - simpl. destruct (f == x); subst.
@@ -356,7 +356,7 @@ Proof with solve_substitution_blk.
     eapply btyping_through_subst_bb...
   - econstructor...
   - econstructor...
------- 
+------
   intros * TypT TypU.
   dependent induction TypT.
   - econstructor...
@@ -391,7 +391,7 @@ Proof with solve_substitution_blk.
   - econstructor...
 Qed.
 
-Ltac solve_subst_tracked := simpl_env; eauto 4 using 
+Ltac solve_subst_tracked := simpl_env; eauto 4 using
   wf_env_subst_tracked,
   wf_cap_subst_tracked,
   subst_over_subset,
@@ -457,19 +457,19 @@ Proof with solve_subst_tracked.
       select (subst_cset _ _ _ |= subst_cset _ _ _)
         (fun H => rewrite subst_cset_fresh_id in H)...
       select (binds _ _ _) (fun H => binds_cases H).
-      * eapply typing_bvar_tracked... 
+      * eapply typing_bvar_tracked...
         apply binds_tail.
         assert (wf_btyp E S1). { eapply wf_btyp_from_binds_blk... }
         assert (x `notin` dom E) as NotIn. { eapply fresh_mid_tail... }
         assert (x `notin` fv_cbt S1). { eapply notin_fv_cbt_wf... }
         rewrite <- subst_cbt_fresh...
         rewrite dom_map...
-      * eapply typing_bvar_tracked... 
-        replace 
+      * eapply typing_bvar_tracked...
+        replace
           (bind_blk (subst_cbt x C S1) tracked)
-        with 
+        with
           (subst_bbind x C (bind_blk S1 tracked))...
-  - Case "mono vars". 
+  - Case "mono vars".
       simpl subst_cb.
       destruct (f == x); subst.
       + SCase "it is the block var".
@@ -485,7 +485,7 @@ Proof with solve_subst_tracked.
         * eapply typing_bvar_capture with (C := (subst_cset x C C0))...
           replace (bind_blk (subst_cbt x C S1) (capture (subst_cset x C C0)))
           with (subst_bbind x C (bind_blk S1 (capture C0)))...
-  - Case "unbox". simpl subst_cb; simpl subst_ce.    
+  - Case "unbox". simpl subst_cb; simpl subst_ce.
     eapply typing_unbox with (C := subst_cset x C C0)...
     replace (typ_capt (subst_cbt x C S1) (subst_cset x C C0)) with (subst_cvt x C (typ_capt S1 C0)) by auto.
     eapply etyping_through_subst_ce...
@@ -541,16 +541,16 @@ Proof with solve_subst_tracked.
       rewrite_env (map (subst_bbind x C) ([(y, bind_blk S1 (capture C0))] ++ F) ++ E).
       eapply styping_through_subst_cs...
   - econstructor... fold subst_cbt subst_cvt subst_cb subst_cs.
-    replace 
+    replace
       (typ_vfun (subst_cvt x C T1) (subst_cvt x C T2))
-    with 
+    with
       (subst_cbt x C (typ_vfun T1 T2))...
-  - simpl. 
+  - simpl.
     rewrite subst_cvt_open_cvt...
     eapply typing_bapp with (S1 := (subst_cbt x C S1))...
-    replace 
+    replace
       (typ_bfun (subst_cbt x C S1) (subst_cvt x C T2))
-    with 
+    with
       (subst_cbt x C (typ_bfun S1 T2))...
   - Case "try".
     assert (wf_env (F ++ [(x, bind_blk U tracked)] ++ E)). {
@@ -570,17 +570,17 @@ Proof with solve_subst_tracked.
       intros kont kontFr.
       rewrite subst_cs_open_es_var...
       rewrite subst_cs_open_bs_var; try notin_solve.
-      rewrite_env (map (subst_bbind x C) 
+      rewrite_env (map (subst_bbind x C)
         ([(kont, bind_blk (typ_vfun T1 T) (capture C0))] ++
          [(y, bind_val T2) ]++ F) ++ E).
       eapply styping_through_subst_cs...
   - Case "reset".
     pick fresh y and apply typing_reset...
-    
+
     + fold subst_cbt subst_cvt subst_cb subst_cs.
-      replace 
+      replace
         (cset_union (subst_cset x C C0) (cset_lvar l))
-      with 
+      with
         (subst_cset x C (cset_union C0 (cset_lvar l))).
       eapply styping_through_subst_cs...
       csetsimpl.
@@ -591,7 +591,7 @@ Proof with solve_subst_tracked.
 
       replace ([(kont, bind_blk (typ_vfun T1 (subst_cvt x C T)) (capture (subst_cset x C C0)))] ++
         [(y, bind_val T2)] ++
-        map (subst_bbind x C) F ++ E) 
+        map (subst_bbind x C) F ++ E)
       with (map (subst_bbind x C) (([(kont, bind_blk (typ_vfun T1 T) (capture C0))] ++ [(y, bind_val T2)]) ++ F) ++ E).
       eapply styping_through_subst_cs...
       simpl; trivial.
@@ -608,7 +608,7 @@ Ltac solve_subst_type := simpl_env; eauto 4 using wf_env_subst_tbind, wf_vtyp_su
   wf_btyp_subst_tbind, wf_vtyp_from_binds_typ, wf_cap_subst_tbind,
   vtype_from_wf_vtyp, btype_from_wf_btyp.
 
-  
+
 Lemma typing_through_subst_t_ : forall U E Q X,
 (forall E_ Q_ e T,
   etyping E_ Q_ e T ->
@@ -731,7 +731,7 @@ Proof with solve_subst_type.
   (** btyping *)
   - eapply typing_bvar_tracked...
     binds_cases HBinds...
-    * replace (subst_tbt X U S1) with S1... 
+    * replace (subst_tbt X U S1) with S1...
       apply subst_tbt_fresh.
       eapply notin_fv_tbt_wf with (E := E).
       eapply wf_btyp_from_binds_blk...
@@ -741,7 +741,7 @@ Proof with solve_subst_type.
       eapply binds_map with (f := subst_tbind X U) in H0...
   - eapply typing_bvar_capture...
     binds_cases HBinds...
-    * replace (subst_tbt X U S1) with S1... 
+    * replace (subst_tbt X U S1) with S1...
       apply subst_tbt_fresh.
       eapply notin_fv_tbt_wf with (E := E).
       eapply wf_btyp_from_binds_blk...

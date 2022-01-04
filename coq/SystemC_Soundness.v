@@ -79,7 +79,7 @@ Proof with simpl_env; eauto using btyping_weaken_restriction, preservation_block
     rewrite (subst_cvt_intro x); auto.
     rewrite_env (map (subst_bbind x C) empty ++ E).
     replace R with (subst_cset x C (cset_union R (cset_fvar x))).
-    
+
     eapply (styping_through_subst_cs C S1); eauto.
     csetsimpl.
     rewrite <- subst_cset_fresh...
@@ -194,13 +194,13 @@ Proof.
 Qed.
 
 Lemma cset_in_empty_env : forall C,
-  wf_cap empty C -> 
+  wf_cap empty C ->
     exists ls, C = cset_set {} {}N ls.
 Proof with eauto.
   intros * Wf.
   inversion Wf.
   destruct (AtomSet.F.choose xs) as [x |] eqn:Eq.
-  - apply AtomSet.F.choose_1 in Eq. 
+  - apply AtomSet.F.choose_1 in Eq.
     destruct (H x Eq) as [S0 Binds].
     inversion Binds.
   - apply AtomSet.F.choose_2 in Eq.
@@ -220,7 +220,7 @@ Proof with eauto using empty_cset_closed.
   - destruct (cset_in_empty_env C H) as [ls EQ]; subst...
     destruct (progress_block _ _ _ _ H0) as [Val | [b' Step]].
     left. constructor...
-    right. exists (exp_box (cset_set {} {}N ls) b'). constructor... 
+    right. exists (exp_box (cset_set {} {}N ls) b'). constructor...
 Qed.
 
 Lemma progress_stmt : forall s T R Q,
@@ -253,7 +253,7 @@ Proof with eauto using vtype_from_wf_vtyp, btype_from_wf_btyp, empty_cset_closed
       destruct (progress_block _ _ _ _ H2) as [Val2 | [e2' Rede2']]...
       SSCase "Val2".
         destruct (canonical_form_babs _ _ _ _ _ Val1 H1) as [S [e3 EQ]].
-        subst. 
+        subst.
         exists (open_cs e3 b2 (cset_set t t0 t1))...
   - Case "typing_throw".
     destruct (progress_block _ _ _ _ H) as [Val1 | [e1' Rede1']]...
@@ -284,7 +284,7 @@ Lemma unwind_step : forall L Q x C T1 T2 k,
   C ; Q |-cnt k ~: T1 ~> T2 ->
   x `notin` L ->
   [(x, bind_val T1)] @ C ; Q |-stm (plug k x) ~: T2.
-Proof with eauto using 
+Proof with eauto using
   wf_cap_weaken_head, wf_btyp_weaken_head, wf_vtyp_weaken_head, wf_btyp_weakening.
   intros * WfT WfC Cnt Fr.
   generalize dependent C.
@@ -307,7 +307,7 @@ Proof with eauto using
       econstructor...
       rewrite_env ([(x, bind_val T1)] ++ empty)...
     * simpl.
-      pick fresh y and apply typing_reset...      
+      pick fresh y and apply typing_reset...
       apply wf_cap_subset with (R := C)...
       rewrite_env ([(x, bind_val T1)] ++ empty)...
       rewrite_env ([(x, bind_val T1)] ++ empty)...
@@ -333,11 +333,11 @@ Proof with eauto using
             eapply wf_vtyp_from_sig_binds...
             pose proof (typing_cnt_regular _ _ _ _ _ Cnt)...
           + eapply wf_vtyp_weaken_head...
-            pose proof (styping_regular _ _ _ _ _ (IHk WfT Fr T2 (cset_union C0 (cset_lvar l)) 
+            pose proof (styping_regular _ _ _ _ _ (IHk WfT Fr T2 (cset_union C0 (cset_lvar l))
               (proj1 (typing_cnt_regular _ _ _ _ _ H2)) H2)) as [_ [_ [WfT2 _]]]...
         * rewrite_env (([(y, bind_val T4)] ++ [(x, bind_val T1)]) ++ empty).
           eapply wf_cap_weaken_head...
-          eapply wf_cap_subset... 
+          eapply wf_cap_subset...
       }
       rewrite <- concat_assoc.
       apply styping_weakening; simpl_env...
@@ -382,7 +382,7 @@ Lemma signature_binds_weaken : forall Q M N l (T1 T : vtyp),
 Proof with eauto.
   intros * Ok SgnBinds.
   Signatures.binds_cases SgnBinds...
-  * rewrite_env ((Q ++ M) ++ N). eapply Signatures.binds_concat_ok... 
+  * rewrite_env ((Q ++ M) ++ N). eapply Signatures.binds_concat_ok...
     Signatures.simpl_env...
 Qed.
 
@@ -500,7 +500,7 @@ Proof with eauto.
 Qed.
 
 Lemma preservation_step : forall s1 s2,
-  typing_state s1 -> 
+  typing_state s1 ->
   s1 --> s2 ->
   typing_state s2.
 Proof with eauto 5 using styping_weaken_restriction, wf_vtyp_from_sig_binds.
@@ -508,7 +508,7 @@ Proof with eauto 5 using styping_weaken_restriction, wf_vtyp_from_sig_binds.
   inversion Typ; subst.
   -- Case "Step".
     inversion Step; subst.
-    - SCase "Cong". 
+    - SCase "Cong".
       econstructor...
       epose proof (preservation_stmt _ _ _ _ _ _ H0 H5)...
     - SCase "Pop".
@@ -519,7 +519,7 @@ Proof with eauto 5 using styping_weaken_restriction, wf_vtyp_from_sig_binds.
       rewrite (subst_es_intro x); auto;
       rewrite_env (empty ++ empty);
       apply (styping_through_subst_es T); simpl_env; eauto.
-    - SCase "Ret". 
+    - SCase "Ret".
       inversion H; subst.
       assert (wf_cap empty R0). {
         rename select (typing_ctx R0 _ _ _) into HT.
@@ -553,11 +553,11 @@ Proof with eauto 5 using styping_weaken_restriction, wf_vtyp_from_sig_binds.
       inversion H0; subst...
       apply typ_step with (T := T) (R := cset_union C (cset_lvar l))...
       econstructor...
-      + srewrite_env (nil ++ [(l, bind_sig T2 T1)] ++ Q). 
+      + srewrite_env (nil ++ [(l, bind_sig T2 T1)] ++ Q).
         apply ctx_typing_weaken_signature...
         Signatures.simpl_env. econstructor...
       + intros v Notinv kont Notinkont.
-        srewrite_env (nil ++ [(l, bind_sig T2 T1)] ++ Q). 
+        srewrite_env (nil ++ [(l, bind_sig T2 T1)] ++ Q).
         eapply styping_weaken_signature.
         Signatures.simpl_env...
         constructor...
@@ -576,7 +576,7 @@ Proof with eauto 5 using styping_weaken_restriction, wf_vtyp_from_sig_binds.
         econstructor...
         econstructor...
         (* Connect (bound_labels c) and Q by R : Q |-ctx c ~: T. *)
-        {          
+        {
           simpl_env.
           apply Signatures.binds_head. apply Signatures.binds_singleton.
         }
@@ -603,12 +603,12 @@ Proof with eauto 5 using styping_weaken_restriction, wf_vtyp_from_sig_binds.
       econstructor...
   -- Case "Wind".
     inversion Step; subst.
-    - SCase "throw frame". 
+    - SCase "throw frame".
       inversion H0; subst.
       inversion H1; subst...
       econstructor...
       econstructor...
-    - SCase "throw wrong handler". 
+    - SCase "throw wrong handler".
       inversion H1; subst.
       eapply typ_wind with (R := R0)...
       {
@@ -625,7 +625,7 @@ Proof with eauto 5 using styping_weaken_restriction, wf_vtyp_from_sig_binds.
       econstructor...
       eapply styping_weaken_restriction...
       pick fresh f. pick fresh val.
-      
+
       rewrite (subst_es_intro val); try notin_solve.
       rewrite (subst_bs_intro f); try notin_solve.
       rewrite subst_es_open_bs_var...
@@ -670,7 +670,7 @@ Proof with eauto 5 using styping_weaken_restriction, wf_vtyp_from_sig_binds.
 Qed.
 
 Lemma progress_step : forall s1,
-  typing_state s1 -> 
+  typing_state s1 ->
   done s1 \/ exists s2, s1 --> s2.
 Proof with eauto.
   intros * Typ.
@@ -695,7 +695,7 @@ Proof with eauto.
       destruct (progress_stmt _ _ _ _ H0) as [M|[e' Red1]]...
   -- Case "Wind".
     destruct c.
-    * exfalso. 
+    * exfalso.
       inversion Typ; subst.
       inversion H1; subst.
       exfalso. unfold cset_references_lvar, from_labels, cset_lvars, bound_labels in H.

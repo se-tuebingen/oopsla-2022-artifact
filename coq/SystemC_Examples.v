@@ -15,15 +15,15 @@ Axiom l1l3 : l1 <> l3.
 Axiom l2l3 : l2 <> l3.
 
 (* (f : S0) => return box {f} f  *)
-Definition id_ex : blk := 
-  blk_babs S0 (stm_ret (exp_box (cset_bvar 0) (blk_bvar 0))). 
+Definition id_ex : blk :=
+  blk_babs S0 (stm_ret (exp_box (cset_bvar 0) (blk_bvar 0))).
 
 (* (f : S0) -> S0 at {f} *)
 Definition id_ex_typ : btyp :=
   typ_bfun S0 (typ_capt S0 (cset_bvar 0)).
 
-Ltac crush := 
-  eauto; simpl_env; simpl; 
+Ltac crush :=
+  eauto; simpl_env; simpl;
     try fsetdec;
     unfold open_bs, open_bs_rec, open_cvt, open_cvt_rec, open_cbt, open_cbt_rec, open_cs, open_cs_rec;
     destruct (0 === 0); try contradiction;
@@ -56,10 +56,10 @@ Proof with crush.
   rewrite substZeroInSingleton.
   rewrite substitutionS0.
   econstructor.
-  econstructor...  
+  econstructor...
   econstructor; intros; exists S0.
   assert (x = x0) by fsetdec; subst...
-  
+
   econstructor...
   econstructor...
   apply S0Wf...
@@ -77,7 +77,7 @@ Definition try_return_immediate_typ :=
 Definition try_return_param_type :=
   typ_base.
 Definition try_return_immediate :=
-  stm_try {}C try_return_param_type try_return_immediate_typ 
+  stm_try {}C try_return_param_type try_return_immediate_typ
      (stm_ret exp_const) (stm_ret exp_const).
 
 Ltac destruct_if :=
@@ -599,7 +599,7 @@ Qed.
 Definition sugar_def (C : cap) (S1 : btyp) (b : blk) (s : stm) : stm :=
   (stm_vapp (blk_vabs (typ_capt S1 C) s) (exp_box C b)).
 
-Definition sugar_var (x : atom) : blk := 
+Definition sugar_var (x : atom) : blk :=
     (blk_unbox (exp_fvar x)).
 
 Lemma sugar_def_typing : forall L E R b s (C : cap) Q S1 T2,
@@ -629,10 +629,10 @@ Proof with crush.
   econstructor...
 Qed.
 
-(** Finally 
-def handleTick(prog : {() => Int} => Int) => Int = 
+(** Finally
+def handleTick(prog : {() => Int} => Int) => Int =
   val stateFun = try { tick =>
-    val res = prog (tick) in 
+    val res = prog (tick) in
     box { prog } ( (s : Int) => res )
   } with {
     box { prog } ( (s : Int) => (unbox resume(s))(s + 1)
@@ -668,7 +668,7 @@ Proof with notin_simpl; crush; try fsetdec; try fnsetdec; try lsetdec.
     econstructor.
     * autorewrite with csets.
       cbv [cset_fvar open_cset cset_bvar cset_references_bvar_dec cset_bvars
-            cset_fvars cset_union cset_remove_bvar cset_lvars cset_subset_prop]. 
+            cset_fvars cset_union cset_remove_bvar cset_lvars cset_subset_prop].
       destruct_set_mem 0 (NatSet.F.singleton 0); try nnotin_solve...
       repeat split; try fnsetdec; try lsetdec...
     * cbv [cset_fvar open_cset cset_bvar cset_references_bvar_dec cset_bvars
@@ -758,7 +758,7 @@ Proof with notin_simpl; crush; try fsetdec; try fnsetdec; try lsetdec.
       replace (open_cset 0 (cset_fvar prog) (cset_bvar 0)) with (cset_fvar prog)...
       econstructor...
       econstructor...
-      intros p pIsProg. replace p with prog... 
+      intros p pIsProg. replace p with prog...
         exists (typ_bfun (typ_exc typ_base typ_base) typ_base). binds_dec...
       econstructor.
       instantiate (1 := singleton s `union` singleton tick `union` singleton prog).
