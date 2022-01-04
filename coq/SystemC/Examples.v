@@ -1,6 +1,6 @@
-Require Import SystemC_Definitions.
+Require Import SystemC.Definitions.
 Require Import Coq.Program.Tactics.
-Require Import SystemC_Lemmas.
+Require Import SystemC.Lemmas.
 
 
 (* Block type *)
@@ -395,7 +395,7 @@ Lemma cap_return_typing1 :
                           |-blk (blk_vabs typ_base (stm_throw (blk_handler l1) exp_const))
                                ~: (typ_vfun typ_base typ_base)).
 Proof with crush.
-  Require Import SystemC_Soundness.
+  Require Import SystemC.Soundness.
   pick fresh x and apply typing_vabs.
   cbv [open_es open_es_rec].
   pose proof (l1l2).

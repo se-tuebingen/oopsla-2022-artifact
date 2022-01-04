@@ -1,4 +1,4 @@
-Require Export SystemC_Infrastructure.
+Require Export SystemC.Infrastructure.
 Require Import Taktiks.
 Require Import Signatures.
 Require Import Coq.Program.Tactics.

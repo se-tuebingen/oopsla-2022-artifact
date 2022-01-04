@@ -1,5 +1,5 @@
 Require Import Taktiks.
-Require Export SystemC_Definitions.
+Require Export SystemC.Definitions.
 
 (*  Free Variables *)
 Fixpoint fv_ee (e : exp) {struct e} : atoms :=

@@ -1,5 +1,5 @@
 Require Export Taktiks.
-Require Export SystemC_Lemmas.
+Require Export SystemC.Lemmas.
 
 (* ********************************************************************** *)
 (** ** Weakening (5) *)

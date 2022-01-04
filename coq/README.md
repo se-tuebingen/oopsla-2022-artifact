@@ -14,12 +14,12 @@ Then, to actually build the proofs:
 
 ## Overview
 
-The proofs are based on the POPL'08 locally-nameless proof of System F(-sub). We recommend looking into `SystemC_Examples.v` for examples and `SystemC_Definitions.v` for definitions.
+The proofs are based on the POPL'08 locally-nameless proof of System F(-sub). We recommend looking into `SystemC.Examples.v` for examples and `SystemC.Definitions.v` for definitions.
 
-- All definitions can be found in the file `SystemC_Definitions.v`.
-- The files `SystemC_Infrastructure.v` and `SystemC_Lemmas.v` contain technical lemmas related to type
+- All definitions can be found in the file `SystemC.Definitions.v`.
+- The files `SystemC.Infrastructure.v` and `SystemC.Lemmas.v` contain technical lemmas related to type
   regularity and substitution.
-- File `SystemC_Substition.v` contains lemmas concerning typing under term and type substitution.
-- The file `SystemC_Soundness.v` contains lemmas leading to and including preservation and progress.
-- Finally, the file `SystemC_Examples.v` contains proofs of typing and reduction for a selected
+- File `SystemC.Substition.v` contains lemmas concerning typing under term and type substitution.
+- The file `SystemC.Soundness.v` contains lemmas leading to and including preservation and progress.
+- Finally, the file `SystemC.Examples.v` contains proofs of typing and reduction for a selected
   sample set of terms written in System-C, including terms analogous to examples presented in the paper. The file includes a description of the examples.
