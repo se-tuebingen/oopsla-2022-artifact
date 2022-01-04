@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<link href="coqdocjs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="config.js"></script>
+<script type="text/javascript" src="coqdocjs.js"></script>
+</head>
+
+<body onload="document.getElementById('content').focus()">
+  <div id="header">
+    <span class="left">
+      <span class="modulename"> <script> document.write(document.title) </script> </span>
+    </span>
+
+    <span class="button" id="toggle-proofs"></span>
+
+    <span class="right">
+      <a href="../">Artifact Overview</a>
+      <a href="./indexpage.html"> Index of Coq Modules</a>
+      <a href="./toc.html"> Table of Contents </a>
+    </span>
+</div>
+    <div id="content" tabindex="-1" onblur="document.getElementById('content').focus()">
+    <div id="main">
+<h1 class="libtitle">Top.Util.FSetNotin</h1>
+
+<div class="code">
+</div>
+
+<div class="doc">
+Lemmas and tactics for working with and solving goals related to
+    non-membership in finite sets.  The main tactic of interest here
+    is <span class="inlinecode"><span class="id" title="var">notin_solve</span></span>.
+
+<div class="paragraph"> </div>
+
+    Authors: Arthur Charguéraud and Brian Aydemir. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab1"></a><h1 class="section">Implementation</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Module</span> <a name="Notin"><span class="id" title="module">Notin</span></a> (<span class="id" title="var">X</span> : <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.FSets.FSetInterface.html#S"><span class="id" title="module">FSetInterface.S</span></a>).<br/>
+
+<br/>
+
+<br/>
+<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab2"></a><h2 class="section">Facts about set (non-)membership</h2>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="Notin.in_singleton"><span class="id" title="lemma">in_singleton</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.singleton"><span class="id" title="axiom">singleton</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="Notin.notin_empty"><span class="id" title="lemma">notin_empty</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.empty"><span class="id" title="axiom">empty</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="Notin.notin_union"><span class="id" title="lemma">notin_union</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> <span class="id" title="var">E</span> <span class="id" title="var">F</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.FSetNotin.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a> <a class="idref" href="Top.Util.FSetNotin.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="Notin.elim_notin_union"><span class="id" title="lemma">elim_notin_union</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> <span class="id" title="var">E</span> <span class="id" title="var">F</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a> <a class="idref" href="Top.Util.FSetNotin.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">(</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.FSetNotin.html#E"><span class="id" title="variable">E</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">∧</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">(</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">)</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="Notin.notin_singleton"><span class="id" title="lemma">notin_singleton</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.E.eq"><span class="id" title="axiom">E.eq</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.singleton"><span class="id" title="axiom">singleton</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="Notin.elim_notin_singleton"><span class="id" title="lemma">elim_notin_singleton</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.singleton"><span class="id" title="axiom">singleton</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.E.eq"><span class="id" title="axiom">E.eq</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="Notin.elim_notin_singleton'"><span class="id" title="lemma">elim_notin_singleton'</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.singleton"><span class="id" title="axiom">singleton</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#a0a5068f83a704fcfbda8cd473a6cfea"><span class="id" title="notation">≠</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="Notin.notin_singleton_swap"><span class="id" title="lemma">notin_singleton_swap</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.singleton"><span class="id" title="axiom">singleton</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.singleton"><span class="id" title="axiom">singleton</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a>).<br/>
+
+<br/>
+<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab3"></a><h2 class="section">Rewriting non-membership facts</h2>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="Notin.notin_singleton_rw"><span class="id" title="lemma">notin_singleton_rw</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.singleton"><span class="id" title="axiom">singleton</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#4bfb4f2d0721ba668e3a802ab1b745a1"><span class="id" title="notation">↔</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.E.eq"><span class="id" title="axiom">E.eq</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a>.<br/>
+
+<br/>
+<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab4"></a><h2 class="section">Tactics</h2>
+
+<div class="paragraph"> </div>
+
+ The tactic <span class="inlinecode"><span class="id" title="var">notin_simpl_hyps</span></span> destructs all hypotheses of the form
+    <span class="inlinecode">(~</span> <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.x"><span class="id" title="variable">x</span></a></span> <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#E"><span class="id" title="variable">E</span></a>)</span>, where <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#E"><span class="id" title="variable">E</span></a></span> is built using only <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#empty"><span class="id" title="abbreviation">empty</span></a></span>, <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a></span>, and
+    <span class="inlinecode"><a class="idref" href="Top.Util.Metatheory.html#singleton"><span class="id" title="abbreviation">singleton</span></a></span>. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The tactic <span class="inlinecode"><span class="id" title="var">notin_solve</span></span> solves goals of them form <span class="inlinecode">(<a class="idref" href="Top.SystemC.CaptureSets.html#Props.x"><span class="id" title="variable">x</span></a></span> <span class="inlinecode">≠</span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.y"><span class="id" title="variable">y</span></a>)</span> and
+    <span class="inlinecode">(~</span> <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.x"><span class="id" title="variable">x</span></a></span> <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#E"><span class="id" title="variable">E</span></a>)</span> that are provable from hypotheses of the form
+    destructed by <span class="inlinecode"><span class="id" title="var">notin_simpl_hyps</span></span>. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab5"></a><h2 class="section">Examples and test cases</h2>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="Notin.test_notin_solve_1"><span class="id" title="lemma">test_notin_solve_1</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> <span class="id" title="var">E</span> <span class="id" title="var">F</span> <span class="id" title="var">G</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a> <a class="idref" href="Top.Util.FSetNotin.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.FSetNotin.html#G"><span class="id" title="variable">G</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a> <a class="idref" href="Top.Util.FSetNotin.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="Top.Util.FSetNotin.html#G"><span class="id" title="variable">G</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="Notin.test_notin_solve_2"><span class="id" title="lemma">test_notin_solve_2</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span> <span class="id" title="var">E</span> <span class="id" title="var">F</span> <span class="id" title="var">G</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a> <a class="idref" href="Top.Util.FSetNotin.html#E"><span class="id" title="variable">E</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.singleton"><span class="id" title="axiom">singleton</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a>) <a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a>)) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.FSetNotin.html#G"><span class="id" title="variable">G</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.singleton"><span class="id" title="axiom">singleton</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">∧</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.singleton"><span class="id" title="axiom">singleton</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="Notin.test_notin_solve_3"><span class="id" title="lemma">test_notin_solve_3</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.E.eq"><span class="id" title="axiom">E.eq</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.singleton"><span class="id" title="axiom">singleton</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">∧</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.singleton"><span class="id" title="axiom">singleton</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="Notin.test_notin_solve_4"><span class="id" title="lemma">test_notin_solve_4</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span> <span class="id" title="var">E</span> <span class="id" title="var">F</span> <span class="id" title="var">G</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a> <a class="idref" href="Top.Util.FSetNotin.html#E"><span class="id" title="variable">E</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.singleton"><span class="id" title="axiom">singleton</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a>) <a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a>)) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a> <a class="idref" href="Top.Util.FSetNotin.html#G"><span class="id" title="variable">G</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="Notin.test_notin_solve_5"><span class="id" title="lemma">test_notin_solve_5</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span> <span class="id" title="var">E</span> <span class="id" title="var">F</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a> <a class="idref" href="Top.Util.FSetNotin.html#E"><span class="id" title="variable">E</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a> (<a class="idref" href="Top.Util.FSetNotin.html#X.singleton"><span class="id" title="axiom">singleton</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a>) <a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a>)) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a> <a class="idref" href="Top.Util.FSetNotin.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.E.eq"><span class="id" title="axiom">E.eq</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">∧</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.FSetNotin.html#X.E.eq"><span class="id" title="axiom">E.eq</span></a> <a class="idref" href="Top.Util.FSetNotin.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.FSetNotin.html#y"><span class="id" title="variable">y</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">End</span> <a class="idref" href="Top.Util.FSetNotin.html#Notin"><span class="id" title="module">Notin</span></a>.<br/>
+</div>
+</div>
+<div id="footer">
+  Generated by <a href="http://coq.inria.fr/">coqdoc</a> and improved with <a href="https://github.com/tebbi/coqdocjs">CoqdocJS</a>
+</div>
+</div>
+</body>
+
+</html>
