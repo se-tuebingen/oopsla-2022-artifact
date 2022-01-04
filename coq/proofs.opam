@@ -1,0 +1,27 @@
+opam-version: "2.0"
+version: "dev"
+
+synopsis: "Proofs for System C"
+description: """
+Mechanized proofs accompanying our OOPSLA 2022 paper.
+"""
+
+build: [
+  ["sh" "-c" "coq_makefile -f _CoqProject -o Makefile"]
+  [make "-j%{jobs}%"]
+]
+
+install: []
+
+run-test: []
+
+depends: [
+  "ocaml" {>= "4.05.0"}
+  "coq" {(>= "8.10") | (= "dev")}
+]
+
+tags: [
+]
+authors: [
+  "Jonathan Brachthäuser"
+]
