@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: coq-community/docker-coq-action@v1
       with:
-        coq_version: 8.10.0
+        coq_version: 8.10
         script: |
           startGroup "Build project"
             make -j2
