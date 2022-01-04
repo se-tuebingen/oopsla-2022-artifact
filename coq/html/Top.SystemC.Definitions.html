@@ -39,7 +39,8 @@ This file contains the definitions for System C. We include snippets of the pape
 
 <div class="paragraph"> </div>
 
-    <i>Table of Contents</i>:
+<a name="lab105"></a><h2 class="section">Table of Contents</h2>
+
 
 <div class="paragraph"> </div>
 
@@ -55,10 +56,53 @@ This file contains the definitions for System C. We include snippets of the pape
 
 <div class="paragraph"> </div>
 
+    <a href="#env">Environments and Signatures</a>
 
 <div class="paragraph"> </div>
 
-<a name="lab105"></a><h1 class="section"><a name="syntax"></a>  Syntax</h1>
+    <a href="#typing">Typing</a>
+<ul class="doclist">
+<li> <a href="#typing-expression">Expression Typing</a>
+
+</li>
+<li> <a href="#typing-block">Block Typing</a>
+
+</li>
+<li> <a href="#typing-statement">Statement Typing</a>
+
+</li>
+</ul>
+
+<div class="paragraph"> </div>
+
+    <a href="#semantics">Operational Semantics</a>
+<ul class="doclist">
+<li> <a href="#values">Values</a>
+
+</li>
+<li> <a href="#redexes">Machine Redexes</a>
+
+</li>
+<li> <a href="#semantics-trivial">Trivial Reduction</a>
+
+</li>
+<li> <a href="#stacks">Stacks, Contexts, and their Typing</a>
+
+</li>
+<li> <a href="#abstract-machine">Abstract Machine</a>
+
+</li>
+<li> <a href="#machine-reduction">Machine Reduction</a>
+
+</li>
+<li> <a href="#machine-typing">Abstract Machine Typing</a>
+
+</li>
+</ul>
+
+<div class="paragraph"> </div>
+
+<a name="lab106"></a><h1 class="section"><a name="syntax"></a>  Syntax</h1>
 
 
 <div class="paragraph"> </div>
@@ -73,10 +117,15 @@ This file contains the definitions for System C. We include snippets of the pape
 <div class="paragraph"> </div>
 
     In consequence, there are always two types of variables, free variables
-    (such as <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_fvar"><span class="id" title="constructor">typ_fvar</span></a></span>) and locally bound variables (such as <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_bvar"><span class="id" title="constructor">typ_bvar</span></a></span>). 
+    (such as <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_fvar"><span class="id" title="constructor">typ_fvar</span></a></span>) and locally bound variables (such as <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_bvar"><span class="id" title="constructor">typ_bvar</span></a></span>).
+
 <div class="paragraph"> </div>
 
-<a name="lab106"></a><h2 class="section"><a name="syntax-types"></a> Syntax of Types</h2>
+    Capture sets <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a></span> are records, containing sets of free variables, sets of bound variables, and sets of labels.
+    
+<div class="paragraph"> </div>
+
+<a name="lab107"></a><h2 class="section"><a name="syntax-types"></a> Syntax of Types</h2>
 
   Here, we define the syntax of types, as defined in Figure 1 in the paper.
 
@@ -85,7 +134,7 @@ This file contains the definitions for System C. We include snippets of the pape
   <img src="img/syntax-types.png" alt="Syntax of types" class="fig" />  
 <div class="paragraph"> </div>
 
-<a name="lab107"></a><h3 class="section">Value Types</h3>
+<a name="lab108"></a><h3 class="section">Value Types</h3>
 
 </div>
 <div class="code">
@@ -98,7 +147,7 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab108"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab109"></a><h4 class="section">Differences to the paper</h4>
 
     In the mechanization, we also additionally support
     value-type polymorphism. Hence, the constructors for type variables (<span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_bvar"><span class="id" title="constructor">typ_bvar</span></a></span> and <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_fvar"><span class="id" title="constructor">typ_fvar</span></a></span>),
@@ -106,7 +155,7 @@ This file contains the definitions for System C. We include snippets of the pape
     of separate base types (as in the paper). 
 <div class="paragraph"> </div>
 
-<a name="lab109"></a><h3 class="section">Block Types</h3>
+<a name="lab110"></a><h3 class="section">Block Types</h3>
 
 </div>
 <div class="code">
@@ -121,7 +170,7 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab110"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab111"></a><h4 class="section">Differences to the paper</h4>
 
     In the paper, we formalize multi-arity function types.
     Since this is akward to work with in Coq, here, we only mechanize single arity
@@ -145,7 +194,7 @@ This file contains the definitions for System C. We include snippets of the pape
     as a function type <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a></span> <span class="inlinecode">→</span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T2"><span class="id" title="variable">T2</span></a></span> as for instance can be seen in rule TRY in Figure 2. 
 <div class="paragraph"> </div>
 
-<a name="lab111"></a><h2 class="section"><a name="syntax-terms"></a> Syntax of Terms</h2>
+<a name="lab112"></a><h2 class="section"><a name="syntax-terms"></a> Syntax of Terms</h2>
 
     In the following, we define the syntax of expressions, statements, and blocks.
 
@@ -154,7 +203,7 @@ This file contains the definitions for System C. We include snippets of the pape
     <img src="img/syntax-terms.png" alt="Syntax of terms" class="fig" /> 
 <div class="paragraph"> </div>
 
-<a name="lab112"></a><h3 class="section">Expressions</h3>
+<a name="lab113"></a><h3 class="section">Expressions</h3>
 
 </div>
 <div class="code">
@@ -167,12 +216,12 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab113"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab114"></a><h4 class="section">Differences to the paper</h4>
 
     Besides only having one primitive value, expressions are precisely as in the paper. 
 <div class="paragraph"> </div>
 
-<a name="lab114"></a><h3 class="section">Statements</h3>
+<a name="lab115"></a><h3 class="section">Statements</h3>
 
 </div>
 <div class="code">
@@ -189,7 +238,7 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab115"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab116"></a><h4 class="section">Differences to the paper</h4>
 
     Similar to the syntax of types, in the mechanization we have two different
     forms of application (instead of multi-arity). <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#stm_vapp"><span class="id" title="constructor">stm_vapp</span></a></span> takes the block to call
@@ -222,7 +271,7 @@ This file contains the definitions for System C. We include snippets of the pape
   
 <div class="paragraph"> </div>
 
-<a name="lab116"></a><h3 class="section">Blocks</h3>
+<a name="lab117"></a><h3 class="section">Blocks</h3>
 
 </div>
 <div class="code">
@@ -239,7 +288,7 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab117"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab118"></a><h4 class="section">Differences to the paper</h4>
 
     Again, as for statements and block types, we have two different forms
     of abstraction. <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#blk_vabs"><span class="id" title="constructor">blk_vabs</span></a></span> to abstract over values and <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#blk_babs"><span class="id" title="constructor">blk_babs</span></a></span> to abstract
@@ -264,11 +313,11 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab118"></a><h1 class="section"><a name="env"></a> Environments and Signatures</h1>
+<a name="lab119"></a><h1 class="section"><a name="env"></a> Environments and Signatures</h1>
 
 <div class="paragraph"> </div>
 
-<a name="lab119"></a><h2 class="section">Environments</h2>
+<a name="lab120"></a><h2 class="section">Environments</h2>
 
     Like in the paper, we use a single environment for value, block, and type abstraction.
     We formalize environments by representing them as association lists
@@ -327,7 +376,7 @@ Basing our mechanization on an existing locally nameless proof, we
 </div>
 
 <div class="doc">
-<a name="lab120"></a><h2 class="section">Signatures</h2>
+<a name="lab121"></a><h2 class="section">Signatures</h2>
 
     As a proof device, each runtime label (Figure 3 in the paper) is associated with a
     signature (that is the argument type and the result type of an effect operation).
@@ -356,7 +405,7 @@ Basing our mechanization on an existing locally nameless proof, we
 </div>
 
 <div class="doc">
-<a name="lab121"></a><h1 class="section"><a name="typing"></a> Typing</h1>
+<a name="lab122"></a><h1 class="section"><a name="typing"></a> Typing</h1>
 
 
 <div class="paragraph"> </div>
@@ -383,7 +432,7 @@ Basing our mechanization on an existing locally nameless proof, we
 Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in coqdoc. 
 <div class="paragraph"> </div>
 
-<a name="lab122"></a><h2 class="section">Expression Typing</h2>
+<a name="lab123"></a><h2 class="section"><a name="typing-expression"></a> Expression Typing</h2>
 
 
 <div class="paragraph"> </div>
@@ -413,14 +462,14 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab123"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab124"></a><h4 class="section">Differences to the paper</h4>
 
     The three rules directly correspond to rules LIT, VAR, and BOXINTRO in
     the paper. As can be seen (all) typing judgements in Coq make wellformedness
     conditions explicit, which are left implicit in the paper. 
 <div class="paragraph"> </div>
 
-<a name="lab124"></a><h2 class="section">Block Typing</h2>
+<a name="lab125"></a><h2 class="section"><a name="typing-block"></a> Block Typing</h2>
 
 
 <div class="paragraph"> </div>
@@ -467,7 +516,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab125"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab126"></a><h4 class="section">Differences to the paper</h4>
 
     Note that we build in subsumption on blocks (rule BSUB in the paper)
     into the rules as additional premises, instead of having one additional
@@ -503,7 +552,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 
 </li>
 </ul>
-<a name="lab126"></a><h3 class="section">Additional Rules for Type Polymorphism</h3>
+<a name="lab127"></a><h3 class="section">Additional Rules for Type Polymorphism</h3>
 
 </div>
 <div class="code">
@@ -522,7 +571,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab127"></a><h3 class="section">Typing Effect Handlers</h3>
+<a name="lab128"></a><h3 class="section">Typing Effect Handlers</h3>
 
     <img src="img/typing-cap.png" alt="Typing of handlers" class="fig" />
     Like in the other rules, we bake subsumption into this rule. 
@@ -545,7 +594,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab128"></a><h2 class="section">Statement Typing</h2>
+<a name="lab129"></a><h2 class="section"><a name="typing-statement"></a> Statement Typing</h2>
 
 
 <div class="paragraph"> </div>
@@ -589,7 +638,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab129"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab130"></a><h4 class="section">Differences to the paper</h4>
 
     The rules correspond to the paper with the following mapping:
 <ul class="doclist">
@@ -614,7 +663,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 
 </li>
 </ul>
-<a name="lab130"></a><h3 class="section">Typing Handling of Effects</h3>
+<a name="lab131"></a><h3 class="section">Typing Handling of Effects</h3>
 
     <img src="img/typing-try.png" alt="Typing of handlers" class="fig" />  
 </div>
@@ -637,6 +686,21 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">|-</span></a><a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">stm</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#open_bs"><span class="id" title="definition">open_bs</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#open_es"><span class="id" title="definition">open_es</span></a> <a class="idref" href="Top.SystemC.Definitions.html#h"><span class="id" title="variable">h</span></a> <a class="idref" href="Top.SystemC.Definitions.html#v"><span class="id" title="variable">v</span></a>) <a class="idref" href="Top.SystemC.Definitions.html#f"><span class="id" title="variable">f</span></a><a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">)</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">~:</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">))</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">@</span></a> <a class="idref" href="Top.SystemC.Definitions.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">;</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">|-</span></a><a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">stm</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#stm_try"><span class="id" title="constructor">stm_try</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T2"><span class="id" title="variable">T2</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b"><span class="id" title="variable">b</span></a> <a class="idref" href="Top.SystemC.Definitions.html#h"><span class="id" title="variable">h</span></a><a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">)</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">~:</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a><br/>
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab132"></a><h4 class="section">Differences to the paper</h4>
+
+    As mentioned above, handling statements are annotated with a capture set <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a></span>.
+    Also, we use the special type constructor <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_exc"><span class="id" title="constructor">typ_exc</span></a></span> instead of a function type.
+    Otherwise, the definition is a straightforward translation to Coq in locally nameless. 
+<div class="paragraph"> </div>
+
+ The following rule for <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typing_reset"><span class="id" title="constructor">typing_reset</span></a></span> is a variation of <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typing_try"><span class="id" title="constructor">typing_try</span></a></span>, not binding the capability
+    anymore and with a singleton set <span class="inlinecode">{<a class="idref" href="Top.SystemC.CaptureSets.html#Props.l"><span class="id" title="variable">l</span></a>}</span> instead of <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a></span>. 
+</div>
+<div class="code">
 <br/>
 &nbsp;&nbsp;| <a name="typing_reset"><span class="id" title="constructor">typing_reset</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">L</span> <span class="id" title="var">E</span> <span class="id" title="var">R</span> <span class="id" title="var">Q</span> <span class="id" title="var">C</span> <span class="id" title="var">l</span> <span class="id" title="var">b</span> <span class="id" title="var">h</span> <span class="id" title="var">T</span> <span class="id" title="var">T1</span> <span class="id" title="var">T2</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="Top.SystemC.Definitions.html#11f615684d43d5ff020d0ffb9a3d8457"><span class="id" title="notation">|=</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
@@ -682,12 +746,41 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 <br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab131"></a><h1 class="section"><a name="values"></a> Values</h1>
+<a name="lab133"></a><h1 class="section"><a name="semantics"></a> Operational Semantics</h1>
 
+    As described in the appendix of the paper, we mechanize the operational semantics
+    in form of an abstract machine.
+
+<div class="paragraph"> </div>
+
+    However, the operational semantics is of a hybrid form: We <i>only</i> use the abstract
+    machine semantics for <i>statements</i> and only if they affect the evaluation context / stack.
+
+<div class="paragraph"> </div>
+
+    For all other "trivial" reductions, we use a substitution based semantics with congruence rules.
+
+<div class="paragraph"> </div>
+
+    This separation makes it easier in the soundness proof to separate the "interesting" cases from
+    the trivial ones.
+
+<div class="paragraph"> </div>
+
+    <img src="img/machine-semantics.png" alt="Semantics" class="fig" /> 
+<div class="paragraph"> </div>
+
+<a name="lab134"></a><h2 class="section"><a name="values"></a> Values</h2>
+
+    Values are defined in the paper in the appendix.
+
+<div class="paragraph"> </div>
+
+    <img src="img/values.png" alt="Values" class="fig" />
+    
 </div>
 <div class="code">
 
@@ -699,6 +792,7 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#bvalue"><span class="id" title="inductive">bvalue</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b"><span class="id" title="variable">b</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#capt"><span class="id" title="definition">capt</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#evalue"><span class="id" title="inductive">evalue</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#exp_box"><span class="id" title="constructor">exp_box</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b"><span class="id" title="variable">b</span></a>)<br/>
+<br/>
 <span class="id" title="keyword">with</span> <a name="bvalue"><span class="id" title="inductive">bvalue</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#blk"><span class="id" title="inductive">blk</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
 &nbsp;&nbsp;| <a name="value_vfun"><span class="id" title="constructor">value_vfun</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">T</span> <span class="id" title="var">s</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#block"><span class="id" title="inductive">block</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#blk_vabs"><span class="id" title="constructor">blk_vabs</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
@@ -713,7 +807,17 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#bvalue"><span class="id" title="inductive">bvalue</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#blk_handler"><span class="id" title="constructor">blk_handler</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a>).<br/>
 
 <br/>
-<span class="comment">(*&nbsp;Redex&nbsp;in&nbsp;a&nbsp;context&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab135"></a><h2 class="section"><a name="redexes"></a> Machine Redexes</h2>
+
+    Since we mechanize the operational semantics in terms of an abstract machine, we also
+    define a predicate that describes when a statement can only be reduced in a larger context. 
+</div>
+<div class="code">
+
+<br/>
 <span class="id" title="keyword">Inductive</span> <a name="machine_redex"><span class="id" title="inductive">machine_redex</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#stm"><span class="id" title="inductive">stm</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
 &nbsp;&nbsp;| <a name="redex_ret"><span class="id" title="constructor">redex_ret</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">e</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#evalue"><span class="id" title="inductive">evalue</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e"><span class="id" title="variable">e</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
@@ -729,11 +833,10 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#machine_redex"><span class="id" title="inductive">machine_redex</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#stm_throw"><span class="id" title="constructor">stm_throw</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#blk_handler"><span class="id" title="constructor">blk_handler</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a>) <a class="idref" href="Top.SystemC.Definitions.html#e"><span class="id" title="variable">e</span></a>).<br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab132"></a><h1 class="section"><a name="reduction"></a> Reduction</h1>
+<a name="lab136"></a><h2 class="section"><a name="semantics-trivial"></a> Trivial Reduction</h2>
 
 </div>
 <div class="code">
@@ -744,12 +847,17 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 <span class="id" title="keyword">Reserved Notation</span> &quot;e1 --&gt;s e2" (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 69).<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+<a name="lab137"></a><h3 class="section"><a name="semantics-blocks"></a> Reduction of Blocks</h3>
+
+    Blocks can always be reduced regardless of the context. In fact,
+    the only reduction is box-unbox elimination (<span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#bred_box"><span class="id" title="constructor">bred_box</span></a></span>) and block substitution (<span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#bred_box"><span class="id" title="constructor">bred_box</span></a></span>).
+  
+</div>
+<div class="code">
 <span class="id" title="keyword">Inductive</span> <a name="bred"><span class="id" title="inductive">bred</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#blk"><span class="id" title="inductive">blk</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#blk"><span class="id" title="inductive">blk</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
-&nbsp;&nbsp;<span class="comment">(*&nbsp;Q:&nbsp;Why&nbsp;don't&nbsp;we&nbsp;need&nbsp;a&nbsp;congruence&nbsp;here?<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A:&nbsp;expressions&nbsp;can&nbsp;be&nbsp;either&nbsp;constants,&nbsp;variables,&nbsp;or&nbsp;boxes.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constants&nbsp;are&nbsp;never&nbsp;boxed&nbsp;blocks&nbsp;and&nbsp;variables&nbsp;will&nbsp;be&nbsp;substited&nbsp;with&nbsp;boxed&nbsp;blocks,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;so&nbsp;this&nbsp;should&nbsp;suffice.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
 &nbsp;&nbsp;| <a name="bred_box"><span class="id" title="constructor">bred_box</span></a>  : <span class="id" title="keyword">∀</span> <span class="id" title="var">C</span> <span class="id" title="var">b</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#blk_unbox"><span class="id" title="constructor">blk_unbox</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#exp_box"><span class="id" title="constructor">exp_box</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b"><span class="id" title="variable">b</span></a>) <a class="idref" href="Top.SystemC.Definitions.html#21a10694b7b04103b96620702ff41ba6"><span class="id" title="notation">--&gt;</span></a><a class="idref" href="Top.SystemC.Definitions.html#21a10694b7b04103b96620702ff41ba6"><span class="id" title="notation">b</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b"><span class="id" title="variable">b</span></a><br/>
 <br/>
@@ -762,22 +870,44 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 <span class="id" title="keyword">where</span> <a name="21a10694b7b04103b96620702ff41ba6"><span class="id" title="notation">&quot;</span></a>b1 --&gt;b b2" := (<a class="idref" href="Top.SystemC.Definitions.html#bred"><span class="id" title="inductive">bred</span></a> <span class="id" title="var">b1</span> <span class="id" title="var">b2</span>).<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+<a name="lab138"></a><h3 class="section"><a name="semantics-blocks"></a> Reduction of Expressions</h3>
+
+    Reduction on expressions is even simpler. Only boxed blocks can be reduced at all.
+  
+</div>
+<div class="code">
 <span class="id" title="keyword">Inductive</span> <a name="ered"><span class="id" title="inductive">ered</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#exp"><span class="id" title="inductive">exp</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#exp"><span class="id" title="inductive">exp</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
-&nbsp;&nbsp;<span class="comment">(*&nbsp;Q:&nbsp;Why&nbsp;don't&nbsp;we&nbsp;need&nbsp;exp_box&nbsp;(exp_unbox&nbsp;e)&nbsp;-&gt;&nbsp;e&nbsp;?<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A:&nbsp;Since&nbsp;we&nbsp;have&nbsp;the&nbsp;congruence,&nbsp;at&nbsp;some&nbsp;point&nbsp;`(exp_unbox&nbsp;e)`&nbsp;will&nbsp;reduce<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;a&nbsp;block&nbsp;value.&nbsp;The&nbsp;reduction&nbsp;in&nbsp;`bred`&nbsp;will&nbsp;perform&nbsp;the&nbsp;box/unbox&nbsp;reduction.<br/>
-&nbsp;&nbsp;&nbsp;*)</span><br/>
 &nbsp;&nbsp;| <a name="ered_box"><span class="id" title="constructor">ered_box</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">C</span> <span class="id" title="var">b</span> <span class="id" title="var">b'</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#b"><span class="id" title="variable">b</span></a> <a class="idref" href="Top.SystemC.Definitions.html#21a10694b7b04103b96620702ff41ba6"><span class="id" title="notation">--&gt;</span></a><a class="idref" href="Top.SystemC.Definitions.html#21a10694b7b04103b96620702ff41ba6"><span class="id" title="notation">b</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b'"><span class="id" title="variable">b'</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#20dacbe52519fa496608a0f00147f0ff"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#exp_box"><span class="id" title="constructor">exp_box</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b"><span class="id" title="variable">b</span></a><a class="idref" href="Top.SystemC.Definitions.html#20dacbe52519fa496608a0f00147f0ff"><span class="id" title="notation">)</span></a> <a class="idref" href="Top.SystemC.Definitions.html#20dacbe52519fa496608a0f00147f0ff"><span class="id" title="notation">--&gt;</span></a><a class="idref" href="Top.SystemC.Definitions.html#20dacbe52519fa496608a0f00147f0ff"><span class="id" title="notation">e</span></a> <a class="idref" href="Top.SystemC.Definitions.html#20dacbe52519fa496608a0f00147f0ff"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#exp_box"><span class="id" title="constructor">exp_box</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b'"><span class="id" title="variable">b'</span></a><a class="idref" href="Top.SystemC.Definitions.html#20dacbe52519fa496608a0f00147f0ff"><span class="id" title="notation">)</span></a><br/>
 <span class="id" title="keyword">where</span> <a name="20dacbe52519fa496608a0f00147f0ff"><span class="id" title="notation">&quot;</span></a>e1 --&gt;e e2" := (<a class="idref" href="Top.SystemC.Definitions.html#ered"><span class="id" title="inductive">ered</span></a> <span class="id" title="var">e1</span> <span class="id" title="var">e2</span>).<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+<a name="lab139"></a><h3 class="section"><a name="semantics-statements"></a> Reduction of Statements</h3>
+
+</div>
+<div class="code">
 <span class="id" title="keyword">Inductive</span> <a name="sred"><span class="id" title="inductive">sred</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#stm"><span class="id" title="inductive">stm</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#stm"><span class="id" title="inductive">stm</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
 &nbsp;&nbsp;| <a name="sred_ret"><span class="id" title="constructor">sred_ret</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">e</span> <span class="id" title="var">e'</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#e"><span class="id" title="variable">e</span></a> <a class="idref" href="Top.SystemC.Definitions.html#20dacbe52519fa496608a0f00147f0ff"><span class="id" title="notation">--&gt;</span></a><a class="idref" href="Top.SystemC.Definitions.html#20dacbe52519fa496608a0f00147f0ff"><span class="id" title="notation">e</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e'"><span class="id" title="variable">e'</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e"><span class="id" title="variable">e</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">--&gt;</span></a><a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e'"><span class="id" title="variable">e'</span></a><br/>
 <br/>
+&nbsp;&nbsp;| <a name="sred_vapp_3"><span class="id" title="constructor">sred_vapp_3</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">T</span> <span class="id" title="var">s</span> <span class="id" title="var">e</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#evalue"><span class="id" title="inductive">evalue</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e"><span class="id" title="variable">e</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#stm_vapp"><span class="id" title="constructor">stm_vapp</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#blk_vabs"><span class="id" title="constructor">blk_vabs</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a>) <a class="idref" href="Top.SystemC.Definitions.html#e"><span class="id" title="variable">e</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">--&gt;</span></a><a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#open_es"><span class="id" title="definition">open_es</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e"><span class="id" title="variable">e</span></a><a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">)</span></a><br/>
+<br/>
+</div>
+
+<div class="doc">
+The remaining rules are congruences, omitted in the appendix of the paper. 
+</div>
+<div class="code">
 &nbsp;&nbsp;| <a name="sred_def_1"><span class="id" title="constructor">sred_def_1</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">C</span> <span class="id" title="var">S1</span> <span class="id" title="var">b</span> <span class="id" title="var">b'</span> <span class="id" title="var">s</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#b"><span class="id" title="variable">b</span></a> <a class="idref" href="Top.SystemC.Definitions.html#21a10694b7b04103b96620702ff41ba6"><span class="id" title="notation">--&gt;</span></a><a class="idref" href="Top.SystemC.Definitions.html#21a10694b7b04103b96620702ff41ba6"><span class="id" title="notation">b</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b'"><span class="id" title="variable">b'</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#stm_def"><span class="id" title="constructor">stm_def</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#S1"><span class="id" title="variable">S1</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b"><span class="id" title="variable">b</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">--&gt;</span></a><a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#stm_def"><span class="id" title="constructor">stm_def</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#S1"><span class="id" title="variable">S1</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b'"><span class="id" title="variable">b'</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a><br/>
@@ -793,10 +923,6 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 &nbsp;&nbsp;| <a name="sred_vapp_2"><span class="id" title="constructor">sred_vapp_2</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">b</span> <span class="id" title="var">e</span> <span class="id" title="var">e'</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#e"><span class="id" title="variable">e</span></a> <a class="idref" href="Top.SystemC.Definitions.html#20dacbe52519fa496608a0f00147f0ff"><span class="id" title="notation">--&gt;</span></a><a class="idref" href="Top.SystemC.Definitions.html#20dacbe52519fa496608a0f00147f0ff"><span class="id" title="notation">e</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e'"><span class="id" title="variable">e'</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#stm_vapp"><span class="id" title="constructor">stm_vapp</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b"><span class="id" title="variable">b</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e"><span class="id" title="variable">e</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">--&gt;</span></a><a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#stm_vapp"><span class="id" title="constructor">stm_vapp</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b"><span class="id" title="variable">b</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e'"><span class="id" title="variable">e'</span></a><br/>
-<br/>
-&nbsp;&nbsp;| <a name="sred_vapp_3"><span class="id" title="constructor">sred_vapp_3</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">T</span> <span class="id" title="var">s</span> <span class="id" title="var">e</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#evalue"><span class="id" title="inductive">evalue</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e"><span class="id" title="variable">e</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#stm_vapp"><span class="id" title="constructor">stm_vapp</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#blk_vabs"><span class="id" title="constructor">blk_vabs</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a>) <a class="idref" href="Top.SystemC.Definitions.html#e"><span class="id" title="variable">e</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">--&gt;</span></a><a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#open_es"><span class="id" title="definition">open_es</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e"><span class="id" title="variable">e</span></a><a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">)</span></a><br/>
 <br/>
 &nbsp;&nbsp;| <a name="sred_bapp_1"><span class="id" title="constructor">sred_bapp_1</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">b1</span> <span class="id" title="var">b1'</span> <span class="id" title="var">C</span> <span class="id" title="var">b2</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#b1"><span class="id" title="variable">b1</span></a> <a class="idref" href="Top.SystemC.Definitions.html#21a10694b7b04103b96620702ff41ba6"><span class="id" title="notation">--&gt;</span></a><a class="idref" href="Top.SystemC.Definitions.html#21a10694b7b04103b96620702ff41ba6"><span class="id" title="notation">b</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b1'"><span class="id" title="variable">b1'</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
@@ -826,7 +952,12 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 </div>
 
 <div class="doc">
-*******************************************  Stacks / Contexts                            ******************************************* 
+<a name="lab140"></a><h2 class="section"><a name="stacks"></a> Stacks / Contexts</h2>
+
+
+<div class="paragraph"> </div>
+
+    <img src="img/contexts.png" alt="contexts" class="fig" />  
 </div>
 <div class="code">
 
@@ -835,7 +966,6 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 &nbsp;&nbsp;<span class="comment">(*&nbsp;val&nbsp;_&nbsp;:&nbsp;T&nbsp;=&nbsp;<span class="inlinecode"></span>;&nbsp;s&nbsp;&nbsp;*)</span><br/>
 &nbsp;&nbsp;| <a name="K"><span class="id" title="constructor">K</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#vtyp"><span class="id" title="inductive">vtyp</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#stm"><span class="id" title="inductive">stm</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#frame"><span class="id" title="inductive">frame</span></a><br/>
 &nbsp;&nbsp;<span class="comment">(*&nbsp;invariant:&nbsp;all&nbsp;elements&nbsp;in&nbsp;cap&nbsp;are&nbsp;bound&nbsp;in&nbsp;the&nbsp;tail&nbsp;of&nbsp;the&nbsp;ctx&nbsp;*)</span><br/>
-&nbsp;&nbsp;<span class="comment">(*&nbsp;reset_l&nbsp;<span class="inlinecode"></span>&nbsp;h&nbsp;*)</span><br/>
 &nbsp;&nbsp;| <a name="H"><span class="id" title="constructor">H</span></a> : <a class="idref" href="Top.Util.Label.html#LabelImpl.label"><span class="id" title="axiom">label</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#stm"><span class="id" title="inductive">stm</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#frame"><span class="id" title="inductive">frame</span></a><br/>
 .<br/>
 
@@ -852,12 +982,18 @@ We use the following abbreviation to denote runtime stacks
 </div>
 
 <div class="doc">
-the toplevel / empty runtime stack  
+The toplevel / empty runtime stack.  
 </div>
 <div class="code">
 <span class="id" title="keyword">Notation</span> <a name="top"><span class="id" title="abbreviation">top</span></a> := (@<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <a class="idref" href="Top.SystemC.Definitions.html#frame"><span class="id" title="inductive">frame</span></a>).<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+The following definition extracts labels, bound by the context. 
+</div>
+<div class="code">
 <span class="id" title="keyword">Fixpoint</span> <a name="bound_labels"><span class="id" title="definition">bound_labels</span></a> (<span class="id" title="var">c</span> : <a class="idref" href="Top.SystemC.Definitions.html#ctx"><span class="id" title="abbreviation">ctx</span></a>) : <a class="idref" href="Top.Util.Label.html#labels"><span class="id" title="abbreviation">labels</span></a> :=<br/>
 &nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> ⇒ <a class="idref" href="Top.Util.Label.html#6d5f914ca8d436a7f90e0b9be989e988"><span class="id" title="notation">{}</span></a><a class="idref" href="Top.Util.Label.html#6d5f914ca8d436a7f90e0b9be989e988"><span class="id" title="notation">L</span></a><br/>
@@ -866,6 +1002,12 @@ the toplevel / empty runtime stack
 &nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+We need to be able to plug an expression into a context. 
+</div>
+<div class="code">
 <span class="id" title="keyword">Fixpoint</span> <a name="plug"><span class="id" title="definition">plug</span></a> (<span class="id" title="var">c</span> : <a class="idref" href="Top.SystemC.Definitions.html#ctx"><span class="id" title="abbreviation">ctx</span></a>) (<span class="id" title="var">e</span> : <a class="idref" href="Top.SystemC.Definitions.html#exp"><span class="id" title="inductive">exp</span></a>) {<span class="id" title="keyword">struct</span> <span class="id" title="var">c</span>} : <a class="idref" href="Top.SystemC.Definitions.html#stm"><span class="id" title="inductive">stm</span></a> :=<br/>
 &nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> ⇒ <a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e"><span class="id" title="variable">e</span></a><br/>
@@ -881,8 +1023,19 @@ the toplevel / empty runtime stack
 </div>
 
 <div class="doc">
-<a name="lab133"></a><h1 class="section">Context typing</h1>
+<a name="lab141"></a><h3 class="section">Context typing</h3>
 
+    The following definition models the context typing from Appendix A.3 in the paper.
+
+<div class="paragraph"> </div>
+
+    <img src="img/context-typing.png" alt="context typing" class="fig" />
+
+<div class="paragraph"> </div>
+
+    It can be thought of as a variant of statement typing, flipped inside-out.
+    <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typing_ctx"><span class="id" title="inductive">typing_ctx</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a></span> <span class="inlinecode"><a class="idref" href="Top.Util.ListFacts.html#Q"><span class="id" title="variable">Q</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#K"><span class="id" title="constructor">K</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a></span> is parametrized by a set <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a></span> of capabilities <i>bound</i> in the
+    context, global signatures <span class="inlinecode"><a class="idref" href="Top.Util.ListFacts.html#Q"><span class="id" title="variable">Q</span></a></span>, the context <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#K"><span class="id" title="constructor">K</span></a></span> itself, and the type <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a></span> at the hole. 
 </div>
 <div class="code">
 <span class="id" title="keyword">Inductive</span> <a name="typing_ctx"><span class="id" title="inductive">typing_ctx</span></a> : <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#sig"><span class="id" title="abbreviation">sig</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#ctx"><span class="id" title="abbreviation">ctx</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#vtyp"><span class="id" title="inductive">vtyp</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
@@ -912,8 +1065,12 @@ the toplevel / empty runtime stack
 </div>
 
 <div class="doc">
-<a name="lab134"></a><h1 class="section">Continuation typing</h1>
+<a name="lab142"></a><h3 class="section">Continuation typing</h3>
 
+    Continuations are reversed contexts, so the typing rules are very similar.
+    The rendering <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.R"><span class="id" title="variable">R</span></a></span> <span class="inlinecode">;</span> <span class="inlinecode"><a class="idref" href="Top.Util.ListFacts.html#Q"><span class="id" title="variable">Q</span></a></span> <span class="inlinecode">|-<span class="id" title="var">cnt</span></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#K"><span class="id" title="constructor">K</span></a></span> <span class="inlinecode">~:</span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a></span> <span class="inlinecode">~&gt;</span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T2"><span class="id" title="variable">T2</span></a></span> shows that continuations <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#K"><span class="id" title="constructor">K</span></a></span>
+    have a function-like type. The hole has type <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a></span> and they are delimited at <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T2"><span class="id" title="variable">T2</span></a></span>.
+    
 </div>
 <div class="code">
 <span class="id" title="keyword">Inductive</span> <a name="typing_cnt"><span class="id" title="inductive">typing_cnt</span></a> : <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#sig"><span class="id" title="abbreviation">sig</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#ctx"><span class="id" title="abbreviation">ctx</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#vtyp"><span class="id" title="inductive">vtyp</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#vtyp"><span class="id" title="inductive">vtyp</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
@@ -945,14 +1102,21 @@ the toplevel / empty runtime stack
 </div>
 
 <div class="doc">
-*******************************************  State Machines                               ******************************************* 
+<a name="lab143"></a><h2 class="section"><a name="abstract-machine"></a> Abstract Machine</h2>
+
+    The abstract machine can be in one of two states.
+<ul class="doclist">
+<li> either we simply step within a context <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#state_step"><span class="id" title="constructor">state_step</span></a></span>,
+
+</li>
+<li> or we unwind the stack to search for a delimiter <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#state_wind"><span class="id" title="constructor">state_wind</span></a></span>. 
+</li>
+</ul>
+
 </div>
 <div class="code">
-
-<br/>
 <span class="id" title="keyword">Inductive</span> <a name="state"><span class="id" title="inductive">state</span></a> : <span class="id" title="keyword">Type</span> :=<br/>
 &nbsp;&nbsp;| <a name="state_step"><span class="id" title="constructor">state_step</span></a> (<span class="id" title="var">s</span> : <a class="idref" href="Top.SystemC.Definitions.html#stm"><span class="id" title="inductive">stm</span></a>) (<span class="id" title="var">c</span> : <a class="idref" href="Top.SystemC.Definitions.html#ctx"><span class="id" title="abbreviation">ctx</span></a>) (<span class="id" title="var">Q</span> : <a class="idref" href="Top.SystemC.Definitions.html#sig"><span class="id" title="abbreviation">sig</span></a>) : <a class="idref" href="Top.SystemC.Definitions.html#state"><span class="id" title="inductive">state</span></a><br/>
-&nbsp;&nbsp;<span class="comment">(*&nbsp;Maybe&nbsp;we&nbsp;need&nbsp;to&nbsp;add&nbsp;the&nbsp;type&nbsp;of&nbsp;the&nbsp;effect&nbsp;operation&nbsp;here&nbsp;as&nbsp;well...&nbsp;*)</span><br/>
 &nbsp;&nbsp;| <a name="state_wind"><span class="id" title="constructor">state_wind</span></a> (<span class="id" title="var">l</span> : <a class="idref" href="Top.Util.Label.html#LabelImpl.label"><span class="id" title="axiom">label</span></a>) (<span class="id" title="var">v</span> : <a class="idref" href="Top.SystemC.Definitions.html#exp"><span class="id" title="inductive">exp</span></a>) (<span class="id" title="var">c</span> : <a class="idref" href="Top.SystemC.Definitions.html#ctx"><span class="id" title="abbreviation">ctx</span></a>) (<span class="id" title="var">k</span> : <a class="idref" href="Top.SystemC.Definitions.html#ctx"><span class="id" title="abbreviation">ctx</span></a>) (<span class="id" title="var">Q</span> : <a class="idref" href="Top.SystemC.Definitions.html#sig"><span class="id" title="abbreviation">sig</span></a>) : <a class="idref" href="Top.SystemC.Definitions.html#state"><span class="id" title="inductive">state</span></a><br/>
 .<br/>
 
@@ -965,6 +1129,12 @@ the toplevel / empty runtime stack
 <span class="id" title="keyword">Reserved Notation</span> &quot;st1 --&gt; st2" (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 69).<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+The following predicate corresponds to values, but for machine states. 
+</div>
+<div class="code">
 <span class="id" title="keyword">Inductive</span> <a name="done"><span class="id" title="inductive">done</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#state"><span class="id" title="inductive">state</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
 &nbsp;&nbsp;| <a name="done_ret"><span class="id" title="constructor">done_ret</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">Q</span> <span class="id" title="var">e</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#evalue"><span class="id" title="inductive">evalue</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e"><span class="id" title="variable">e</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
@@ -972,47 +1142,116 @@ the toplevel / empty runtime stack
 .<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+<a name="lab144"></a><h3 class="section"><a name="machine-reduction"></a> Reduction Steps</h3>
+
+    For better comparison, we label the rules with the names from the paper. 
+</div>
+<div class="code">
+
+<br/>
 <span class="id" title="keyword">Inductive</span> <a name="step"><span class="id" title="inductive">step</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#state"><span class="id" title="inductive">state</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#state"><span class="id" title="inductive">state</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
+<br/>
+</div>
+
+<div class="doc">
+(cong) 
+</div>
+<div class="code">
 &nbsp;&nbsp;| <a name="step_cong"><span class="id" title="constructor">step_cong</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">Q</span> <span class="id" title="var">s</span> <span class="id" title="var">s'</span> <span class="id" title="var">c</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">--&gt;</span></a><a class="idref" href="Top.SystemC.Definitions.html#e1eb5820dc5956ef4a133faa42f77941"><span class="id" title="notation">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s'"><span class="id" title="variable">s'</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e92f2993feae095c395ce5261340adfe"><span class="id" title="notation">--&gt;</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s'"><span class="id" title="variable">s'</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a><br/>
 <br/>
+</div>
+
+<div class="doc">
+(pop) 
+</div>
+<div class="code">
 &nbsp;&nbsp;| <a name="step_pop_1"><span class="id" title="constructor">step_pop_1</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">Q</span> <span class="id" title="var">v</span> <span class="id" title="var">T</span> <span class="id" title="var">s</span> <span class="id" title="var">c</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#evalue"><span class="id" title="inductive">evalue</span></a> <a class="idref" href="Top.SystemC.Definitions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> <a class="idref" href="Top.SystemC.Definitions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#K"><span class="id" title="constructor">K</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e92f2993feae095c395ce5261340adfe"><span class="id" title="notation">--&gt;</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#open_es"><span class="id" title="definition">open_es</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a><br/>
 <br/>
+</div>
+
+<div class="doc">
+(ret) 
+</div>
+<div class="code">
 &nbsp;&nbsp;| <a name="step_pop_2"><span class="id" title="constructor">step_pop_2</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">Q</span> <span class="id" title="var">v</span> <span class="id" title="var">l</span> <span class="id" title="var">C</span> <span class="id" title="var">s</span> <span class="id" title="var">c</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#evalue"><span class="id" title="inductive">evalue</span></a> <a class="idref" href="Top.SystemC.Definitions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> <a class="idref" href="Top.SystemC.Definitions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e92f2993feae095c395ce5261340adfe"><span class="id" title="notation">--&gt;</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> <a class="idref" href="Top.SystemC.Definitions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a><br/>
 <br/>
+</div>
+
+<div class="doc">
+(push) 
+</div>
+<div class="code">
 &nbsp;&nbsp;| <a name="step_push"><span class="id" title="constructor">step_push</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">Q</span> <span class="id" title="var">s</span> <span class="id" title="var">T</span> <span class="id" title="var">b</span> <span class="id" title="var">c</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#stmt"><span class="id" title="inductive">stmt</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#stm_val"><span class="id" title="constructor">stm_val</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b"><span class="id" title="variable">b</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#stm_val"><span class="id" title="constructor">stm_val</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b"><span class="id" title="variable">b</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a> <a class="idref" href="Top.SystemC.Definitions.html#e92f2993feae095c395ce5261340adfe"><span class="id" title="notation">--&gt;</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b"><span class="id" title="variable">b</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#K"><span class="id" title="constructor">K</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a><br/>
 <br/>
+</div>
+
+<div class="doc">
+(try) 
+</div>
+<div class="code">
 &nbsp;&nbsp;| <a name="step_try"><span class="id" title="constructor">step_try</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">Q</span> <span class="id" title="var">s</span> <span class="id" title="var">h</span> <span class="id" title="var">l</span> <span class="id" title="var">C</span> <span class="id" title="var">T2</span> <span class="id" title="var">T1</span> <span class="id" title="var">c</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.Label.html#LabelSet.F.In"><span class="id" title="axiom">LabelSet.F.In</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#bound_labels"><span class="id" title="definition">bound_labels</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.Label.html#LabelSet.F.In"><span class="id" title="axiom">LabelSet.F.In</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> (<a class="idref" href="Top.Util.Signatures.html#Signatures.dom"><span class="id" title="definition">Signatures.dom</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#stm_try"><span class="id" title="constructor">stm_try</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T2"><span class="id" title="variable">T2</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#h"><span class="id" title="variable">h</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a><a class="idref" href="Top.SystemC.Definitions.html#e92f2993feae095c395ce5261340adfe"><span class="id" title="notation">--&gt;</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#open_cs"><span class="id" title="definition">open_cs</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#blk_handler"><span class="id" title="constructor">blk_handler</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_lvar"><span class="id" title="definition">cset_lvar</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a>) <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#h"><span class="id" title="variable">h</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.Util.Environment.html#1e2518ff2e78f907c94429897ac7861a"><span class="id" title="notation">[</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a> <a class="idref" href="Top.SystemC.Definitions.html#bind_sig"><span class="id" title="constructor">bind_sig</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T2"><span class="id" title="variable">T2</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a><a class="idref" href="Top.Util.Environment.html#1e2518ff2e78f907c94429897ac7861a"><span class="id" title="notation">]</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a><br/>
 <br/>
+</div>
+
+<div class="doc">
+(reset) 
+</div>
+<div class="code">
 &nbsp;&nbsp;| <a name="step_reset"><span class="id" title="constructor">step_reset</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">Q</span> <span class="id" title="var">s</span> <span class="id" title="var">h</span> <span class="id" title="var">l</span> <span class="id" title="var">C</span> <span class="id" title="var">T1</span> <span class="id" title="var">T</span> <span class="id" title="var">c</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.Util.Signatures.html#Signatures.binds"><span class="id" title="definition">Signatures.binds</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#bind_sig"><span class="id" title="constructor">bind_sig</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a>) <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#stm_reset"><span class="id" title="constructor">stm_reset</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#h"><span class="id" title="variable">h</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a><a class="idref" href="Top.SystemC.Definitions.html#e92f2993feae095c395ce5261340adfe"><span class="id" title="notation">--&gt;</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#h"><span class="id" title="variable">h</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a><br/>
 <br/>
-&nbsp;&nbsp;<span class="comment">(*&nbsp;switch&nbsp;to&nbsp;search&nbsp;mode&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+(try), switch to search mode 
+</div>
+<div class="code">
 &nbsp;&nbsp;| <a name="step_throw"><span class="id" title="constructor">step_throw</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">Q</span> <span class="id" title="var">l</span> <span class="id" title="var">v</span> <span class="id" title="var">c</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#evalue"><span class="id" title="inductive">evalue</span></a> <a class="idref" href="Top.SystemC.Definitions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#stm_throw"><span class="id" title="constructor">stm_throw</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#blk_handler"><span class="id" title="constructor">blk_handler</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a>) <a class="idref" href="Top.SystemC.Definitions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a><a class="idref" href="Top.SystemC.Definitions.html#e92f2993feae095c395ce5261340adfe"><span class="id" title="notation">--&gt;</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">〈</span></a><a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">throw</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">#</span></a> <a class="idref" href="Top.SystemC.Definitions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">•</span></a> <a class="idref" href="Top.SystemC.Definitions.html#top"><span class="id" title="abbreviation">top</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">〉</span></a><br/>
 <br/>
+</div>
+
+<div class="doc">
+(unwind) 
+</div>
+<div class="code">
 &nbsp;&nbsp;| <a name="step_unwind_1"><span class="id" title="constructor">step_unwind_1</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">Q</span> <span class="id" title="var">l</span> <span class="id" title="var">v</span> <span class="id" title="var">T</span> <span class="id" title="var">s</span> <span class="id" title="var">c</span> <span class="id" title="var">k</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">〈</span></a><a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">throw</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">#</span></a> <a class="idref" href="Top.SystemC.Definitions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#K"><span class="id" title="constructor">K</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">•</span></a> <a class="idref" href="Top.SystemC.Definitions.html#k"><span class="id" title="variable">k</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">〉</span></a><a class="idref" href="Top.SystemC.Definitions.html#e92f2993feae095c395ce5261340adfe"><span class="id" title="notation">--&gt;</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">〈</span></a><a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">throw</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">#</span></a> <a class="idref" href="Top.SystemC.Definitions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">•</span></a> <a class="idref" href="Top.SystemC.Definitions.html#K"><span class="id" title="constructor">K</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="Top.SystemC.Definitions.html#k"><span class="id" title="variable">k</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">〉</span></a><br/>
 <br/>
+</div>
+
+<div class="doc">
+(forward) 
+</div>
+<div class="code">
 &nbsp;&nbsp;| <a name="step_unwind_2"><span class="id" title="constructor">step_unwind_2</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">Q</span> <span class="id" title="var">l</span> <span class="id" title="var">v</span> <span class="id" title="var">l2</span> <span class="id" title="var">C</span> <span class="id" title="var">h</span> <span class="id" title="var">c</span> <span class="id" title="var">k</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#a0a5068f83a704fcfbda8cd473a6cfea"><span class="id" title="notation">≠</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l2"><span class="id" title="variable">l2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">〈</span></a><a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">throw</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">#</span></a> <a class="idref" href="Top.SystemC.Definitions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l2"><span class="id" title="variable">l2</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#h"><span class="id" title="variable">h</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">•</span></a> <a class="idref" href="Top.SystemC.Definitions.html#k"><span class="id" title="variable">k</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">〉</span></a><a class="idref" href="Top.SystemC.Definitions.html#e92f2993feae095c395ce5261340adfe"><span class="id" title="notation">--&gt;</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">〈</span></a><a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">throw</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">#</span></a> <a class="idref" href="Top.SystemC.Definitions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">•</span></a> <a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l2"><span class="id" title="variable">l2</span></a> <a class="idref" href="Top.SystemC.Definitions.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#h"><span class="id" title="variable">h</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="Top.SystemC.Definitions.html#k"><span class="id" title="variable">k</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">〉</span></a><br/>
 <br/>
-&nbsp;&nbsp;<span class="comment">(*&nbsp;switch&nbsp;back&nbsp;to&nbsp;step&nbsp;mode&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+(handle), switch back to step mode 
+</div>
+<div class="code">
 &nbsp;&nbsp;| <a name="step_handle"><span class="id" title="constructor">step_handle</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">Q</span> <span class="id" title="var">l</span> <span class="id" title="var">v</span> <span class="id" title="var">T</span> <span class="id" title="var">T1</span> <span class="id" title="var">C</span> <span class="id" title="var">h</span> <span class="id" title="var">c</span> <span class="id" title="var">k</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;the&nbsp;continuation:&nbsp;(y&nbsp;:&nbsp;T1)&nbsp;=&gt;&nbsp;reset&nbsp;l&nbsp;c&nbsp;h&nbsp;E<span class="inlinecode"><span class="id" title="var">y</span></span>&nbsp;&nbsp;*)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.Util.Signatures.html#Signatures.binds"><span class="id" title="definition">Signatures.binds</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#bind_sig"><span class="id" title="constructor">bind_sig</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a>) <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
@@ -1023,11 +1262,35 @@ the toplevel / empty runtime stack
 <span class="id" title="keyword">where</span> <a name="e92f2993feae095c395ce5261340adfe"><span class="id" title="notation">&quot;</span></a>st1 --&gt; st2" := (<a class="idref" href="Top.SystemC.Definitions.html#step"><span class="id" title="inductive">step</span></a> <span class="id" title="var">st1</span> <span class="id" title="var">st2</span>).<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+<a name="lab145"></a><h3 class="section"><a name="machine-typing"></a> Abstract Machine Typing</h3>
+
+    A machine state is simply by composing the previously defined typing judgements.
+
+<div class="paragraph"> </div>
+
+    For <span class="inlinecode"><span class="id" title="var">typ_state</span></span>, a the statement has to have the same type <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a></span> that is expected
+    by the context. 
+</div>
+<div class="code">
+
+<br/>
 <span class="id" title="keyword">Inductive</span> <a name="typing_state"><span class="id" title="inductive">typing_state</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#state"><span class="id" title="inductive">state</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
 &nbsp;&nbsp;| <a name="typ_step"><span class="id" title="constructor">typ_step</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">R</span> <span class="id" title="var">Q</span> <span class="id" title="var">s</span> <span class="id" title="var">c</span> <span class="id" title="var">T</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="Top.SystemC.Definitions.html#712461db59c1a2fde93b7e2402fdb584"><span class="id" title="notation">;</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#712461db59c1a2fde93b7e2402fdb584"><span class="id" title="notation">|-</span></a><a class="idref" href="Top.SystemC.Definitions.html#712461db59c1a2fde93b7e2402fdb584"><span class="id" title="notation">ctx</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#712461db59c1a2fde93b7e2402fdb584"><span class="id" title="notation">~:</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">@</span></a> <a class="idref" href="Top.SystemC.Definitions.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">;</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">|-</span></a><a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">stm</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">~:</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T"><span class="id" title="variable">T</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#typing_state"><span class="id" title="inductive">typing_state</span></a><a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a><br/>
+<br/>
+</div>
+
+<div class="doc">
+For <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_wind"><span class="id" title="constructor">typ_wind</span></a></span> the signature bound at label <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.l"><span class="id" title="variable">l</span></a></span> has to be <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T3"><span class="id" title="variable">T3</span></a></span> <span class="inlinecode">→</span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a></span>,
+    the value has to have the expected type <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T3"><span class="id" title="variable">T3</span></a></span>, and the types of the
+    continuation and stack have to align at <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T2"><span class="id" title="variable">T2</span></a></span>.  
+</div>
+<div class="code">
 &nbsp;&nbsp;| <a name="typ_wind"><span class="id" title="constructor">typ_wind</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">R</span> <span class="id" title="var">Q</span> <span class="id" title="var">l</span> <span class="id" title="var">v</span> <span class="id" title="var">c</span> <span class="id" title="var">k</span> <span class="id" title="var">T1</span> <span class="id" title="var">T2</span> <span class="id" title="var">T3</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_lvar"><span class="id" title="definition">cset_references_lvar</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.Definitions.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.Util.Signatures.html#Signatures.binds"><span class="id" title="definition">Signatures.binds</span></a> <a class="idref" href="Top.SystemC.Definitions.html#l"><span class="id" title="variable">l</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#bind_sig"><span class="id" title="constructor">bind_sig</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T3"><span class="id" title="variable">T3</span></a> <a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a>) <a class="idref" href="Top.SystemC.Definitions.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
