@@ -60,137 +60,143 @@
     "relUrl": "/casestudies.html"
   },"10": {
     "doc": "Home",
-    "title": "System C",
-    "content": "Welcome to System C! In this interactive demo we will take you through a brief introduction to System C and a quick tour of its features. You can find all examples from the paper on this page. Editors . In general, you will find a lot of small code snippets that can you can typecheck and run in the browser. For example, this is a program that prints out “Hello World!”. Try clicking typecheck and run to load the editor (this can take a while the first time). def sayHello(): Unit { println(\"Hello World!\") } . The editor comes with basic support for System C – try hovering over println! . You can also modify the program and then click typecheck and run again to run the typechecker. Alternatively, in the editor you can also use the keybinding &lt;CTRL+Enter&gt; on Windows or &lt;CMD+Enter&gt; on MacOS. REPLs . Sometimes you will also find REPL windows. To run the code example, just click the run button! . sayHello() . Like with other editors, you can freely change the REPL input. Since REPLs are always single-line, you can simply press &lt;ENTER&gt; instead of clicking run. ",
-    "url": "/oopsla-2022-artifact/#system-c",
-    "relUrl": "/#system-c"
+    "title": "Effects, Capabilities, and Boxes",
+    "content": "Welcome to our artifact website! . Our artifact consists of the following components: . | Coq Proofs. We documented our Coq proofs, highlighting the most important aspects and contrasting the definitions with the paper. We recommend you look at the definitions as well as at the theorems. | Interactive Demo. This website contains additional casestudies, examples from the paper, and additional explanation on capabilities and boxing. All examples can be typechecked and edited in the browser! . | . ",
+    "url": "/oopsla-2022-artifact/#effects-capabilities-and-boxes",
+    "relUrl": "/#effects-capabilities-and-boxes"
   },"11": {
+    "doc": "Home",
+    "title": "Interactive Demo",
+    "content": "In this interactive demo we will take you through a brief introduction to System C and a quick tour of its features. You can find all examples from the paper on this page. Editors . In general, you will find a lot of small code snippets that can you can typecheck and run in the browser. For example, this is a program that prints out “Hello World!”. Try clicking typecheck and run to load the editor (this can take a while the first time). def sayHello(): Unit { println(\"Hello World!\") } . The editor comes with basic support for System C – try hovering over println! . You can also modify the program and then click typecheck and run again to run the typechecker. Alternatively, in the editor you can also use the keybinding &lt;CTRL+Enter&gt; on Windows or &lt;CMD+Enter&gt; on MacOS. REPLs . Sometimes you will also find REPL windows. To run the code example, just click the run button! . sayHello() . Like with other editors, you can freely change the REPL input. Since REPLs are always single-line, you can simply press &lt;ENTER&gt; instead of clicking run. ",
+    "url": "/oopsla-2022-artifact/#interactive-demo",
+    "relUrl": "/#interactive-demo"
+  },"12": {
     "doc": "Home",
     "title": "Home",
     "content": " ",
     "url": "/oopsla-2022-artifact/",
     "relUrl": "/"
-  },"12": {
+  },"13": {
     "doc": "Basics",
     "title": "Basics",
     "content": "System C supports basic datatypes, such as numbers, strings, functions, and booleans. def hello(): Unit { val one = 1; val hello = \"Hello\"; val check = true; println(hello) } . In addition to these basic datatypes, it also has support for inductive datatypes; for example: . type Color { Red() Green() Blue() } . You can try it out! . println(Red()) . As usual, datatypes can also take type parameteres and be recursive: . type Pair[A, B] { Pair(fst: A, snd: B) } type List[A] { Cons(head: A, tail: List[A]) Nil() } . Datatypes can be destructed using pattern matching: . def doPair() { Pair(1, 2) match { case Pair(x, y) =&gt; println(x + y) }; val z = Pair(Pair(1, 2), 3) match { case Pair(Pair(x, y), z) =&gt; x + y + z }; println(z); // this is shorthand for Cons(1, Cons(2, Cons(3, Nil()))) val l = [1, 2, 3]; val z1 = l match { case Nil() =&gt; 0 case Cons(x, tl) =&gt; x + 1 }; println(z1); () } . doPair() . ",
     "url": "/oopsla-2022-artifact/intro/",
     "relUrl": "/intro/"
-  },"13": {
+  },"14": {
     "doc": "Paper Examples",
     "title": "Examples from the Paper",
     "content": "Here we include executable variants of all examples from the paper. ",
     "url": "/oopsla-2022-artifact/paper.html#examples-from-the-paper",
     "relUrl": "/paper.html#examples-from-the-paper"
-  },"14": {
+  },"15": {
     "doc": "Paper Examples",
     "title": "Paper Examples",
     "content": " ",
     "url": "/oopsla-2022-artifact/paper.html",
     "relUrl": "/paper.html"
-  },"15": {
+  },"16": {
     "doc": "Use and Mention",
     "title": "Distinguishing between Use and Mention",
     "content": "As observed by Colin Gordon (2020), one issue with capability-based effect systems is that they often fail to distinguish between the actual usage of a capability from when a capability is simply mentioned or passed through a section of code. Consider the following example, where we are given two capabilities, one for reading from and one for writing to a cell in memory: . interface Write[T] { def write(value: T): Unit def read(): T } interface Read[T] { def read(): T } def fork(pureFunction: () =&gt; Unit at {}): Unit { () } def mereMention[T] { x : Read[T] } { y: Write[T] } { fork(box { () =&gt; // here we mention `y`, but do not really \"use\" it. def z1(v: T) { y.write(v) } // same here. val z2 = box { () =&gt; y.read() }; () }); () } . In more traditional capability systems we would observe that the boxed blocked passed to fork captures the write capability y and hence could not be parallelized safely. However, as the only mentions of y are (1) behind a function z1, which is never called and (2) an inert boxed value z2, System C can safely conclude that we do not actually use the y capability and can safely call fork. This is indiciated by the type assigned to it, which is () =&gt; Unit at {} – a boxed thunk which requires no capability at usage (unboxing). This example might be perhaps a bit contrived, but System C also deals with similar problems that come up in real life. Consider an example due to Gordon; we have a UI, for which computation which modifies the UI must take place on dedicated UI threads. interface UI { def use(): Unit } interface Field { def setLabel(text: String): Unit } def application { ui : UI } { def field = new Field { def setLabel(text: String) { ui.use() } }; def forkThread(run: () =&gt; Unit at {}): Unit { return () } def forkUIThread(run: () =&gt; Unit at {ui}): Unit { return () } forkThread({() =&gt; val tmp = 42; // some expensive computation forkUIThread({() =&gt; field.setLabel(\"The result is \" ++ show(tmp)) }) }); () } . Here, we are given a global UI capability which must be passed through a background worker thread before it is used to report the final result on the UI thread. The intermediate thread must not use the UI capability. A more traditional capability system would conservatively approximate that the function passed to forkThread closes over field, which in turn closes over ui. In contrast, System C is able to accurately observe that it never uses it and hence can be safely run. ",
     "url": "/oopsla-2022-artifact/casestudies/passthrough.html#distinguishing-between-use-and-mention",
     "relUrl": "/casestudies/passthrough.html#distinguishing-between-use-and-mention"
-  },"16": {
+  },"17": {
     "doc": "Use and Mention",
     "title": "Use and Mention",
     "content": " ",
     "url": "/oopsla-2022-artifact/casestudies/passthrough.html",
     "relUrl": "/casestudies/passthrough.html"
-  },"17": {
+  },"18": {
     "doc": "Region-based Local State",
     "title": "Local Backtrackable State",
     "content": "Since System C features effect handlers and multiple resumptions, mutable state needs to be used with care. Take the following standard handler for ambiguity that runs explores all possible choices. interface Amb { def flip(): Boolean } def allChoices { prog : {Amb} =&gt; Unit }: Unit { try { prog {amb} } with amb: Amb { def flip() { resume(true); resume(false) } } } . If we declare the mutable variable outside of the handler for ambiguity, changes should be persisted across different explored alternatives: . def stateExample1() { var x = 1; allChoices { {amb: Amb} =&gt; if (amb.flip()) { x = 2 } else { () }; println(x) } } . stateExample1() . whereas, if we declare the mutable variable within the handler for ambiguity, it should perform backtracking: . def stateExample2() { allChoices { {amb: Amb} =&gt; var x = 1; if (amb.flip()) { x = 2 } else { () }; println(x) } } . stateExample2() . In order to achieve this correct backtracking behaviour, state is allocated on the stack, captured together with the continuation and restored on resumption. ",
     "url": "/oopsla-2022-artifact/casestudies/regions.html#local-backtrackable-state",
     "relUrl": "/casestudies/regions.html#local-backtrackable-state"
-  },"18": {
+  },"19": {
     "doc": "Region-based Local State",
     "title": "Regions",
     "content": "In fact, all local mutable variables are allocated in corresponding regions. The regions become visible, when trying to close over the references: . def stateExample1b() { var x = 1; val closure = box { () =&gt; x }; () } . The inferred capability set for closure is {stateExample1b}. This illustrates that x is allocated in a region associated with the current function definition. We could also make this more explicit as: . def stateExample1c() { region r { var x in r = 1; val closure = box { () =&gt; x }; () } } . Now, the inferred capability set at closure is {r}. Regions are second-class and can be passed to functions: . def newCounter {pool: Region} { var state in pool = 0; return box { () =&gt; println(state); state = state + 1 } } . Hovering over newCounter, we can see that the inferred return type is () =&gt; Unit at {pool}. That is, we return a function that closes over the region that we passed to it. Let us allocate a fresh region and use the above defined function: . def stateExample3() { region pool { val c1 = newCounter {pool}; val c2 = newCounter {pool}; c1(); c1(); c2(); c1(); c2() } } . stateExample3() . ",
     "url": "/oopsla-2022-artifact/casestudies/regions.html#regions",
     "relUrl": "/casestudies/regions.html#regions"
-  },"19": {
+  },"20": {
     "doc": "Region-based Local State",
     "title": "Backtrackable Regions",
     "content": "Of course the two concepts can be combined and regions show the correct backtracking behavior. def exampleProgram {amb:Amb} {reg:Region} { var x in reg = 1; if (amb.flip()) { x = 2 } else { () }; println(x) } def stateExample4() { region pool { allChoices { {amb: Amb} =&gt; exampleProgram {amb} {pool} } } } . stateExample4() . and nested the other way around: . def stateExample5() { allChoices { {amb: Amb} =&gt; region pool { exampleProgram {amb} {pool} } } } . stateExample5() . ",
     "url": "/oopsla-2022-artifact/casestudies/regions.html#backtrackable-regions",
     "relUrl": "/casestudies/regions.html#backtrackable-regions"
-  },"20": {
+  },"21": {
     "doc": "Region-based Local State",
     "title": "Region-based Local State",
     "content": " ",
     "url": "/oopsla-2022-artifact/casestudies/regions.html",
     "relUrl": "/casestudies/regions.html"
-  },"21": {
+  },"22": {
     "doc": "Scheduling (with continuations and mutable cells)",
     "title": "Scheduling Tasks and Continuations",
     "content": "Writing a safe, co-operatively threaded scheduler in an effect safe manner can be hard, as it requires treating continuations as first-class values. Continuations might indirectly close over other capabilities and we want to prevent that capabilities leave their defining scope indirectly through continuations. System C can safely express this though – the following is a skeleton of a scheduler. import immutable/list // we first draft a naive implementation of a queue def emptyQueue[T]() { Nil[T]() } def enqueue[T](q: List[T], el: T): List[T] { Cons(el, q) } def nonEmpty[T](q: List[T]) { size(q) &gt; 0 } def dequeue[T](q: List[T]) { reverse(q) match { case Nil() =&gt; panic[(List[T], T)](\"Empty queue\") case Cons(hd, tl) =&gt; (reverse(tl), hd) }} // now we define the interface of our scheduler interface Proc { def fork(): Boolean } // and implement the scheduler itself def schedule { p: { Proc } =&gt; Unit }: Unit { // \"processes\" spawned by fork are stored in this local mutable cell var q: List[() =&gt; Unit at {p, schedule}] = emptyQueue(); // we run the program with our own scheduler try { p {proc} } with proc: Proc { // forking enqueues the continuation twice def fork() { q = enqueue(q, box { () =&gt; resume(true) }); q = enqueue(q, box { () =&gt; resume(false) }) } }; // finally, while there are continuations, we dequeue and force them while (nonEmpty(q)) { dequeue(q) match { case (rest, k) =&gt; // this \"type-ascription\" is necessary due to our preliminary // implementation of local type inference for matches val k2: () =&gt; Unit at {p, schedule} = k; q = rest; // force the continuation (unbox k2)() } } } // Example using the scheduler interface Exc { def abort(): Unit } def example() { try { schedule { {p:Proc} =&gt; if (p.fork()) { println(\"(1)\"); if (p.fork()) { println(\"(2)\"); exc.abort() } else { println(\"(3)\") } } else { println(\"(4)\") } } } with exc: Exc { def abort() { println(\"aborted\") }} } . Note how the use of local mutable state is safely encapsulated in function schedule, which does not close over anything. We can run the above example, which forks two threads and aborts with an outer capability: . example() . Here, schedule takes in a program which expects a given Proc capability. As this program is a second-class argument, it can use additional capabilities that are not reflected in its type (but are on its binder) due to System C’s contextual effect polymorphism. In particular, these capabilities may be captured on the continuation term resume. However, as those capabilities are second class, they cannot leak through the resumption and the entire program is safe – in particular, the resumption cannot leak even though it is stored in the mutable cell q, as q is second-class itself and valid only within the context of the scheduler region. In the example above, calling exc.abort() not only terminates one “thread”, but the scheduler as a whole. This is the expected behavior: The handler for exceptions is located outside of the scheduler and thus the continuation captured and discarded by abort also includes the scheduler itself. ",
     "url": "/oopsla-2022-artifact/casestudies/scheduler.html#scheduling-tasks-and-continuations",
     "relUrl": "/casestudies/scheduler.html#scheduling-tasks-and-continuations"
-  },"22": {
+  },"23": {
     "doc": "Scheduling (with continuations and mutable cells)",
     "title": "Scheduling (with continuations and mutable cells)",
     "content": " ",
     "url": "/oopsla-2022-artifact/casestudies/scheduler.html",
     "relUrl": "/casestudies/scheduler.html"
-  },"23": {
+  },"24": {
     "doc": "Section 1",
     "title": "Section 1",
     "content": "Section 1 – Introduction . interface Exc { def throw(msg: String): Unit } type File { FileHandle(id: Int) } def eachLine(file: File) { f: String =&gt; Unit }: Unit { () } def open(path: String) {exc:Exc}: File { FileHandle(0) } def process(path: String) {exc1: Exc}: Unit { def abort(): Unit { exc1.throw(\"processing aborted\") } try { eachLine(open(path){exc2}) { (line: String) =&gt; abort() } } with exc2: Exc { def throw(msg: String) { () }} } . ",
     "url": "/oopsla-2022-artifact/paper/section1.html",
     "relUrl": "/paper/section1.html"
-  },"24": {
+  },"25": {
     "doc": "Section 2",
     "title": "Section 2 – Global Capabilities",
     "content": "interface Exc { def throw(msg: String): Unit } interface Console { def println[A](a: A): Unit } interface Time { def now(): Int } // console and time are \"global\" -- that is, module wide capabilities def globalCapabilities { console: Console } { time: Time }: Unit { def sayTime() { console.println(\"The current time is: \" ++ show(time.now())) } // other blocks closing only over console or time def sayHello() { console.println(\"Hello!\") } def currentTime() { time.now() } def repeat(n: Int) { f: () =&gt; Unit }: Unit { if (n == 0) { () } else { f(); repeat(n - 1) {f} } } repeat(3) { () =&gt; console.println(\"Hello!\") }; repeat(3) { () =&gt; sayTime() }; def parallelWrong { f: () =&gt; Unit } { g: () =&gt; Unit }: Unit { () } // this wrong definition admits the following call: parallelWrong { () =&gt; console.println(\"Hello, \") } { () =&gt; console.println(\"world!\") }; // \"correct\" specification def parallel(f: () =&gt; Unit at {}, g: () =&gt; Unit at {}): Unit { () } // try commenting out the below call to see type errors // parallel( // box { () =&gt; console.println(\"Hello, \") }, // box { () =&gt; console.println(\"world!\") }); // same here, this is illtyped: // val firstClassWrong = box {} { () =&gt; console.println(\"Hello, \") }; val firstClassInfer = box { () =&gt; sayTime() }; def sayTimeThrice(): Unit { repeat(3) { () =&gt; sayTime() } } // 2.1.4 Capability Polymorphism def repeater { f: () =&gt; Unit }: (Int) =&gt; Unit at { f } { return box { (n: Int) =&gt; repeat(n) {f} } } val repeatTime = repeater { sayTime }; // some more variants illustrating closure and capability sets val b = sayTime; val n = repeater { () =&gt; sayTime() }; val n1 = repeater { sayTime }; val b2 : () =&gt; Unit at {console, time} = box { () =&gt; (unbox n)(3) }; val b3 = n(3); val b4 = { () =&gt; n(3) }; val r = repeater { b }; () } . Support Code for Running Examples . def run[T] { prog : {Console} {Time} =&gt; T }: T { try { prog {console} {time} } with console: Console { def println[A](msg: A) { println(msg); resume(()) } } with time: Time { def now() { resume(timestamp()) } } } . We can run the above examples . run {globalCapabilities} . ",
     "url": "/oopsla-2022-artifact/paper/section2.html#section-2--global-capabilities",
     "relUrl": "/paper/section2.html#section-2--global-capabilities"
-  },"25": {
+  },"26": {
     "doc": "Section 2",
     "title": "Section 2 – Local Capabilities and Effect Handlers",
     "content": "interface Stopwatch { def elapsed(): Int } def localCapabilities { console: Console } { time: Time }: Unit { try { console.println(\"hello\"); exc.throw(\"world\"); console.println(\"done\") } with exc: Exc { def throw(msg: String) { console.println(msg ++ \"!\") } }; // uncomment the following example to see a type error: // try { return (box exc) } with exc: Exc { def throw(msg: String) { () } }; () } . Again, we can run the above examples: . run {localCapabilities} . ",
     "url": "/oopsla-2022-artifact/paper/section2.html#section-2--local-capabilities-and-effect-handlers",
     "relUrl": "/paper/section2.html#section-2--local-capabilities-and-effect-handlers"
-  },"26": {
+  },"27": {
     "doc": "Section 2",
     "title": "Example 2.1",
     "content": "interface FileHandle { def readByte(pos: Int): Int } def withFile[T](path: String) { prog: {FileHandle} =&gt; T }: T { try { prog {fh} } with fh: FileHandle { def readByte(pos: Int) { resume(pos + 42) } } } def fileExample() { withFile(\"A.txt\") { {fileA: FileHandle} =&gt; val offsetReader : Int =&gt; Int at {fileA} = withFile(\"B.txt\") { {fileB: FileHandle} =&gt; val offset = fileB.readByte(0); return box { (pos: Int) =&gt; fileA.readByte(pos + offset) } }; (unbox offsetReader)(10) } } . Running the example will print 92 (0 + 42 + 42 + 10). fileExample() . ",
     "url": "/oopsla-2022-artifact/paper/section2.html#example-21",
     "relUrl": "/paper/section2.html#example-21"
-  },"27": {
+  },"28": {
     "doc": "Section 2",
     "title": "Effect Handlers",
     "content": "def effectHandlers { console: Console } { time: Time }: Unit { val before = time.now(); try { def report(t: Int) { console.println(show(t) ++ \"ms\") } report(watch.elapsed()); report(watch.elapsed()); report(watch.elapsed()) } with watch: Stopwatch { def elapsed() { // we can observe the capture of `resume` by boxing it: val k = box resume; resume(time.now() - before) } } } . run {effectHandlers} . ",
     "url": "/oopsla-2022-artifact/paper/section2.html#effect-handlers",
     "relUrl": "/paper/section2.html#effect-handlers"
-  },"28": {
+  },"29": {
     "doc": "Section 2",
     "title": "Section 2",
     "content": " ",
     "url": "/oopsla-2022-artifact/paper/section2.html",
     "relUrl": "/paper/section2.html"
-  },"29": {
+  },"30": {
     "doc": "Section 4",
     "title": "Section 4.2 – Mutable State",
     "content": "interface State[S] { def get(): S def set(v: S): Unit } def handleState[S, R](init: S) { prog: {State[S]} =&gt; R }: R { val stateFun: S =&gt; R at {prog} = try { val res = prog { state }; return box {prog} { (s: S) =&gt; res } } with state: State[S] { def get() { box { (s: S) =&gt; (unbox resume(s))(s) } } def set(v: S) { box { (_: S) =&gt; (unbox resume(()))(v) } } }; return (unbox stateFun)(init) } . handleState(0) { {s: State[Int]} =&gt; println(s.get()); s.set(2); println(s.get()) } . For more details on regions, also see the corresponding regions case study. def regions1() { region r { var x in r = 42; val t = x; x = (t + 1) } } . def regions2() { region r { var x in r = 42; val f: () =&gt; Int at {r} = box { () =&gt; x }; (unbox f)() } } . regions2() . ",
     "url": "/oopsla-2022-artifact/paper/section4.html#section-42--mutable-state",
     "relUrl": "/paper/section4.html#section-42--mutable-state"
-  },"30": {
+  },"31": {
     "doc": "Section 4",
     "title": "Example 4.1",
     "content": "See the scheduler case study . ",
     "url": "/oopsla-2022-artifact/paper/section4.html#example-41",
     "relUrl": "/paper/section4.html#example-41"
-  },"31": {
+  },"32": {
     "doc": "Section 4",
     "title": "Section 4.4 – Effect Handlers and Object Orientation",
     "content": "Similar examples can be found in the regions case study. Support code to run the example from Section 2. interface Console { def println[A](a: A): Unit } def run[T] { prog : {Console} =&gt; T }: T { try { prog {console} } with console: Console { def println[A](msg: A) { println(msg); resume(()) } } } . interface Counter { def inc(): Unit def get(): Int } def counterExample { console: Console }: Unit { def makeCounter { pool: Region }: Counter at {pool, console} { var count in pool = 0; def c = new Counter { def inc() { console.println(count); count = count + 1 } def get() { count } }; return box c } region r { val c1 = makeCounter {r}; val c2 = makeCounter {r}; c1.inc(); c1.inc(); c2.inc(); console.println(c1.get()); console.println(c2.get()) } } . run {counterExample} . ",
     "url": "/oopsla-2022-artifact/paper/section4.html#section-44--effect-handlers-and-object-orientation",
     "relUrl": "/paper/section4.html#section-44--effect-handlers-and-object-orientation"
-  },"32": {
+  },"33": {
     "doc": "Section 4",
     "title": "Section 4",
     "content": " ",
