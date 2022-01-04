@@ -15,5 +15,7 @@ jobs:
         coq_version: "8.10"
         script: |
           startGroup "Build project"
+            cd coq/
+            coq_makefile -f _CoqProject -o Makefile
             make -j2
           endGroup
