@@ -1,4 +1,4 @@
-name: Scala CI
+name: Building and Deploying Demo Website
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
 
     - name: Build page
       working-directory: demo-sources
-      run: bundle exec jekyll build
+      run: bundle exec jekyll build --baseurl /oopsla-2022-artifact
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.6
