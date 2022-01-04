@@ -9,6 +9,8 @@ Require Export Coq.Program.Equality.
 
     #<a href="##syntax">Syntax</a>#
     - #<a href="##syntax-types">Syntax of Types</a>#
+    - #<a href="##syntax-terms">Syntax of Terms</a>#
+
 *)
 
 (** * #<a name="syntax"></a>#  Syntax
@@ -26,12 +28,13 @@ Require Export Coq.Program.Equality.
 
 (** *** Value Types *)
 Inductive vtyp : Type :=
-  | typ_base : vtyp                 (* Base types *)
-  | typ_capt : btyp -> cap -> vtyp  (* Boxed block types *)
-  | typ_fvar : atom -> vtyp         (* Free value-type variables *)
-  | typ_bvar : nat -> vtyp          (* Bound value-type variables *)
+  | typ_base : vtyp                 (* base types *)
+  | typ_capt : btyp -> cap -> vtyp  (* boxed block types *)
+  | typ_fvar : atom -> vtyp         (* (free) value-type variables *)
+  | typ_bvar : nat -> vtyp          (* (bound) value-type variables *)
 
-(** _Differences to the paper_: In the mechanization, we also additionally support
+(** **** Differences to the paper
+    In the mechanization, we also additionally support
     value-type polymorphism. Hence, the constructors for type variables ([typ_bvar] and [typ_fvar]),
     which are not present in the paper. Also, we only include one base type [typ_base] instead
     of separate base types (as in the paper). *)
@@ -44,7 +47,8 @@ with btyp : Type :=
   | typ_exc  : vtyp -> vtyp -> btyp    (* capability types *)
 .
 
-(** _Differences to the paper_: In the paper, we formalize multi-arity function types.
+(** **** Differences to the paper
+    In the paper, we formalize multi-arity function types.
     Since this is akward to work with in Coq, here, we only mechanize single arity
     function types.
 
@@ -60,48 +64,79 @@ with btyp : Type :=
     as a function type [T1 -> T2] as for instance can be seen in rule TRY in Figure 2. *)
 
 
-(** ** Syntax of Terms *)
+(** ** #<a name="syntax-terms"></a># Syntax of Terms
+    In the following, we define the syntax of expressions, statements, and blocks. *)
 
-(** * Expressions (first-class), Statements, and Blocks (second-class) *)
+(** *** Expressions *)
 Inductive exp : Type :=
-  | exp_bvar : nat -> exp
-  | exp_fvar : atom -> exp
-  | exp_const : exp
-  | exp_box : cap -> blk -> exp
+  | exp_bvar : nat -> exp         (* (bound) expression variables *)
+  | exp_fvar : atom -> exp        (* (free) expression variables *)
+  | exp_const : exp               (* primitives *)
+  | exp_box : cap -> blk -> exp   (* box introduction *)
 
+(** **** Differences to the paper
+    Besides only having one primitive value, expressions are precisely as in the paper. *)
+
+(** *** Statements *)
 with stm : Type :=
-  | stm_ret : exp -> stm
-  | stm_val : vtyp -> stm -> stm -> stm
-  | stm_def : cap -> btyp -> blk -> stm -> stm
-  | stm_vapp : blk -> exp -> stm
-  | stm_bapp : blk -> cap -> blk -> stm
+  | stm_ret : exp -> stm                                (* returning *)
+  | stm_val : vtyp -> stm -> stm -> stm                 (* sequencing *)
+  | stm_def : cap -> btyp -> blk -> stm -> stm          (* block definition *)
+  | stm_vapp : blk -> exp -> stm                        (* block application (to value arguments) *)
+  | stm_bapp : blk -> cap -> blk -> stm                 (* block application (to block arguments) *)
+  | stm_try : cap -> vtyp -> vtyp -> stm -> stm -> stm  (* handlers *)
+  | stm_throw : blk -> exp -> stm                       (* performing an effect *)
+  | stm_reset : label -> cap -> stm -> stm -> stm       (* runtime delimiter *)
 
-  (* Exception handlers
-     try C T { f : Exc T1 T => s } with { k: (T => R @ C) => s }
+(** **** Differences to the paper
+    Similar to the syntax of types, in the mechanization we have two different
+    forms of application (instead of multi-arity). [stm_vapp] takes the block to call
+    and an expression (value argument), while [stm_bapp] takes the block to call,
+    a capture annotation (to avoid implementing capture inference in the mechanization),
+    and a block argument.
+
+    Similar to block application for blocks the handler construct [stm_try C T1 T2 s1 s2] models statements
+    of the form
+    <<
+      try { f : Exc T1 T2 => s1 } with { (x: T1, k: (T2 => R @ C)) => s2 }
+    >>
+
+    That is, the capture annotion [C] corresponds to the capture set on the continuation [k].
+    This can also be seen in Figure 2, rule TRY, but without an explicit annotation on the [stm_try].
+    Types [T1] and [T2] are also explicitly annotated, which is not the case in the paper.
+
+
+    Like in Figure 3 of the paper, we also include the syntax for runtime delimiters [stm_reset C T1 T2] that model
+    statements of the form
+    <<
+      #_l { s1 } with { (x: T1, k: (T2 => R @ C)) => s2 }
+    >>
   *)
-  | stm_try : cap -> vtyp -> vtyp -> stm -> stm -> stm
-  | stm_throw : blk -> exp -> stm
 
-  (* Delimiters
-    reset_l C T { s } with { k: (T => R @ C) => s }
-  *)
-  | stm_reset : label -> cap -> stm -> stm -> stm
-
+(** *** Blocks *)
 with blk : Type :=
-  | blk_bvar : nat -> blk
-  | blk_fvar : atom -> blk
-  | blk_vabs : vtyp -> stm -> blk
-  | blk_babs : btyp -> stm -> blk
-  | blk_unbox : exp -> blk
-
-  (* abs / t-app *)
-  | blk_tabs : blk -> blk
-  | blk_tapp : blk -> vtyp -> blk
-
-  (* a capability
-    handler l : T *)
-  | blk_handler : label -> blk
+  | blk_bvar : nat -> blk           (* (bound) block variables *)
+  | blk_fvar : atom -> blk          (* (free) block variables *)
+  | blk_vabs : vtyp -> stm -> blk   (* block implementation (with value argument) *)
+  | blk_babs : btyp -> stm -> blk   (* block implementation (with block argument) *)
+  | blk_unbox : exp -> blk          (* box elimination *)
+  | blk_tabs : blk -> blk           (* value type abstraction *)
+  | blk_tapp : blk -> vtyp -> blk   (* value type application *)
+  | blk_handler : label -> blk      (* runtime capability *)
 .
+(** **** Differences to the paper
+    Again, as for statements and block types, we have two different forms
+    of abstraction. [blk_vabs] to abstract over values and [blk_babs] to abstract
+    over (tracked) blocks.
+
+    In addition to the paper, we also include term-level syntax to abstract over
+    value types [blk_tabs] and instantiate polymorphic blocks with value types [blk_tapp].
+
+    The constructor [blk_handler] corresponds to the <<cap_l>> form in the paper and
+    represents runtime capabilities.
+  *)
+
+(* begin hide *)
 
 (** We declare the constructors for indices and variables to be
     coercions.  For example, if Coq sees a [nat] where it expects an
@@ -117,8 +152,8 @@ Coercion exp_fvar : atom >-> exp.
 Coercion typ_bvar : nat >-> vtyp.
 Coercion typ_fvar : atom >-> vtyp.
 
-(* ********************************************************************** *)
-(** * #<a name="open"></a># Opening terms *)
+
+(** * Opening terms *)
 
 (*  Opening expressions in expressions  *)
 Fixpoint open_ee_rec (k : nat) (f : exp) (e : exp)  {struct e} : exp :=
@@ -420,8 +455,10 @@ with block : blk -> Prop :=
       block (blk_handler l)
 .
 
+(* end hide *)
 
-(* ********************************************************************** *)
+
+
 (** * #<a name="env"></a># Environments *)
 
 (** We use a single environment for value, type, and region abstraction. We
@@ -458,6 +495,8 @@ Notation env := (list (atom * binding)).
 Notation sig := (list (label * signature)).
 
 Notation empty := (@nil (atom * binding)).
+
+(* begin hide *)
 
 (** We also define a notation that makes it convenient to write one
     element lists.  This notation is useful because of our convention
@@ -732,8 +771,8 @@ Inductive wf_sig : sig -> Prop :=
       ~ LabelSet.F.In x (Signatures.dom E) ->
       wf_sig ([(x, bind_sig T1 T)] ++ E).
 
-(* ********************************************************************** *)
-(** * Restricting Environments  *)
+
+(* end hide *)
 
 (* ********************************************************************** *)
 (** * #<a name="typing_doc"></a># Typing *)

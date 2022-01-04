@@ -40,7 +40,7 @@ div + br {
 div:empty{ display: none;}
 
 div.paragraph {
-  margin-top: 1em;
+  margin-top: 0.5em;
 }
 
 #main h1 {
@@ -56,12 +56,16 @@ div.paragraph {
 }
 
 #main h3 {
+    margin-top: 1.5em;
 	font-size: 1em;
     font-weight: bold;
+    margin-bottom: 0.5em;
 }
 
 #main h4, #main h5, #main h6 {
 	font-size: 1em;
+    font-style: italic;
+    margin-bottom: 0.5em;
 }
 
 #toc h2 {
