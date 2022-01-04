@@ -8,9 +8,21 @@ nav_order: 0
 ---
 
 
-# System C
+# Effects, Capabilities, and Boxes
 
-Welcome to System C!  In this interactive demo we will take you through a
+Welcome to our artifact website!
+
+Our artifact consists of the following components:
+
+- [**Coq Proofs**](proofs/). We documented our Coq proofs, highlighting the most important aspects and contrasting the definitions with the paper.
+  We recommend you look at the [definitions](./proofs/Top.SystemC.Definitions.html) as well as at the [theorems](./proofs/Top.SystemC.Soundness.html).
+
+- [**Interactive Demo**](intro.html). This website contains additional [casestudies](casestudies.html), [examples from the paper](paper.html),
+  and additional explanation on [capabilities](capability) and [boxing](boxing). All examples can be typechecked and edited in the browser!
+
+
+## Interactive Demo
+In this interactive demo we will take you through a
 brief introduction to System C and a quick tour of its features.
 
 > _You can find all examples from the paper on [this page](paper.html)._
