@@ -25,7 +25,7 @@ def handleState[S, R](init: S) { prog: {State[S]} => R }: R {
 handleState(0) { {s: State[Int]} => println(s.get()); s.set(2); println(s.get()) }
 ```
 
-For more details on regions, also see the corresponding [regions case study](regions).
+For more details on regions, also see the corresponding [regions case study](../casestudies/regions.html).
 ```effekt
 def regions1() {
   region r {
