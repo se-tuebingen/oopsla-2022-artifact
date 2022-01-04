@@ -18,9 +18,10 @@
     <span class="button" id="toggle-proofs"></span>
 
     <span class="right">
-      <a href="../">Artifact Overview</a>
-      <a href="./indexpage.html"> Index of Coq Modules</a>
       <a href="./toc.html"> Table of Contents </a>
+      <a href="../">Artifact Overview</a>
+      <a href="./Top.SystemC.Soundness.html"> Theorems </a>
+      <a href="./Top.SystemC.Definitions.html"> Definitions </a>
     </span>
 </div>
     <div id="content" tabindex="-1" onblur="document.getElementById('content').focus()">
@@ -40,7 +41,7 @@
 
     The proof of soundness is split the following aspects:
 <ul class="doclist">
-<li> <i>Substitution._ See file <span class="inlinecode"><span class="id" title="library">SystemC.Substitution</span></span>.
+<li> <i>Substitution</i>. See file <span class="inlinecode"><span class="id" title="library">SystemC.Substitution</span></span>.
       For instance <span class="inlinecode"><a class="idref" href="Top.SystemC.Substitution.html#etyping_through_subst_ee"><span class="id" title="lemma">etyping_through_subst_ee</span></a></span> shows that substituting an expression in
       an expression preserves expression-typing, and <span class="inlinecode"><a class="idref" href="Top.SystemC.Substitution.html#styping_through_subst_bs"><span class="id" title="lemma">styping_through_subst_bs</span></a></span> shows that
       substituting a block into a statement preserves statement-typing).
@@ -49,11 +50,11 @@
 <li> <i>Plugging</i>. Lemma 3.4 in the paper is proven (in a variation) by <span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#unwind_step"><span class="id" title="lemma">unwind_step</span></a></span>.
 
 </li>
-<li> <i>Preservation._ We show type preservation of reducing statements (<span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#preservation_stmt"><span class="id" title="lemma">preservation_stmt</span></a></span>)
+<li> <i>Preservation</i>. We show type preservation of reducing statements (<span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#preservation_stmt"><span class="id" title="lemma">preservation_stmt</span></a></span>)
       and machine states (<span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#preservation_step"><span class="id" title="lemma">preservation_step</span></a></span>).
 
 </li>
-<li> <i>Progress._ We show type progress for statements (<span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#progress_stmt"><span class="id" title="lemma">progress_stmt</span></a></span>)
+<li> <i>Progress</i>. We show type progress for statements (<span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#progress_stmt"><span class="id" title="lemma">progress_stmt</span></a></span>)
       and machine states (<span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#progress_step"><span class="id" title="lemma">progress_step</span></a></span>).
 
 </li>

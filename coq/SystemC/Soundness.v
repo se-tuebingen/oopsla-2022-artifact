@@ -6,14 +6,14 @@ Require Import Coq.Program.Tactics.
 (** * Soundness
 
     The proof of soundness is split the following aspects:
-    - _Substitution._ See file [SystemC.Substitution].
+    - _Substitution_. See file [SystemC.Substitution].
       For instance [etyping_through_subst_ee] shows that substituting an expression in
       an expression preserves expression-typing, and [styping_through_subst_bs] shows that
       substituting a block into a statement preserves statement-typing).
     - _Plugging_. Lemma 3.4 in the paper is proven (in a variation) by [unwind_step].
-    - _Preservation._ We show type preservation of reducing statements ([preservation_stmt])
+    - _Preservation_. We show type preservation of reducing statements ([preservation_stmt])
       and machine states ([preservation_step]).
-    - _Progress._ We show type progress for statements ([progress_stmt])
+    - _Progress_. We show type progress for statements ([progress_stmt])
       and machine states ([progress_step]).
 *)
 
