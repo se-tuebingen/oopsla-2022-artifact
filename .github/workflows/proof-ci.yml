@@ -1,0 +1,23 @@
+name: Compiling the proofs
+
+on:
+  release:
+    types: [published, created, edited]
+
+jobs:
+  build:
+
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/demo-sources/Gemfile
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: coq-community/docker-coq-action@v1
+      with:
+        coq_version: 8.10.0
+        script: |
+          startGroup "Build project"
+            make -j2
+          endGroup
