@@ -1,7 +1,7 @@
 # System C Proofs
 
 This project contains the Coq proofs for System C.
-We developed the proofs with Coq version 8.10.0.
+We developed the proofs with Coq version 8.10.2.
 
 
 A makefile is attached, but to recreate it in case of problems, run the following command:
