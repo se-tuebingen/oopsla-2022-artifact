@@ -1,36 +1,71 @@
-(**
-  Definitions for System C
-*)
-
 Require Export Metatheory.
 Require Export CaptureSets.
 Require Import Signatures.
 Require Export Coq.Program.Equality.
 
+(** This file contains the definitions for System C.
 
-(** * Value and Block (Second-Class Types) *)
+    _Table of Contents_:
+
+    #<a href="##syntax">Syntax</a>#
+    - #<a href="##syntax-types">Syntax of Types</a>#
+*)
+
+(** * #<a name="syntax"></a>#  Syntax
+
+    The definitions here reflect the definitions in Figure 1 from the paper.
+
+    Please note that we base our proofs on a
+    #<a href="https://www.cis.upenn.edu/~plclub/popl08-tutorial/code/coqdoc/Fsub_Definitions.html">locally nameless representation</a>#.
+
+    In consequence, there are always two types of variables, free variables
+    (such as [typ_fvar]) and locally bound variables (such as [typ_bvar]). *)
+
+
+(** ** #<a name="syntax-types"></a># Syntax of Types *)
+
+(** *** Value Types *)
 Inductive vtyp : Type :=
-  | typ_base : vtyp
-  | typ_capt : btyp -> cap -> vtyp
-  | typ_fvar : atom -> vtyp
-  | typ_bvar : nat -> vtyp
-  
-with btyp : Type := 
-  (* function types with value arguments 
-     e.g. Int -> Int *)
-  | typ_vfun : vtyp -> vtyp -> btyp
-  (* function types with block arguments that are always tracked 
-     e.g. (f : Int -> Int) -> Int *)
-  | typ_bfun : btyp -> vtyp -> btyp
-  (* type abstractions *)
-  | typ_tfun : btyp -> btyp
-  | typ_exc : vtyp -> vtyp -> btyp
+  | typ_base : vtyp                 (* Base types *)
+  | typ_capt : btyp -> cap -> vtyp  (* Boxed block types *)
+  | typ_fvar : atom -> vtyp         (* Free value-type variables *)
+  | typ_bvar : nat -> vtyp          (* Bound value-type variables *)
+
+(** _Differences to the paper_: In the mechanization, we also additionally support
+    value-type polymorphism. Hence, the constructors for type variables ([typ_bvar] and [typ_fvar]),
+    which are not present in the paper. Also, we only include one base type [typ_base] instead
+    of separate base types (as in the paper). *)
+
+(** *** Block Types *)
+with btyp : Type :=
+  | typ_vfun : vtyp -> vtyp -> btyp    (* function types with value arguments *)
+  | typ_bfun : btyp -> vtyp -> btyp    (* function types with tracked block arguments *)
+  | typ_tfun : btyp -> btyp            (* type abstractions *)
+  | typ_exc  : vtyp -> vtyp -> btyp    (* capability types *)
 .
 
+(** _Differences to the paper_: In the paper, we formalize multi-arity function types.
+    Since this is akward to work with in Coq, here, we only mechanize single arity
+    function types.
+
+    We include two type constructors, [typ_vfun] for function types with value arguments
+    (e.g. [Int -> Int]), and [typ_bfun] for function types with block arguments that
+    are always tracked (e.g. [(f : Int -> Int) -> Int]).
+
+    Since in the calculus function arguments are independent of each other, we do not
+    expect any theoretical complications in the setting of a full multi-arity representation.
+
+    Type constructor [typ_exc T1 T2] is a block type that represents capabilities with an effect
+    signature from [T1] to [T2]. To simplify the presentation, in the paper, this is represented
+    as a function type [T1 -> T2] as for instance can be seen in rule TRY in Figure 2. *)
+
+
+(** ** Syntax of Terms *)
+
 (** * Expressions (first-class), Statements, and Blocks (second-class) *)
-Inductive exp : Type :=  
+Inductive exp : Type :=
   | exp_bvar : nat -> exp
-  | exp_fvar : atom -> exp  
+  | exp_fvar : atom -> exp
   | exp_const : exp
   | exp_box : cap -> blk -> exp
 
@@ -41,7 +76,7 @@ with stm : Type :=
   | stm_vapp : blk -> exp -> stm
   | stm_bapp : blk -> cap -> blk -> stm
 
-  (* Exception handlers 
+  (* Exception handlers
      try C T { f : Exc T1 T => s } with { k: (T => R @ C) => s }
   *)
   | stm_try : cap -> vtyp -> vtyp -> stm -> stm -> stm
@@ -63,7 +98,7 @@ with blk : Type :=
   | blk_tabs : blk -> blk
   | blk_tapp : blk -> vtyp -> blk
 
-  (* a capability 
+  (* a capability
     handler l : T *)
   | blk_handler : label -> blk
 .
@@ -87,11 +122,11 @@ Coercion typ_fvar : atom >-> vtyp.
 
 (*  Opening expressions in expressions  *)
 Fixpoint open_ee_rec (k : nat) (f : exp) (e : exp)  {struct e} : exp :=
-  match e with  
+  match e with
   | exp_bvar i => if k === i then f else (exp_bvar i)
   | exp_fvar x => exp_fvar x
   | exp_const => exp_const
-  | exp_box C b => exp_box C (open_eb_rec k f b) 
+  | exp_box C b => exp_box C (open_eb_rec k f b)
   end
 with open_es_rec (k : nat) (f : exp) (s : stm) {struct s} : stm :=
   match s with
@@ -120,7 +155,7 @@ end.
 Fixpoint open_cvt_rec (k : nat) (C : cap) (T : vtyp)  {struct T} : vtyp :=
   match T with
   | typ_base => typ_base
-  | typ_capt S1 C1 => typ_capt (open_cbt_rec k C S1) (open_cset k C C1) 
+  | typ_capt S1 C1 => typ_capt (open_cbt_rec k C S1) (open_cset k C C1)
   | typ_fvar a => typ_fvar a
   | typ_bvar n => typ_bvar n
   end
@@ -139,7 +174,7 @@ Fixpoint open_be_rec (k : nat) (f : blk) (e : exp) {struct e} : exp :=
   | exp_bvar i => exp_bvar i
   | exp_fvar x => exp_fvar x
   | exp_const => exp_const
-  | exp_box C1 b => exp_box C1 (open_bb_rec k f b) 
+  | exp_box C1 b => exp_box C1 (open_bb_rec k f b)
   end
 with open_bs_rec (k : nat) (f : blk) (s : stm) {struct s} : stm :=
   match s with
@@ -170,7 +205,7 @@ Fixpoint open_ce_rec (k : nat) (f : blk) (C : cap) (e : exp) {struct e} : exp :=
   | exp_bvar i => exp_bvar i
   | exp_fvar x => exp_fvar x
   | exp_const => exp_const
-  | exp_box C1 b => exp_box (open_cset k C C1) (open_cb_rec k f C b) 
+  | exp_box C1 b => exp_box (open_cset k C C1) (open_cb_rec k f C b)
   end
 
 with open_cs_rec (k : nat) (f : blk) (C : cap) (s : stm) {struct s} : stm :=
@@ -219,7 +254,7 @@ Fixpoint open_te_rec (k : nat) (U : vtyp) (e : exp) {struct e} : exp :=
   | exp_bvar i => exp_bvar i
   | exp_fvar x => exp_fvar x
   | exp_const => exp_const
-  | exp_box C1 b => exp_box C1 (open_tb_rec k U b) 
+  | exp_box C1 b => exp_box C1 (open_tb_rec k U b)
   end
 with open_ts_rec (k : nat) (U : vtyp) (s : stm) {struct s} : stm :=
   match s with
@@ -278,14 +313,14 @@ Definition open_te e U := open_te_rec 0 U e.
 Inductive vtype : vtyp -> Prop :=
   | type_base :
       vtype typ_base
-  | type_capt : forall S1 C1, 
+  | type_capt : forall S1 C1,
       btype S1 ->
       capt C1 ->
       vtype (typ_capt S1 C1)
   | type_fvar : forall a,
       vtype (typ_fvar a)
 with btype : btyp -> Prop :=
-  | type_vfun : forall T1 T2, 
+  | type_vfun : forall T1 T2,
     vtype T1 ->
     vtype T2 ->
     btype (typ_vfun T1 T2)
@@ -305,7 +340,7 @@ with btype : btyp -> Prop :=
 Inductive expr : exp -> Prop :=
   | expr_var : forall x,
       expr (exp_fvar x)
-  | expr_const : 
+  | expr_const :
       expr exp_const
   | expr_box : forall C b,
       capt C ->
@@ -316,7 +351,7 @@ with stmt : stm -> Prop :=
   | stmt_ret : forall e,
       expr e ->
       stmt (stm_ret e)
-  | stmt_val : forall L T b s,  
+  | stmt_val : forall L T b s,
       vtype T ->
       stmt b ->
       (forall X : atom, X `notin` L -> stmt (open_es s X)) ->
@@ -325,15 +360,15 @@ with stmt : stm -> Prop :=
       capt C ->
       btype S1 ->
       block b ->
-      (* here we really only want to open with a block, but not the capture set, since it 
+      (* here we really only want to open with a block, but not the capture set, since it
          does not introduce a tracked binding! *)
       (forall X : atom, X `notin` L -> stmt (open_bs s X)) ->
       stmt (stm_def C S1 b s)
-  | stmt_vapp : forall b e,  
+  | stmt_vapp : forall b e,
       block b ->
       expr e ->
       stmt (stm_vapp b e)
-  | stmt_bapp : forall b1 C b2,  
+  | stmt_bapp : forall b1 C b2,
       block b1 ->
       capt C ->
       block b2 ->
@@ -343,14 +378,14 @@ with stmt : stm -> Prop :=
       vtype T1 ->
       vtype T ->
       (forall X : atom, X `notin` L -> stmt (open_cs b X (cset_fvar X))) ->
-      (forall v : atom, v `notin` L -> 
-        (forall k : atom, k `notin` (L `union` singleton v) -> 
+      (forall v : atom, v `notin` L ->
+        (forall k : atom, k `notin` (L `union` singleton v) ->
         stmt (open_bs (open_es h v) k))) ->
       stmt (stm_try C T1 T b h)
   | stmt_reset : forall L l C b h,
       capt C ->
       stmt b ->
-      (forall v : atom, v `notin` L -> 
+      (forall v : atom, v `notin` L ->
        forall k : atom, k `notin` (L `union` singleton v) ->
        stmt (open_bs (open_es h v) k)) ->
       stmt (stm_reset l C b h)
@@ -374,7 +409,7 @@ with block : blk -> Prop :=
   | block_unbox : forall e,
       expr e ->
       block (blk_unbox e)
-  | block_tabs : forall L s, 
+  | block_tabs : forall L s,
       (forall X : atom, X `notin` L -> block (open_tb s X)) ->
       block (blk_tabs s)
   | block_tapp : forall b T,
@@ -402,7 +437,7 @@ with block : blk -> Prop :=
     a particular binding is a typing or region assumption.  Thus,
     we instantiate [A] with the type [binding], defined below. *)
 
-Inductive coeffect : Type := 
+Inductive coeffect : Type :=
   | tracked : coeffect
   | capture : cap -> coeffect.
 
@@ -435,11 +470,11 @@ Notation "[ x ]" := (x :: nil).
 (* Substitution *)
 
 Fixpoint subst_ee (z : atom) (f : exp) (e : exp)  {struct e} : exp :=
-  match e with  
+  match e with
   | exp_bvar i => exp_bvar i
   | exp_fvar x => if x == z then f else e
   | exp_const => exp_const
-  | exp_box C b => exp_box C (subst_eb z f b) 
+  | exp_box C b => exp_box C (subst_eb z f b)
   end
 with subst_es (z : atom) (f : exp) (s : stm) {struct s} : stm :=
   match s with
@@ -469,7 +504,7 @@ Fixpoint subst_be (z : atom) (f : blk) (e : exp) {struct e} : exp :=
   | exp_bvar i => exp_bvar i
   | exp_fvar x => exp_fvar x
   | exp_const => exp_const
-  | exp_box C1 b => exp_box C1 (subst_bb z f b) 
+  | exp_box C1 b => exp_box C1 (subst_bb z f b)
   end
 with subst_bs (z : atom) (f : blk) (s : stm) {struct s} : stm :=
   match s with
@@ -497,7 +532,7 @@ with subst_bb (z : atom) (f : blk) (b : blk) {struct b} : blk :=
 Fixpoint subst_cvt (z : atom) (C : cap) (T : vtyp) {struct T} : vtyp :=
   match T with
   | typ_base => typ_base
-  | typ_capt S1 C1 => typ_capt (subst_cbt z C S1) (subst_cset z C C1) 
+  | typ_capt S1 C1 => typ_capt (subst_cbt z C S1) (subst_cset z C C1)
   | typ_bvar n => typ_bvar n
   | typ_fvar a => typ_fvar a
   end
@@ -514,7 +549,7 @@ Fixpoint subst_ce (z : atom) (f : blk) (C : cap) (e : exp) {struct e} : exp :=
   | exp_bvar i => exp_bvar i
   | exp_fvar x => exp_fvar x
   | exp_const => exp_const
-  | exp_box C1 b => exp_box (subst_cset z C C1) (subst_cb z f C b) 
+  | exp_box C1 b => exp_box (subst_cset z C C1) (subst_cb z f C b)
   end
 
 with subst_cs (z : atom) (f : blk) (C : cap) (s : stm) {struct s} : stm :=
@@ -538,7 +573,7 @@ with subst_cb (z : atom) (f : blk) (C : cap) (b : blk) {struct b} : blk :=
   | blk_unbox e => blk_unbox (subst_ce z f C e)
   | blk_tabs e => blk_tabs (subst_cb z f C e)
   | blk_tapp e T => blk_tapp (subst_cb z f C e) (subst_cvt z C T)
-  | blk_handler l => blk_handler l 
+  | blk_handler l => blk_handler l
   end.
 
 Fixpoint subst_tvt (z : atom) (U : vtyp) (T : vtyp) {struct T} : vtyp :=
@@ -558,7 +593,7 @@ with subst_tbt (z : atom) (U : vtyp) (S1 : btyp) {struct S1} : btyp :=
 
 
 Fixpoint subst_te (Z : atom) (U : vtyp) (e : exp)  {struct e} : exp :=
-  match e with  
+  match e with
   | exp_bvar i => exp_bvar i
   | exp_fvar x => exp_fvar x
   | exp_const => exp_const
@@ -568,10 +603,10 @@ with subst_ts (Z : atom) (U : vtyp) (s : stm) {struct s} : stm :=
   match s with
   | stm_ret e => stm_ret (subst_te Z U e)
   | stm_val T s1 s2 => stm_val (subst_tvt Z U T)
-                                (subst_ts Z U s1) 
+                                (subst_ts Z U s1)
                                 (subst_ts Z U s2)
   | stm_def C S1 b s => stm_def C (subst_tbt Z U S1)
-                                (subst_tb Z U b) 
+                                (subst_tb Z U b)
                                 (subst_ts Z U s)
   | stm_vapp b e => stm_vapp (subst_tb Z U b) (subst_te Z U e)
   | stm_bapp b C g => stm_bapp (subst_tb Z U b) C (subst_tb Z U g)
@@ -610,7 +645,7 @@ Definition subst_bbind (z : atom) (C : cap) (b : binding) : binding :=
   | bind_typ => bind_typ
   end.
 
-  
+
 (* ********************************************************************** *)
 (** * #<a name="wf"></a># Well-formedness *)
 
@@ -621,9 +656,9 @@ Definition is_tracked (E : env) (xs : atoms) (x : atom) : Prop :=
 Definition all_tracked (E : env) (xs : atoms) : Prop :=
   forall x, (AtomSet.F.In x xs -> exists T, binds x (bind_blk T tracked) E).
 
-Inductive wf_cap : env -> cap -> Prop := 
+Inductive wf_cap : env -> cap -> Prop :=
   | wf_concret_cset : forall E xs ls,
-      all_tracked E xs -> 
+      all_tracked E xs ->
       wf_cap E (cset_set xs {}N ls).
 
 Inductive wf_vtyp : env -> vtyp -> Prop :=
@@ -643,7 +678,7 @@ with  wf_btyp : env -> btyp -> Prop :=
       wf_btyp E (typ_vfun T1 T2)
   | wf_typ_bfun : forall L E S1 T2,
       wf_btyp E S1 ->
-      (forall X : atom, X `notin` L -> 
+      (forall X : atom, X `notin` L ->
         wf_vtyp ([(X, bind_blk S1 tracked)] ++ E) (open_cvt T2 (cset_fvar X))) ->
       wf_btyp E (typ_bfun S1 T2)
   | wf_typ_tfun : forall L E T,
@@ -708,7 +743,7 @@ Inductive wf_sig : sig -> Prop :=
     involving binders (e.g., [typing_abs], [typing_tabs], and [typing_rabs]). *)
 
 
-  (* match C with 
+  (* match C with
   | cset_set A N => AtomSet.F.Subset A xs
   end. *)
 
@@ -723,7 +758,7 @@ Inductive etyping : env -> sig -> exp -> vtyp -> Prop :=
       wf_env E ->
       wf_sig Q ->
       E ; Q |-exp exp_const ~: typ_base
-  | typing_evar : forall E Q x T,      
+  | typing_evar : forall E Q x T,
       wf_env E ->
       wf_sig Q ->
       (* TODO should we add an extended well-formedness statement here: E @ R |- T wf ? *)
@@ -731,7 +766,7 @@ Inductive etyping : env -> sig -> exp -> vtyp -> Prop :=
       E ; Q |-exp (exp_fvar x) ~: T
 
   | typing_box : forall E Q (C : cap) S1 b,
-      (* wf_cap E R C 
+      (* wf_cap E R C
         OR *)
       (* this enforces monotonicity of restrictions, but maybe it prevents us from showing substitution? *)
       (* R |= (cset_fvars C) -> *)
@@ -762,7 +797,7 @@ with btyping : env -> cap -> sig -> blk -> btyp -> Prop :=
   | typing_unbox : forall E R Q e S1 C,
       E ; Q |-exp e ~: (typ_capt S1 C) ->
       wf_cap E R ->
-      
+
       R |= C ->
       E @ R ; Q |-blk (blk_unbox e) ~: S1
   | typing_vabs : forall L E R Q T1 s T2,
@@ -773,17 +808,17 @@ with btyping : env -> cap -> sig -> blk -> btyp -> Prop :=
       (forall x : atom, x `notin` L ->
         ([(x, bind_blk S1 tracked)] ++ E) @ cset_union R (cset_fvar x) ; Q |-stm (open_cs s x (cset_fvar x)) ~: (open_cvt T2 (cset_fvar x))) ->
       E @ R ; Q |-blk (blk_babs S1 s) ~: (typ_bfun S1 T2)
-  
+
   | typing_tabs : forall L E R Q s T,
       (forall X : atom, X `notin` L ->
         ([(X, bind_typ)] ++ E) @ R ; Q |-blk (open_tb s X) ~: (open_tbt T X)) ->
       E @ R ; Q |-blk (blk_tabs s) ~: (typ_tfun T)
-  
+
   | typing_tapp : forall E R Q s T T1,
       wf_vtyp E T1 ->
       E @ R ; Q |-blk s ~: (typ_tfun T) ->
       E @ R ; Q |-blk (blk_tapp s T1) ~: (open_tbt T T1)
-  
+
   | typing_handler : forall E R Q l T1 T,
       wf_env E ->
       wf_sig Q ->
@@ -822,7 +857,7 @@ with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
   | typing_bapp : forall E R Q b1 b2 (C : cap) S1 T2,
       R |= C ->
       wf_cap E C ->
-      E @ R ; Q |-blk b1 ~: (typ_bfun S1 T2) ->      
+      E @ R ; Q |-blk b1 ~: (typ_bfun S1 T2) ->
       E @ C ; Q |-blk b2 ~: S1 ->
       E @ R ; Q |-stm (stm_bapp b1 C b2) ~: (open_cvt T2 C)
 
@@ -833,14 +868,14 @@ with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
 
       (* E, f : (Exc @ {*}) @ C union f |- h : T *)
       (forall f : atom, f `notin` L ->
-        ([(f, bind_blk (typ_exc T2 T1) tracked)] ++ E) @ (cset_union C (cset_fvar f)) ; Q 
+        ([(f, bind_blk (typ_exc T2 T1) tracked)] ++ E) @ (cset_union C (cset_fvar f)) ; Q
           |-stm (open_cs b f (cset_fvar f)) ~: T) ->
 
       (* E, x : T1, k : (T2 -> T @ C) @ C |- h : T *)
       (forall (v : atom), v `notin` L ->
       (forall (f : atom), f `notin` (L `union` singleton v) ->
         ([(f, bind_blk (typ_vfun T1 T) (capture C))] ++
-         [(v, bind_val T2)] ++ E) @ C ; Q 
+         [(v, bind_val T2)] ++ E) @ C ; Q
           |-stm (open_bs (open_es h v) f) ~: T)) ->
 
       E @ R ; Q |-stm (stm_try C T2 T1 b h) ~: T
@@ -857,7 +892,7 @@ with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
       (forall v : atom, v `notin` L ->
       (forall f : atom, f `notin` (L `union` singleton v) ->
         ([(f, bind_blk (typ_vfun T1 T) (capture C))] ++
-          [(v, bind_val T2)] ++ E) @ C ; Q 
+          [(v, bind_val T2)] ++ E) @ C ; Q
           |-stm (open_bs (open_es h v) f) ~: T)) ->
       E @ R ; Q |-stm (stm_reset l C b h) ~: T
 
@@ -878,7 +913,7 @@ Combined Scheme typing_ind from etyping_mutind, styping_mutind, btyping_mutind.
 (** * #<a name="values"></a># Values *)
 
 Inductive evalue : exp -> Prop :=
-  | value_const : 
+  | value_const :
       evalue exp_const
   | value_box : forall C b,
       bvalue b ->
@@ -898,7 +933,7 @@ with bvalue : blk -> Prop :=
       bvalue (blk_handler l).
 
 (* Redex in a context *)
-Inductive machine_redex : stm -> Prop := 
+Inductive machine_redex : stm -> Prop :=
   | redex_ret : forall e,
       evalue e ->
       machine_redex (stm_ret e)
@@ -920,7 +955,7 @@ Reserved Notation "e1 -->e e2" (at level 69).
 Reserved Notation "e1 -->s e2" (at level 69).
 
 Inductive bred : blk -> blk -> Prop :=
-  (* Q: Why don't we need a congruence here? 
+  (* Q: Why don't we need a congruence here?
      A: expressions can be either constants, variables, or boxes.
         Constants are never boxed blocks and variables will be substited with boxed blocks,
         so this should suffice.
@@ -986,13 +1021,13 @@ Inductive sred : stm -> stm -> Prop :=
   | sred_throw_1 : forall b b' e,
       b -->b b' ->
       stm_throw b e -->s stm_throw b' e
-  
+
   | sred_throw_2 : forall b e e',
       bvalue b ->
       e -->e e' ->
       stm_throw b e -->s stm_throw b e'
 
-where "b1 -->s b2" := (sred b1 b2) 
+where "b1 -->s b2" := (sred b1 b2)
 .
 
 (** ******************************************* **)
@@ -1013,7 +1048,7 @@ Notation ctx := (list frame).
 (** the toplevel / empty runtime stack  *)
 Notation top := (@nil frame).
 
-Fixpoint bound_labels (c : ctx) : labels := 
+Fixpoint bound_labels (c : ctx) : labels :=
   match c with
   | nil => {}L
   | K T s :: c => bound_labels c
@@ -1048,7 +1083,7 @@ Inductive typing_ctx : cap -> sig -> ctx -> vtyp -> Prop :=
       (forall v : atom, v `notin` L ->
       (forall f : atom, f `notin` (L `union` singleton v) ->
         [(f, bind_blk (typ_vfun T2 T) (capture C))] ++
-        [(v, bind_val T1)] @ C ; Q 
+        [(v, bind_val T1)] @ C ; Q
         |-stm (open_bs (open_es s v) f) ~: T)) ->
       cset_union C (cset_lvar l) ; Q |-ctx H l C s :: c ~: T
 
@@ -1087,7 +1122,7 @@ where "R ; Q |-cnt K ~: T1 ~> T2" := (typing_cnt R Q K T1 T2).
 Inductive state : Type :=
   | state_step (s : stm) (c : ctx) (Q : sig) : state
   (* Maybe we need to add the type of the effect operation here as well... *)
-  | state_wind (l : label) (v : exp) (c : ctx) (k : ctx) (Q : sig) : state 
+  | state_wind (l : label) (v : exp) (c : ctx) (k : ctx) (Q : sig) : state
 .
 
 Notation "〈throw l # v | c • k | Q 〉" := (state_wind l v c k Q).
@@ -1123,7 +1158,7 @@ Inductive step : state -> state -> Prop :=
   | step_try : forall Q s h l C T2 T1 c,
       ~ LabelSet.F.In l (bound_labels c) ->
       ~ LabelSet.F.In l (Signatures.dom Q) ->
-      〈 stm_try C T2 T1 s h | c | Q 〉--> 
+      〈 stm_try C T2 T1 s h | c | Q 〉-->
       〈 open_cs s (blk_handler l) (cset_lvar l) | H l C h :: c | [(l , bind_sig T2 T1)] ++ Q 〉
 
   | step_reset : forall Q s h l C T1 T c,
@@ -1133,7 +1168,7 @@ Inductive step : state -> state -> Prop :=
   (* switch to search mode *)
   | step_throw : forall Q l v c,
        evalue v ->
-      〈 stm_throw (blk_handler l) v | c | Q 〉--> 
+      〈 stm_throw (blk_handler l) v | c | Q 〉-->
       〈throw l # v | c • top | Q 〉
 
   | step_unwind_1 : forall Q l v T s c k,
@@ -1147,7 +1182,7 @@ Inductive step : state -> state -> Prop :=
   | step_handle : forall Q l v T T1 C h c k,
     (* the continuation: (y : T1) => reset l c h E[y]  *)
     Signatures.binds l (bind_sig T T1) Q ->
-    〈throw l # v | H l C h :: c • k | Q 〉--> 
+    〈throw l # v | H l C h :: c • k | Q 〉-->
     〈 open_bs (open_es h v)
       (blk_vabs T1 (plug (H l C h :: k) (exp_bvar 0))) | c | Q 〉
 
@@ -1168,15 +1203,14 @@ Inductive typing_state : state -> Prop :=
       typing_state〈throw l # v | c • k | Q 〉
 .
 
-Hint Constructors 
-  vtype btype block expr stmt 
-  wf_cap wf_vtyp wf_btyp wf_env 
-  evalue bvalue machine_redex 
+Hint Constructors
+  vtype btype block expr stmt
+  wf_cap wf_vtyp wf_btyp wf_env
+  evalue bvalue machine_redex
   bred sred done step state
 : core.
 
-Hint Resolve 
-  typing_evar typing_vapp typing_bapp typing_ret typing_val typing_handler typing_try typing_throw 
-  typing_cnt_empty typing_ctx_empty typing_ctx_try 
+Hint Resolve
+  typing_evar typing_vapp typing_bapp typing_ret typing_val typing_handler typing_try typing_throw
+  typing_cnt_empty typing_ctx_empty typing_ctx_try
 : core.
-

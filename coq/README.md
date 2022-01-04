@@ -1,12 +1,14 @@
 # System C Proofs
 
 This project contains the Coq proofs for System C.
-We developed the proofs with Coq version 8.10.2.
+We developed the proofs with
+
+    Coq version 8.10.2
 
 
 A makefile is attached, but to recreate it in case of problems, run the following command:
 
-    coq_makefile -f _CoqProject -o Makefile
+    coq_makefile -f _CoqProject -o Makefile.coq
 
 Then, to actually build the proofs:
 
