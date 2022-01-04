@@ -1,15 +1,11 @@
 name: Compiling the proofs
 
 on:
-  release:
-    types: [published, created, edited]
+  push:
+    branches: [ main ]
 
 jobs:
   build:
-
-    env:
-      BUNDLE_GEMFILE: ${{ github.workspace }}/demo-sources/Gemfile
-
     runs-on: ubuntu-latest
 
     steps:
