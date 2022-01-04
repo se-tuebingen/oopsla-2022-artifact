@@ -1,0 +1,31 @@
+name: Scala CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+
+    - name: Install dependencies
+      run: bundle install
+
+    - name: Build page
+      run: bundle exec jekyll build
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.6
+      with:
+        branch: gh-pages # The branch the action should deploy to.
+        folder: demo-sources/_site # the folder that should be deployed
