@@ -1,12 +1,8 @@
 Require Export Taktiks.
-Require Export Rho_Lemmas.
-
-(* Require Import Coq.Program.Tactics. *)
+Require Export SystemC_Lemmas.
 
 (* ********************************************************************** *)
 (** ** Weakening (5) *)
-
-(*  Do we also need to weaken R here? *)
 
 Ltac solve_weakening := simpl_env;
   eauto 5 using wf_cap_weakening,
@@ -236,21 +232,15 @@ Proof with solve_substitution.
   dependent induction TypT.
   - econstructor...
   - simpl. destruct (x0 == x); subst.
-    + select (binds x _ _) (fun H => binds_get H)... 
+    + select (binds x _ _) (fun H => binds_get H)...
       inversion select (bind_val _ = bind_val _); subst.
       rewrite_env (empty ++ F ++ E).
       apply etyping_weakening...
     + econstructor; try assumption.
       * eapply wf_env_strengthening; eassumption.
-      * select (binds _ _ _) (fun H => binds_cases H)...  (** select (binds _ _ _) (fun H => binds_cases H); econstructor... *)
-      (* fold subst_es subst_eb.
-      eapply btyping_through_subst_eb...
-      (* Oh interesting, we need to show that the expression u is typable in the restricted context... *)
-      (* maybe by expression_typing_independent, but that one is not provable! *)
-      eapply expression_typing_independent...
-      admit. *)
-  - econstructor... 
------- 
+      * select (binds _ _ _) (fun H => binds_cases H)...
+  - econstructor...
+------
   intros * TypT TypU.
   dependent induction TypT.
   - simpl. destruct (f == x); subst.

@@ -13,9 +13,9 @@ Environment.v
 Signatures.v
 Metatheory.v
 CaptureSets.v
-Rho_Definitions.v
-Rho_Infrastructure.v
-Rho_Lemmas.v
-Rho_Substitution.v
-Rho_Soundness.v
-Rho_Examples.v
+SystemC_Definitions.v
+SystemC_Infrastructure.v
+SystemC_Lemmas.v
+SystemC_Substitution.v
+SystemC_Soundness.v
+SystemC_Examples.v
