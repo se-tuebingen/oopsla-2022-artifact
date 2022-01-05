@@ -20,13 +20,16 @@
 
 title: "System C"
 description: >- # this means to ignore newlines until "baseurl:"
-  This is the artifact acompanying paper #53 on System C.
+  This is the artifact acompanying the paper 'Effects, Capabilities, and Boxes'.
 
+github: https://github.com/se-tuebingen/oopsla-2022-artifact
 
 # Build settings
 theme: just-the-docs
 color_scheme: paper
 search_enabled: false
+
+
 
 
 # Exclude from processing.
