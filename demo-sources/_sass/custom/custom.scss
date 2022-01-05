@@ -1,3 +1,5 @@
+@import "coqdoc";
+
 p, h1, h2, h3, h4, h5, h6, li {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -9,7 +11,7 @@ p, h1, h2, h3, h4, h5, h6, li {
   // Change font to be more paper-like
   font-family: Georgia,'times new roman',times,serif;
 
-  p {
+  p, div.paragraph {
     text-justify: inter-word;
     text-align: justify;
   }

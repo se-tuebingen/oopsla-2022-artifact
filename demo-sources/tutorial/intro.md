@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Basics
+parent: Tutorial
 permalink: /intro/
 nav_order: 1
 ---

@@ -2,6 +2,7 @@
 layout: page
 title: Boxing and Unboxing
 permalink: /boxing/
+parent: Tutorial
 nav_order: 3
 ---
 # Boxing and Unboxing

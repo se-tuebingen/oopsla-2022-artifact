@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Capabilities
+parent: Tutorial
 permalink: /capability/
 nav_order: 2
 ---

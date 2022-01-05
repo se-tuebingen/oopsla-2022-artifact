@@ -3,9 +3,10 @@ COQDOCFLAGS:= \
   --external 'http://ssr2.msr-inria.inria.fr/doc/ssreflect-1.5/' Ssreflect \
   --external 'http://ssr2.msr-inria.inria.fr/doc/mathcomp-1.5/' MathComp \
   --toc --toc-depth 2 --html --interpolate \
-  --index indexpage --no-lib-name --parse-comments \
+  --noindex --no-lib-name --parse-comments \
   --light --utf8\
-  --with-header $(EXTRA_DIR)/header.html --with-footer $(EXTRA_DIR)/footer.html
+  --with-header $(EXTRA_DIR)/header.demo.html --with-footer $(EXTRA_DIR)/footer.demo.html
+  #--body-only
 export COQDOCFLAGS
 COQMAKEFILE:=Makefile.coq
 COQ_PROJ:=_CoqProject
@@ -29,6 +30,7 @@ html: $(COQMAKEFILE) $(VS)
 	@$(MAKE) -f $(COQMAKEFILE) $@
 	cp $(EXTRA_DIR)/resources/* html
 	cp -r $(EXTRA_DIR)/img html
+	cp -r html/* ../demo-sources/proofs
 
 $(COQMAKEFILE): $(COQ_PROJ) $(VS)
 		coq_makefile -f $(COQ_PROJ) $(VS_OTHER) -o $@
