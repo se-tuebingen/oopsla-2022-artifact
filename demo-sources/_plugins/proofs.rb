@@ -22,7 +22,7 @@ module Proofs
         title_match = title_rx.match page.content
         unless title_match.nil?
           page.data['title'] = title_match[1]
-          Jekyll.logger.warn title_match[1]
+          # Jekyll.logger.warn title_match[1]
         end
       end
     end
