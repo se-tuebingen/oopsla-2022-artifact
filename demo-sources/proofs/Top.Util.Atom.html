@@ -32,12 +32,12 @@ Support for atoms, i.e., objects with decidable equality.  We
 <br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
 <a name="lab32"></a><h1 class="section">Definition</h1>
 
+ 
 <div class="paragraph"> </div>
 
  Atoms are structureless objects such that we can always generate
@@ -88,22 +88,20 @@ The implementation of the above interface is hidden for
 <br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
 <a name="lab33"></a><h1 class="section">Finite sets of atoms</h1>
 
-</div>
-<div class="code">
+ 
+<div class="paragraph"> </div>
 
-<br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
-</div>
 
-<div class="doc">
+<div class="paragraph"> </div>
+
 <a name="lab34"></a><h2 class="section">Definitions</h2>
 
+ 
 </div>
 <div class="code">
 
@@ -151,7 +149,6 @@ We instantiate two modules which provide useful lemmas and tactics
 <span class="id" title="keyword">Module</span> <a name="AtomSetProperties"><span class="id" title="module">AtomSetProperties</span></a> := <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.FSets.FSetProperties.html#Properties"><span class="id" title="module">FSetProperties.Properties</span></a> <a class="idref" href="Top.Util.Atom.html#AtomSet.F"><span class="id" title="module">AtomSet.F</span></a>.<br/>
 
 <br/>
-<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
@@ -192,7 +189,6 @@ The tactic <span class="inlinecode"><span class="id" title="var">notin_solve</sp
 <br/>
 
 <br/>
-<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
@@ -213,12 +209,12 @@ The tactic <span class="inlinecode"><span class="id" title="var">notin_solve</sp
 <span class="id" title="keyword">Notation</span> <a name="notin_union"><span class="id" title="abbreviation">notin_union</span></a>        := <a class="idref" href="Top.Util.Atom.html#notin_union"><span class="id" title="lemma">AtomSetNotin.notin_union</span></a>.<br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
 <a name="lab37"></a><h1 class="section">Additional properties</h1>
 
+ 
 <div class="paragraph"> </div>
 
  One can generate an atom fresh for a given finite set of atoms. 
@@ -229,20 +225,14 @@ The tactic <span class="inlinecode"><span class="id" title="var">notin_solve</sp
 <span class="id" title="keyword">Lemma</span> <a name="atom_fresh_for_set"><span class="id" title="lemma">atom_fresh_for_set</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">L</span> : <a class="idref" href="Top.Util.Atom.html#atoms"><span class="id" title="abbreviation">atoms</span></a>, <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">{</span></a> <span class="id" title="var">x</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">:</span></a> <a class="idref" href="Top.Util.Atom.html#atom"><span class="id" title="axiom">atom</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">|</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.Atom.html#In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.Atom.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.Atom.html#L"><span class="id" title="variable">L</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">}</span></a>.<br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
 <a name="lab38"></a><h1 class="section">Additional tactics</h1>
 
-</div>
-<div class="code">
+ 
+<div class="paragraph"> </div>
 
-<br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
-</div>
-
-<div class="doc">
 <a name="lab39"></a><h2 class="section"><a name="pick_fresh"></a> Picking a fresh atom</h2>
 
 <div class="paragraph"> </div>
@@ -295,12 +285,12 @@ The tactic <span class="inlinecode">(<span class="id" title="var">pick</span></s
 &nbsp;&nbsp;(<span class="id" title="tactic">destruct</span> (<a class="idref" href="Top.Util.Atom.html#atom_fresh_for_set"><span class="id" title="lemma">atom_fresh_for_set</span></a> <span class="id" title="var">L</span>) <span class="id" title="keyword">as</span> [<span class="id" title="var">Y</span> <span class="id" title="var">Fr</span>]).<br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
 <a name="lab40"></a><h2 class="section">Demonstration</h2>
 
+ 
 <div class="paragraph"> </div>
 
  The <span class="inlinecode"><span class="id" title="var">example_pick_fresh</span></span> tactic below illustrates the general

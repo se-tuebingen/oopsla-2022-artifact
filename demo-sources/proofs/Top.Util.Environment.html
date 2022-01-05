@@ -61,12 +61,12 @@ Operations, lemmas, and tactics for working with environments,
 <br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab56"></a><h1 class="section"><a name="overview"></a> Overview</h1>
+<a name="lab57"></a><h1 class="section"><a name="overview"></a> Overview</h1>
 
+ 
 <div class="paragraph"> </div>
 
  An environment is a list of pairs, where the first component of
@@ -110,16 +110,14 @@ Operations, lemmas, and tactics for working with environments,
 In the remainder of this library, we define a number of
     operations, lemmas, and tactics that simplify working with
     environments. 
-</div>
-<div class="code">
+<div class="paragraph"> </div>
 
-<br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
-</div>
 
-<div class="doc">
-<a name="lab57"></a><h1 class="section"><a name="functions"></a> Functions on environments</h1>
+<div class="paragraph"> </div>
 
+<a name="lab58"></a><h1 class="section"><a name="functions"></a> Functions on environments</h1>
+
+ 
 <div class="paragraph"> </div>
 
  Implicit arguments will be declared by default for the definitions
@@ -189,12 +187,12 @@ The domain of an environment is the set of atoms that it maps.
 <br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab58"></a><h1 class="section"><a name="env_rel"></a> Relations on environments</h1>
+<a name="lab59"></a><h1 class="section"><a name="env_rel"></a> Relations on environments</h1>
 
+ 
 <div class="paragraph"> </div>
 
  Implicit arguments will be declared by default for the definitions
@@ -246,12 +244,12 @@ An environment is well-formed if and only if each atom is bound at
 <br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab59"></a><h1 class="section"><a name="op_prop"></a> Properties of operations</h1>
+<a name="lab60"></a><h1 class="section"><a name="op_prop"></a> Properties of operations</h1>
 
+ 
 </div>
 <div class="code">
 
@@ -265,7 +263,7 @@ An environment is well-formed if and only if each atom is bound at
 </div>
 
 <div class="doc">
-<a name="lab60"></a><h2 class="section">Facts about concatenation</h2>
+<a name="lab61"></a><h2 class="section">Facts about concatenation</h2>
 
 </div>
 <div class="code">
@@ -286,7 +284,7 @@ An environment is well-formed if and only if each atom is bound at
 </div>
 
 <div class="doc">
-<a name="lab61"></a><h2 class="section"><span class="inlinecode"><a class="idref" href="Top.Util.Signatures.html#Signatures.map"><span class="id" title="definition">map</span></a></span> commutes with environment-building operations</h2>
+<a name="lab62"></a><h2 class="section"><span class="inlinecode"><a class="idref" href="Top.Util.Signatures.html#Signatures.map"><span class="id" title="definition">map</span></a></span> commutes with environment-building operations</h2>
 
 </div>
 <div class="code">
@@ -311,7 +309,7 @@ An environment is well-formed if and only if each atom is bound at
 </div>
 
 <div class="doc">
-<a name="lab62"></a><h2 class="section">Facts about the domain of an environment</h2>
+<a name="lab63"></a><h2 class="section">Facts about the domain of an environment</h2>
 
 </div>
 <div class="code">
@@ -340,7 +338,7 @@ An environment is well-formed if and only if each atom is bound at
 </div>
 
 <div class="doc">
-<a name="lab63"></a><h2 class="section">Other trivial rewrites</h2>
+<a name="lab64"></a><h2 class="section">Other trivial rewrites</h2>
 
 </div>
 <div class="code">
@@ -353,15 +351,15 @@ An environment is well-formed if and only if each atom is bound at
 <span class="id" title="keyword">End</span> <a class="idref" href="Top.Util.Environment.html#OpProperties"><span class="id" title="section">OpProperties</span></a>.<br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab64"></a><h1 class="section"><a name="auto1"></a> Automation and tactics (I)</h1>
+<a name="lab65"></a><h1 class="section"><a name="auto1"></a> Automation and tactics (I)</h1>
 
+ 
 <div class="paragraph"> </div>
 
-<a name="lab65"></a><h2 class="section"><span class="inlinecode"><span class="id" title="var">simpl_env</span></span></h2>
+<a name="lab66"></a><h2 class="section"><span class="inlinecode"><span class="id" title="var">simpl_env</span></span></h2>
 
 <div class="paragraph"> </div>
 
@@ -410,7 +408,7 @@ An environment is well-formed if and only if each atom is bound at
 </div>
 
 <div class="doc">
-<a name="lab66"></a><h2 class="section"><span class="inlinecode"><span class="id" title="var">rewrite_env</span></span></h2>
+<a name="lab67"></a><h2 class="section"><span class="inlinecode"><span class="id" title="var">rewrite_env</span></span></h2>
 
 <div class="paragraph"> </div>
 
@@ -445,7 +443,7 @@ An environment is well-formed if and only if each atom is bound at
 </div>
 
 <div class="doc">
-<a name="lab67"></a><h2 class="section">Hints</h2>
+<a name="lab68"></a><h2 class="section">Hints</h2>
 
 </div>
 <div class="code">
@@ -459,7 +457,7 @@ An environment is well-formed if and only if each atom is bound at
 </div>
 
 <div class="doc">
-<a name="lab68"></a><h1 class="section"><a name="props"></a> Properties of well-formedness and freshness</h1>
+<a name="lab69"></a><h1 class="section"><a name="props"></a> Properties of well-formedness and freshness</h1>
 
 </div>
 <div class="code">
@@ -524,12 +522,12 @@ A binding in the middle of an environment has an atom fresh from
 <span class="id" title="keyword">End</span> <a class="idref" href="Top.Util.Environment.html#OkProperties"><span class="id" title="section">OkProperties</span></a>.<br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab69"></a><h1 class="section"><a name="binds_prop"></a> Properties of <span class="inlinecode"><a class="idref" href="Top.Util.Signatures.html#Signatures.binds"><span class="id" title="definition">binds</span></a></span></h1>
+<a name="lab70"></a><h1 class="section"><a name="binds_prop"></a> Properties of <span class="inlinecode"><a class="idref" href="Top.Util.Signatures.html#Signatures.binds"><span class="id" title="definition">binds</span></a></span></h1>
 
+ 
 </div>
 <div class="code">
 
@@ -543,7 +541,7 @@ A binding in the middle of an environment has an atom fresh from
 </div>
 
 <div class="doc">
-<a name="lab70"></a><h2 class="section">Introduction forms for <span class="inlinecode"><a class="idref" href="Top.Util.Signatures.html#Signatures.binds"><span class="id" title="definition">binds</span></a></span></h2>
+<a name="lab71"></a><h2 class="section">Introduction forms for <span class="inlinecode"><a class="idref" href="Top.Util.Signatures.html#Signatures.binds"><span class="id" title="definition">binds</span></a></span></h2>
 
 <div class="paragraph"> </div>
 
@@ -569,7 +567,7 @@ A binding in the middle of an environment has an atom fresh from
 </div>
 
 <div class="doc">
-<a name="lab71"></a><h2 class="section">Case analysis on <span class="inlinecode"><a class="idref" href="Top.Util.Signatures.html#Signatures.binds"><span class="id" title="definition">binds</span></a></span></h2>
+<a name="lab72"></a><h2 class="section">Case analysis on <span class="inlinecode"><a class="idref" href="Top.Util.Signatures.html#Signatures.binds"><span class="id" title="definition">binds</span></a></span></h2>
 
 </div>
 <div class="code">
@@ -586,7 +584,7 @@ A binding in the middle of an environment has an atom fresh from
 </div>
 
 <div class="doc">
-<a name="lab72"></a><h2 class="section">Retrieving bindings from an environment</h2>
+<a name="lab73"></a><h2 class="section">Retrieving bindings from an environment</h2>
 
 </div>
 <div class="code">
@@ -609,15 +607,15 @@ A binding in the middle of an environment has an atom fresh from
 <span class="id" title="keyword">End</span> <a class="idref" href="Top.Util.Environment.html#BindsProperties"><span class="id" title="section">BindsProperties</span></a>.<br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab73"></a><h1 class="section"><a name="auto2"></a> Automation and tactics (II)</h1>
+<a name="lab74"></a><h1 class="section"><a name="auto2"></a> Automation and tactics (II)</h1>
 
+ 
 <div class="paragraph"> </div>
 
-<a name="lab74"></a><h2 class="section">Hints</h2>
+<a name="lab75"></a><h2 class="section">Hints</h2>
 
 </div>
 <div class="code">
@@ -630,7 +628,7 @@ A binding in the middle of an environment has an atom fresh from
 </div>
 
 <div class="doc">
-<a name="lab75"></a><h2 class="section"><span class="inlinecode"><span class="id" title="var">binds_get</span></span></h2>
+<a name="lab76"></a><h2 class="section"><span class="inlinecode"><span class="id" title="var">binds_get</span></span></h2>
 
 <div class="paragraph"> </div>
 
@@ -649,7 +647,7 @@ A binding in the middle of an environment has an atom fresh from
 </div>
 
 <div class="doc">
-<a name="lab76"></a><h2 class="section"><span class="inlinecode"><span class="id" title="var">binds_cases</span></span></h2>
+<a name="lab77"></a><h2 class="section"><span class="inlinecode"><span class="id" title="var">binds_cases</span></span></h2>
 
 <div class="paragraph"> </div>
 
@@ -665,12 +663,12 @@ A binding in the middle of an environment has an atom fresh from
 <br/>
 
 <br/>
-<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab77"></a><h1 class="section"><a name="binds_prop2"></a> Additional properties of <span class="inlinecode"><a class="idref" href="Top.Util.Signatures.html#Signatures.binds"><span class="id" title="definition">binds</span></a></span></h1>
+<a name="lab78"></a><h1 class="section"><a name="binds_prop2"></a> Additional properties of <span class="inlinecode"><a class="idref" href="Top.Util.Signatures.html#Signatures.binds"><span class="id" title="definition">binds</span></a></span></h1>
 
+ 
 <div class="paragraph"> </div>
 
  The following lemmas are proven in manner that should be
@@ -746,11 +744,10 @@ Additional lemmas for showing that a binding is in an
 <span class="id" title="keyword">End</span> <a class="idref" href="Top.Util.Environment.html#AdditionalBindsProperties"><span class="id" title="section">AdditionalBindsProperties</span></a>.<br/>
 
 <br/>
-<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab78"></a><h1 class="section"><a name="auto3"></a> Automation and tactics (III)</h1>
+<a name="lab79"></a><h1 class="section"><a name="auto3"></a> Automation and tactics (III)</h1>
 
 </div>
 <div class="code">

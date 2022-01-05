@@ -15,7 +15,7 @@ This file contains the definitions for System C. We include snippets of the pape
 
 <div class="paragraph"> </div>
 
-<a name="lab105"></a><h2 class="section">Table of Contents</h2>
+<a name="lab115"></a><h2 class="section">Table of Contents</h2>
 
 
 <div class="paragraph"> </div>
@@ -78,12 +78,15 @@ This file contains the definitions for System C. We include snippets of the pape
 
 <div class="paragraph"> </div>
 
-<a name="lab106"></a><h1 class="section"><a name="syntax"></a>  Syntax</h1>
-
 
 <div class="paragraph"> </div>
 
-    The definitions here reflect the definitions in Figure 1 from the paper.
+<a name="lab116"></a><h1 class="section"><a name="syntax"></a>  Syntax</h1>
+
+  
+<div class="paragraph"> </div>
+
+ The definitions here reflect the definitions in Figure 1 from the paper.
 
 <div class="paragraph"> </div>
 
@@ -101,16 +104,22 @@ This file contains the definitions for System C. We include snippets of the pape
     
 <div class="paragraph"> </div>
 
-<a name="lab107"></a><h2 class="section"><a name="syntax-types"></a> Syntax of Types</h2>
 
-  Here, we define the syntax of types, as defined in Figure 1 in the paper.
+<div class="paragraph"> </div>
+
+<a name="lab117"></a><h2 class="section"><a name="syntax-types"></a> Syntax of Types</h2>
+
+ 
+<div class="paragraph"> </div>
+
+ Here, we define the syntax of types, as defined in Figure 1 in the paper.
 
 <div class="paragraph"> </div>
 
   <img src="img/syntax-types.png" alt="Syntax of types" class="fig" />  
 <div class="paragraph"> </div>
 
-<a name="lab108"></a><h3 class="section">Value Types</h3>
+<a name="lab118"></a><h3 class="section">Value Types</h3>
 
 </div>
 <div class="code">
@@ -123,7 +132,7 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab109"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab119"></a><h4 class="section">Differences to the paper</h4>
 
     In the mechanization, we also additionally support
     value-type polymorphism. Hence, the constructors for type variables (<span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_bvar"><span class="id" title="constructor">typ_bvar</span></a></span> and <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_fvar"><span class="id" title="constructor">typ_fvar</span></a></span>),
@@ -131,7 +140,7 @@ This file contains the definitions for System C. We include snippets of the pape
     of separate base types (as in the paper). 
 <div class="paragraph"> </div>
 
-<a name="lab110"></a><h3 class="section">Block Types</h3>
+<a name="lab120"></a><h3 class="section">Block Types</h3>
 
 </div>
 <div class="code">
@@ -146,7 +155,7 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab111"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab121"></a><h4 class="section">Differences to the paper</h4>
 
     In the paper, we formalize multi-arity function types.
     Since this is akward to work with in Coq, here, we only mechanize single arity
@@ -170,16 +179,22 @@ This file contains the definitions for System C. We include snippets of the pape
     as a function type <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a></span> <span class="inlinecode">→</span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T2"><span class="id" title="variable">T2</span></a></span> as for instance can be seen in rule TRY in Figure 2. 
 <div class="paragraph"> </div>
 
-<a name="lab112"></a><h2 class="section"><a name="syntax-terms"></a> Syntax of Terms</h2>
 
-    In the following, we define the syntax of expressions, statements, and blocks.
+<div class="paragraph"> </div>
+
+<a name="lab122"></a><h2 class="section"><a name="syntax-terms"></a> Syntax of Terms</h2>
+
+ 
+<div class="paragraph"> </div>
+
+ In the following, we define the syntax of expressions, statements, and blocks.
 
 <div class="paragraph"> </div>
 
     <img src="img/syntax-terms.png" alt="Syntax of terms" class="fig" /> 
 <div class="paragraph"> </div>
 
-<a name="lab113"></a><h3 class="section">Expressions</h3>
+<a name="lab123"></a><h3 class="section">Expressions</h3>
 
 </div>
 <div class="code">
@@ -192,12 +207,12 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab114"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab124"></a><h4 class="section">Differences to the paper</h4>
 
     Besides only having one primitive value, expressions are precisely as in the paper. 
 <div class="paragraph"> </div>
 
-<a name="lab115"></a><h3 class="section">Statements</h3>
+<a name="lab125"></a><h3 class="section">Statements</h3>
 
 </div>
 <div class="code">
@@ -214,7 +229,7 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab116"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab126"></a><h4 class="section">Differences to the paper</h4>
 
     Similar to the syntax of types, in the mechanization we have two different
     forms of application (instead of multi-arity). <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#stm_vapp"><span class="id" title="constructor">stm_vapp</span></a></span> takes the block to call
@@ -247,7 +262,7 @@ This file contains the definitions for System C. We include snippets of the pape
   
 <div class="paragraph"> </div>
 
-<a name="lab117"></a><h3 class="section">Blocks</h3>
+<a name="lab127"></a><h3 class="section">Blocks</h3>
 
 </div>
 <div class="code">
@@ -264,7 +279,7 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab118"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab128"></a><h4 class="section">Differences to the paper</h4>
 
     Again, as for statements and block types, we have two different forms
     of abstraction. <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#blk_vabs"><span class="id" title="constructor">blk_vabs</span></a></span> to abstract over values and <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#blk_babs"><span class="id" title="constructor">blk_babs</span></a></span> to abstract
@@ -289,11 +304,12 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab119"></a><h1 class="section"><a name="env"></a> Environments and Signatures</h1>
+<a name="lab129"></a><h1 class="section"><a name="env"></a> Environments and Signatures</h1>
 
+ 
 <div class="paragraph"> </div>
 
-<a name="lab120"></a><h2 class="section">Environments</h2>
+<a name="lab130"></a><h2 class="section">Environments</h2>
 
     Like in the paper, we use a single environment for value, block, and type abstraction.
     We formalize environments by representing them as association lists
@@ -352,7 +368,7 @@ Basing our mechanization on an existing locally nameless proof, we
 </div>
 
 <div class="doc">
-<a name="lab121"></a><h2 class="section">Signatures</h2>
+<a name="lab131"></a><h2 class="section">Signatures</h2>
 
     As a proof device, each runtime label (Figure 3 in the paper) is associated with a
     signature (that is the argument type and the result type of an effect operation).
@@ -381,12 +397,12 @@ Basing our mechanization on an existing locally nameless proof, we
 </div>
 
 <div class="doc">
-<a name="lab122"></a><h1 class="section"><a name="typing"></a> Typing</h1>
+<a name="lab132"></a><h1 class="section"><a name="typing"></a> Typing</h1>
 
-
+ 
 <div class="paragraph"> </div>
 
-    Like in the paper, we model typing as three mutually inductive relations.
+ Like in the paper, we model typing as three mutually inductive relations.
 
 <div class="paragraph"> </div>
 
@@ -408,12 +424,15 @@ Basing our mechanization on an existing locally nameless proof, we
 Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in coqdoc. 
 <div class="paragraph"> </div>
 
-<a name="lab123"></a><h2 class="section"><a name="typing-expression"></a> Expression Typing</h2>
-
 
 <div class="paragraph"> </div>
 
-    <img src="img/typing-expressions.png" alt="Typing of expressions" class="fig" /> 
+<a name="lab133"></a><h2 class="section"><a name="typing-expression"></a> Expression Typing</h2>
+
+ 
+<div class="paragraph"> </div>
+
+ <img src="img/typing-expressions.png" alt="Typing of expressions" class="fig" /> 
 </div>
 <div class="code">
 <span class="id" title="keyword">Inductive</span> <a name="etyping"><span class="id" title="inductive">etyping</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#env"><span class="id" title="abbreviation">env</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#sig"><span class="id" title="abbreviation">sig</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#exp"><span class="id" title="inductive">exp</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#vtyp"><span class="id" title="inductive">vtyp</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
@@ -438,19 +457,22 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab124"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab134"></a><h4 class="section">Differences to the paper</h4>
 
     The three rules directly correspond to rules LIT, VAR, and BOXINTRO in
     the paper. As can be seen (all) typing judgements in Coq make wellformedness
     conditions explicit, which are left implicit in the paper. 
 <div class="paragraph"> </div>
 
-<a name="lab125"></a><h2 class="section"><a name="typing-block"></a> Block Typing</h2>
-
 
 <div class="paragraph"> </div>
 
-    <img src="img/typing-blocks.png" alt="Typing of blocks" class="fig" /> 
+<a name="lab135"></a><h2 class="section"><a name="typing-block"></a> Block Typing</h2>
+
+ 
+<div class="paragraph"> </div>
+
+ <img src="img/typing-blocks.png" alt="Typing of blocks" class="fig" /> 
 </div>
 <div class="code">
 <span class="id" title="keyword">with</span> <a name="btyping"><span class="id" title="inductive">btyping</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#env"><span class="id" title="abbreviation">env</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#sig"><span class="id" title="abbreviation">sig</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#blk"><span class="id" title="inductive">blk</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#btyp"><span class="id" title="inductive">btyp</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
@@ -492,7 +514,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab126"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab136"></a><h4 class="section">Differences to the paper</h4>
 
     Note that we build in subsumption on blocks (rule BSUB in the paper)
     into the rules as additional premises, instead of having one additional
@@ -528,7 +550,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 
 </li>
 </ul>
-<a name="lab127"></a><h3 class="section">Additional Rules for Type Polymorphism</h3>
+<a name="lab137"></a><h3 class="section">Additional Rules for Type Polymorphism</h3>
 
 </div>
 <div class="code">
@@ -547,7 +569,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab128"></a><h3 class="section">Typing Effect Handlers</h3>
+<a name="lab138"></a><h3 class="section">Typing Effect Handlers</h3>
 
     <img src="img/typing-cap.png" alt="Typing of handlers" class="fig" />
     Like in the other rules, we bake subsumption into this rule. 
@@ -570,12 +592,12 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab129"></a><h2 class="section"><a name="typing-statement"></a> Statement Typing</h2>
+<a name="lab139"></a><h2 class="section"><a name="typing-statement"></a> Statement Typing</h2>
 
-
+ 
 <div class="paragraph"> </div>
 
-    <img src="img/typing-statements.png" alt="Typing of statements" class="fig" /> 
+ <img src="img/typing-statements.png" alt="Typing of statements" class="fig" /> 
 </div>
 <div class="code">
 <span class="id" title="keyword">with</span> <a name="styping"><span class="id" title="inductive">styping</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#env"><span class="id" title="abbreviation">env</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#sig"><span class="id" title="abbreviation">sig</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#stm"><span class="id" title="inductive">stm</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.Definitions.html#vtyp"><span class="id" title="inductive">vtyp</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
@@ -614,7 +636,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab130"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab140"></a><h4 class="section">Differences to the paper</h4>
 
     The rules correspond to the paper with the following mapping:
 <ul class="doclist">
@@ -639,7 +661,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 
 </li>
 </ul>
-<a name="lab131"></a><h3 class="section">Typing Handling of Effects</h3>
+<a name="lab141"></a><h3 class="section">Typing Handling of Effects</h3>
 
     <img src="img/typing-try.png" alt="Typing of handlers" class="fig" />  
 </div>
@@ -666,7 +688,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab132"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab142"></a><h4 class="section">Differences to the paper</h4>
 
     As mentioned above, handling statements are annotated with a capture set <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a></span>.
     Also, we use the special type constructor <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_exc"><span class="id" title="constructor">typ_exc</span></a></span> instead of a function type.
@@ -725,9 +747,12 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 </div>
 
 <div class="doc">
-<a name="lab133"></a><h1 class="section"><a name="semantics"></a> Operational Semantics</h1>
+<a name="lab143"></a><h1 class="section"><a name="semantics"></a> Operational Semantics</h1>
 
-    As described in the appendix of the paper, we mechanize the operational semantics
+ 
+<div class="paragraph"> </div>
+
+ As described in the appendix of the paper, we mechanize the operational semantics
     in form of an abstract machine.
 
 <div class="paragraph"> </div>
@@ -745,14 +770,19 @@ Since we use locally nameless, the definition of typing uses the <span class="in
     the trivial ones. 
 <div class="paragraph"> </div>
 
-<a name="lab134"></a><h2 class="section"><a name="values"></a> Values</h2>
-
-    Values are defined in the paper in the appendix.
 
 <div class="paragraph"> </div>
 
-    <img src="img/values.png" alt="Values" class="fig" />
-    
+<a name="lab144"></a><h2 class="section"><a name="values"></a> Values</h2>
+
+ 
+<div class="paragraph"> </div>
+
+ Values are defined in the paper in the appendix.
+
+<div class="paragraph"> </div>
+
+    <img src="img/values.png" alt="Values" class="fig" /> 
 </div>
 <div class="code">
 
@@ -782,9 +812,12 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 </div>
 
 <div class="doc">
-<a name="lab135"></a><h2 class="section"><a name="redexes"></a> Machine Redexes</h2>
+<a name="lab145"></a><h2 class="section"><a name="redexes"></a> Machine Redexes</h2>
 
-    Since we mechanize the operational semantics in terms of an abstract machine, we also
+ 
+<div class="paragraph"> </div>
+
+ Since we mechanize the operational semantics in terms of an abstract machine, we also
     define a predicate that describes when a statement can only be reduced in a larger context. 
 </div>
 <div class="code">
@@ -808,12 +841,12 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 </div>
 
 <div class="doc">
-<a name="lab136"></a><h2 class="section"><a name="semantics-trivial"></a> Trivial Reduction</h2>
+<a name="lab146"></a><h2 class="section"><a name="semantics-trivial"></a> Trivial Reduction</h2>
 
-
+ 
 <div class="paragraph"> </div>
 
-    <img src="img/machine-semantics-trivial.png" alt="Semantics" class="fig" /> 
+ <img src="img/machine-semantics-trivial.png" alt="Semantics" class="fig" /> 
 </div>
 <div class="code">
 
@@ -826,7 +859,7 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 </div>
 
 <div class="doc">
-<a name="lab137"></a><h3 class="section"><a name="semantics-blocks"></a> Reduction of Blocks</h3>
+<a name="lab147"></a><h3 class="section"><a name="semantics-blocks"></a> Reduction of Blocks</h3>
 
     Blocks can always be reduced regardless of the context. In fact,
     the only reduction is box-unbox elimination (<span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#bred_box"><span class="id" title="constructor">bred_box</span></a></span>) and block substitution (<span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#bred_box"><span class="id" title="constructor">bred_box</span></a></span>).
@@ -849,7 +882,7 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 </div>
 
 <div class="doc">
-<a name="lab138"></a><h3 class="section"><a name="semantics-blocks"></a> Reduction of Expressions</h3>
+<a name="lab148"></a><h3 class="section"><a name="semantics-blocks"></a> Reduction of Expressions</h3>
 
     Reduction on expressions is even simpler. Only boxed blocks can be reduced at all.
   
@@ -865,7 +898,7 @@ Since we use locally nameless, the definition of typing uses the <span class="in
 </div>
 
 <div class="doc">
-<a name="lab139"></a><h3 class="section"><a name="semantics-statements"></a> Reduction of Statements</h3>
+<a name="lab149"></a><h3 class="section"><a name="semantics-statements"></a> Reduction of Statements</h3>
 
 </div>
 <div class="code">
@@ -928,12 +961,12 @@ The remaining rules are congruences, omitted in the appendix of the paper.
 </div>
 
 <div class="doc">
-<a name="lab140"></a><h2 class="section"><a name="stacks"></a> Stacks / Contexts</h2>
+<a name="lab150"></a><h2 class="section"><a name="stacks"></a> Stacks / Contexts</h2>
 
-
+ 
 <div class="paragraph"> </div>
 
-    <img src="img/contexts.png" alt="contexts" class="fig" />  
+ <img src="img/contexts.png" alt="contexts" class="fig" />  
 </div>
 <div class="code">
 
@@ -999,7 +1032,7 @@ We need to be able to plug an expression into a context.
 </div>
 
 <div class="doc">
-<a name="lab141"></a><h3 class="section">Context typing</h3>
+<a name="lab151"></a><h3 class="section">Context typing</h3>
 
     The following definition models the context typing from Appendix A.3 in the paper.
 
@@ -1041,7 +1074,7 @@ We need to be able to plug an expression into a context.
 </div>
 
 <div class="doc">
-<a name="lab142"></a><h3 class="section">Continuation typing</h3>
+<a name="lab152"></a><h3 class="section">Continuation typing</h3>
 
     Continuations are reversed contexts, so the typing rules are very similar.
     The rendering <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.R"><span class="id" title="variable">R</span></a></span> <span class="inlinecode">;</span> <span class="inlinecode"><a class="idref" href="Top.Util.ListFacts.html#Q"><span class="id" title="variable">Q</span></a></span> <span class="inlinecode">|-<span class="id" title="var">cnt</span></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#K"><span class="id" title="constructor">K</span></a></span> <span class="inlinecode">~:</span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a></span> <span class="inlinecode">~&gt;</span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T2"><span class="id" title="variable">T2</span></a></span> shows that continuations <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#K"><span class="id" title="constructor">K</span></a></span>
@@ -1078,9 +1111,12 @@ We need to be able to plug an expression into a context.
 </div>
 
 <div class="doc">
-<a name="lab143"></a><h2 class="section"><a name="abstract-machine"></a> Abstract Machine</h2>
+<a name="lab153"></a><h2 class="section"><a name="abstract-machine"></a> Abstract Machine</h2>
 
-    The abstract machine can be in one of two states.
+ 
+<div class="paragraph"> </div>
+
+ The abstract machine can be in one of two states.
 <ul class="doclist">
 <li> either we simply step within a context <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#state_step"><span class="id" title="constructor">state_step</span></a></span>,
 
@@ -1121,7 +1157,7 @@ The following predicate corresponds to values, but for machine states.
 </div>
 
 <div class="doc">
-<a name="lab144"></a><h3 class="section"><a name="machine-reduction"></a> Reduction Steps</h3>
+<a name="lab154"></a><h3 class="section"><a name="machine-reduction"></a> Reduction Steps</h3>
 
     For better comparison, we label the rules with the names from the paper.
 
@@ -1245,7 +1281,7 @@ The following predicate corresponds to values, but for machine states.
 </div>
 
 <div class="doc">
-<a name="lab145"></a><h3 class="section"><a name="machine-typing"></a> Abstract Machine Typing</h3>
+<a name="lab155"></a><h3 class="section"><a name="machine-typing"></a> Abstract Machine Typing</h3>
 
     A machine state is simply by composing the previously defined typing judgements.
 

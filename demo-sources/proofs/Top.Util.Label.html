@@ -8,7 +8,16 @@ parent: Proofs
 </div>
 
 <div class="doc">
-Support for atoms, i.e., objects with decidable equality.  We
+<a name="lab41"></a><h1 class="section">IMPORTANT</h1>
+
+    <i>THIS IS A COPY OF THE ATOMS FILE, RENAMED TO LABELS</i>
+ 
+<div class="paragraph"> </div>
+
+
+<div class="paragraph"> </div>
+
+    Support for atoms, i.e., objects with decidable equality.  We
     provide here the ability to generate an atom fresh for any finite
     collection, e.g., the lemma <span class="inlinecode"><a class="idref" href="Top.Util.Atom.html#atom_fresh_for_set"><span class="id" title="lemma">atom_fresh_for_set</span></a></span>, and a tactic to
     pick an atom fresh for the current proof context.
@@ -32,11 +41,10 @@ Support for atoms, i.e., objects with decidable equality.  We
 <br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab41"></a><h1 class="section">Definition</h1>
+<a name="lab42"></a><h1 class="section">Definition</h1>
 
 <div class="paragraph"> </div>
 
@@ -88,21 +96,14 @@ The implementation of the above interface is hidden for
 <br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab42"></a><h1 class="section">Finite sets of labels</h1>
+<a name="lab43"></a><h1 class="section">Finite sets of labels</h1>
 
-</div>
-<div class="code">
+<div class="paragraph"> </div>
 
-<br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
-</div>
-
-<div class="doc">
-<a name="lab43"></a><h2 class="section">Definitions</h2>
+<a name="lab44"></a><h2 class="section">Definitions</h2>
 
 </div>
 <div class="code">
@@ -155,11 +156,10 @@ We instantiate two modules which provide useful lemmas and tactics
 <span class="id" title="keyword">Module</span> <a name="LabelSetProperties"><span class="id" title="module">LabelSetProperties</span></a> := <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.FSets.FSetProperties.html#Properties"><span class="id" title="module">FSetProperties.Properties</span></a> <a class="idref" href="Top.Util.Label.html#LabelSet.F"><span class="id" title="module">LabelSet.F</span></a>.<br/>
 
 <br/>
-<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab44"></a><h2 class="section">Tactics for working with finite sets of labels</h2>
+<a name="lab45"></a><h2 class="section">Tactics for working with finite sets of labels</h2>
 
 <div class="paragraph"> </div>
 
@@ -196,11 +196,10 @@ The tactic <span class="inlinecode"><span class="id" title="var">notin_solve</sp
 <br/>
 
 <br/>
-<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab45"></a><h2 class="section">Lemmas for working with finite sets of labels</h2>
+<a name="lab46"></a><h2 class="section">Lemmas for working with finite sets of labels</h2>
 
 <div class="paragraph"> </div>
 
@@ -217,11 +216,10 @@ The tactic <span class="inlinecode"><span class="id" title="var">notin_solve</sp
 <span class="id" title="keyword">Notation</span> <a name="lnotin_union"><span class="id" title="abbreviation">lnotin_union</span></a>        := <a class="idref" href="Top.Util.Label.html#notin_union"><span class="id" title="lemma">LabelSetNotin.notin_union</span></a>.<br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab46"></a><h1 class="section">Additional properties</h1>
+<a name="lab47"></a><h1 class="section">Additional properties</h1>
 
 <div class="paragraph"> </div>
 
@@ -233,21 +231,14 @@ The tactic <span class="inlinecode"><span class="id" title="var">notin_solve</sp
 <span class="id" title="keyword">Lemma</span> <a name="label_fresh_for_set"><span class="id" title="lemma">label_fresh_for_set</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">L</span> : <a class="idref" href="Top.Util.Label.html#labels"><span class="id" title="abbreviation">labels</span></a>, <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">{</span></a> <span class="id" title="var">x</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">:</span></a> <a class="idref" href="Top.Util.Label.html#label"><span class="id" title="axiom">label</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">|</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.Label.html#In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.Label.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.Label.html#L"><span class="id" title="variable">L</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">}</span></a>.<br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab47"></a><h1 class="section">Additional tactics</h1>
+<a name="lab48"></a><h1 class="section">Additional tactics</h1>
 
-</div>
-<div class="code">
+<div class="paragraph"> </div>
 
-<br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
-</div>
-
-<div class="doc">
-<a name="lab48"></a><h2 class="section"><a name="pick_fresh"></a> Picking a fresh label</h2>
+<a name="lab49"></a><h2 class="section"><a name="pick_fresh"></a> Picking a fresh label</h2>
 
 <div class="paragraph"> </div>
 
@@ -299,11 +290,10 @@ The tactic <span class="inlinecode">(<span class="id" title="var">pick</span></s
 &nbsp;&nbsp;(<span class="id" title="tactic">destruct</span> (<a class="idref" href="Top.Util.Label.html#label_fresh_for_set"><span class="id" title="lemma">label_fresh_for_set</span></a> <span class="id" title="var">L</span>) <span class="id" title="keyword">as</span> [<span class="id" title="var">Y</span> <span class="id" title="var">Fr</span>]).<br/>
 
 <br/>
-<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab49"></a><h2 class="section">Demonstration</h2>
+<a name="lab50"></a><h2 class="section">Demonstration</h2>
 
 <div class="paragraph"> </div>
 

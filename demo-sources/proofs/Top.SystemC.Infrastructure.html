@@ -7,7 +7,26 @@ parent: Proofs
 <div class="code">
 
 <br/>
-<span class="comment">(*&nbsp;&nbsp;Free&nbsp;Variables&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+This file is a (more-or-less) straight forward adaptation of
+    the infrastructure code that is necessary to work with locally nameless.
+
+<div class="paragraph"> </div>
+
+    All lemmas and proofs are just concerned with binding and are not especially
+    interesting. 
+<div class="paragraph"> </div>
+
+<a name="lab156"></a><h2 class="section">Free Variables</h2>
+
+<div class="paragraph"> </div>
+
+<a name="lab157"></a><h3 class="section">Free Expression Variables</h3>
+
+</div>
+<div class="code">
 <span class="id" title="keyword">Fixpoint</span> <a name="fv_ee"><span class="id" title="definition">fv_ee</span></a> (<span class="id" title="var">e</span> : <a class="idref" href="Top.SystemC.Definitions.html#exp"><span class="id" title="inductive">exp</span></a>) {<span class="id" title="keyword">struct</span> <span class="id" title="var">e</span>} : <a class="idref" href="Top.Util.Atom.html#atoms"><span class="id" title="abbreviation">atoms</span></a> :=<br/>
 &nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="Top.SystemC.Infrastructure.html#e"><span class="id" title="variable">e</span></a> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;| <a class="idref" href="Top.SystemC.Definitions.html#exp_bvar"><span class="id" title="constructor">exp_bvar</span></a> <span class="id" title="var">i</span> ⇒ <a class="idref" href="Top.Util.Metatheory.html#0a1b312427021aedeeb9d59198d8ee69"><span class="id" title="notation">{}</span></a><br/>
@@ -39,7 +58,13 @@ parent: Proofs
 &nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
 
 <br/>
-<span class="comment">(*&nbsp;Block&nbsp;term&nbsp;variables&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab158"></a><h3 class="section">Free Block Term Variables</h3>
+
+</div>
+<div class="code">
 <span class="id" title="keyword">Fixpoint</span> <a name="fv_be"><span class="id" title="definition">fv_be</span></a> (<span class="id" title="var">e</span> : <a class="idref" href="Top.SystemC.Definitions.html#exp"><span class="id" title="inductive">exp</span></a>) {<span class="id" title="keyword">struct</span> <span class="id" title="var">e</span>} : <a class="idref" href="Top.Util.Atom.html#atoms"><span class="id" title="abbreviation">atoms</span></a> :=<br/>
 &nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="Top.SystemC.Infrastructure.html#e"><span class="id" title="variable">e</span></a> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;| <a class="idref" href="Top.SystemC.Definitions.html#exp_bvar"><span class="id" title="constructor">exp_bvar</span></a> <span class="id" title="var">i</span> ⇒ <a class="idref" href="Top.Util.Metatheory.html#0a1b312427021aedeeb9d59198d8ee69"><span class="id" title="notation">{}</span></a><br/>
@@ -71,7 +96,13 @@ parent: Proofs
 &nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
 
 <br/>
-<span class="comment">(*&nbsp;Block&nbsp;type&nbsp;variables&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab159"></a><h3 class="section">Free Block Type Variables</h3>
+
+</div>
+<div class="code">
 <span class="id" title="keyword">Fixpoint</span> <a name="fv_cvt"><span class="id" title="definition">fv_cvt</span></a> (<span class="id" title="var">T</span> : <a class="idref" href="Top.SystemC.Definitions.html#vtyp"><span class="id" title="inductive">vtyp</span></a>) {<span class="id" title="keyword">struct</span> <span class="id" title="var">T</span>} : <a class="idref" href="Top.Util.Atom.html#atoms"><span class="id" title="abbreviation">atoms</span></a> :=<br/>
 &nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="Top.SystemC.Infrastructure.html#T"><span class="id" title="variable">T</span></a> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;| <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a> ⇒ <a class="idref" href="Top.Util.Metatheory.html#0a1b312427021aedeeb9d59198d8ee69"><span class="id" title="notation">{}</span></a><br/>
@@ -121,6 +152,13 @@ parent: Proofs
 &nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+<a name="lab160"></a><h3 class="section">Free Type Variables</h3>
+
+</div>
+<div class="code">
 <span class="id" title="keyword">Fixpoint</span> <a name="fv_tvt"><span class="id" title="definition">fv_tvt</span></a> (<span class="id" title="var">T</span> : <a class="idref" href="Top.SystemC.Definitions.html#vtyp"><span class="id" title="inductive">vtyp</span></a>) {<span class="id" title="keyword">struct</span> <span class="id" title="var">T</span>} : <a class="idref" href="Top.Util.Atom.html#atoms"><span class="id" title="abbreviation">atoms</span></a> :=<br/>
 <span class="id" title="keyword">match</span> <a class="idref" href="Top.SystemC.Infrastructure.html#T"><span class="id" title="variable">T</span></a> <span class="id" title="keyword">with</span><br/>
 &nbsp;&nbsp;| <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a> ⇒ <a class="idref" href="Top.Util.Metatheory.html#0a1b312427021aedeeb9d59198d8ee69"><span class="id" title="notation">{}</span></a><br/>
@@ -197,11 +235,10 @@ The second step in defining "<span class="inlinecode"><span class="id" title="va
 &nbsp;&nbsp;<span class="id" title="keyword">let</span> <span class="id" title="var">L</span> := <span class="id" title="var">gather_atoms</span> <span class="id" title="tactic">in</span> (<span class="id" title="var">pick</span> <span class="id" title="tactic">fresh</span> <span class="id" title="var">x</span> <span class="id" title="keyword">for</span> <span class="id" title="var">L</span>).<br/>
 
 <br/>
-<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
 </div>
 
 <div class="doc">
-<a name="lab146"></a><h1 class="section"><a name="apply_fresh"></a> The "<span class="inlinecode"><span class="id" title="var">pick</span></span> <span class="inlinecode"><span class="id" title="tactic">fresh</span></span> <span class="inlinecode"><span class="id" title="var">and</span></span> <span class="inlinecode"><span class="id" title="tactic">apply</span></span>" tactic</h1>
+<a name="lab161"></a><h3 class="section"><a name="apply_fresh"></a> The "<span class="inlinecode"><span class="id" title="var">pick</span></span> <span class="inlinecode"><span class="id" title="tactic">fresh</span></span> <span class="inlinecode"><span class="id" title="var">and</span></span> <span class="inlinecode"><span class="id" title="tactic">apply</span></span>" tactic</h3>
 
 <div class="paragraph"> </div>
 
@@ -307,15 +344,12 @@ The second step in defining "<span class="inlinecode"><span class="id" title="va
 </div>
 
 <div class="doc">
-************************************  Opening Closed Lemmas  The naming scheme of the aux lemmas is:
+<a name="lab162"></a><h2 class="section">Opening Closed Lemmas</h2>
+ The naming scheme of the aux lemmas is:
+<pre>
+    open_EXPRe_rec j u e = open_CE_rec i P C (open_EXPR_rec j u e)
+</pre>
 
-<div class="paragraph"> </div>
-
-    open&lt;<tt>EXPR</tt>&gt;e_rec j u e = open&lt;<tt>CE</tt>&gt;<i>rec i P C (open</i>&lt;<tt>EXPR</tt>&gt;<i>rec j u e)
-
-<div class="paragraph"> </div>
-
- ************************************ 
 </div>
 <div class="code">
 
@@ -544,7 +578,9 @@ The second step in defining "<span class="inlinecode"><span class="id" title="va
 </div>
 
 <div class="doc">
-************************************  Substitution / Opening Lemmas         ************************************ 
+<a name="lab163"></a><h1 class="section">Substitution / Opening Lemmas</h1>
+
+ 
 </div>
 <div class="code">
 

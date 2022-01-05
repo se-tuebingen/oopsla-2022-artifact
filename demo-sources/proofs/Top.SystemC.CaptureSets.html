@@ -5,27 +5,39 @@ parent: Proofs
 <h1 class="libtitle">Top.SystemC.CaptureSets</h1>
 
 <div class="code">
+
+<br/>
 </div>
 
 <div class="doc">
-Support here for Capture Sets, a.k.a a record
-    of free and bound variables tracking which variables
-    are captured by a particualar type. 
+This file implements Capture Sets, a.k.a a record
+    of free and bound variables, captured by a particular value. 
 </div>
 <div class="code">
 
 <br/>
 
 <br/>
-
-<br/>
 </div>
 
 <div class="doc">
-**************************************************  Definition of Capture Sets  ************************************************** 
+<a name="lab107"></a><h2 class="section">Definition of Capture Sets</h2>
+
+ 
 <div class="paragraph"> </div>
 
- A captureset -- a pair of free variables and bound variables. 
+ A captureset -- a record of:
+<ul class="doclist">
+<li> free variables (<span class="inlinecode"><a class="idref" href="Top.Util.Atom.html#atoms"><span class="id" title="abbreviation">atoms</span></a></span>)
+
+</li>
+<li> bound variables (<span class="inlinecode"><a class="idref" href="Top.Util.Nat.html#nats"><span class="id" title="abbreviation">nats</span></a></span>)
+
+</li>
+<li> and runtime labels (<span class="inlinecode"><a class="idref" href="Top.Util.Label.html#labels"><span class="id" title="abbreviation">labels</span></a></span>) 
+</li>
+</ul>
+
 </div>
 <div class="code">
 <span class="id" title="keyword">Inductive</span> <a name="cap"><span class="id" title="inductive">cap</span></a> : <span class="id" title="keyword">Type</span> :=<br/>
@@ -35,7 +47,9 @@ Support here for Capture Sets, a.k.a a record
 </div>
 
 <div class="doc">
-**************************************************  Constructors  ************************************************** 
+<a name="lab108"></a><h2 class="section">Smart Constructors</h2>
+
+ 
 </div>
 <div class="code">
 
@@ -49,14 +63,14 @@ Support here for Capture Sets, a.k.a a record
 The empty set may be written similarly to informal practice. 
 </div>
 <div class="code">
-<span class="id" title="keyword">Notation</span> <a name="c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">&quot;</span></a>{}C" :=<br/>
-&nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#empty_cset"><span class="id" title="definition">empty_cset</span></a> : <span class="id" title="var">metatheory_scope</span>.<br/>
+<span class="id" title="keyword">Notation</span> <a name="c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">&quot;</span></a>{}C" := <a class="idref" href="Top.SystemC.CaptureSets.html#empty_cset"><span class="id" title="definition">empty_cset</span></a> : <span class="id" title="var">metatheory_scope</span>.<br/>
 
 <br/>
 </div>
 
 <div class="doc">
-Singletons 
+<a name="lab109"></a><h3 class="section">Singleton Sets</h3>
+
 </div>
 <div class="code">
 <span class="id" title="keyword">Definition</span> <a name="cset_fvar"><span class="id" title="definition">cset_fvar</span></a> (<span class="id" title="var">a</span> : <a class="idref" href="Top.Util.Atom.html#AtomImpl.atom"><span class="id" title="axiom">atom</span></a>) :=<br/>
@@ -78,7 +92,9 @@ Singletons
 </div>
 
 <div class="doc">
-**************************************************  Selectors  ************************************************** 
+<a name="lab110"></a><h2 class="section">Selectors</h2>
+
+ 
 </div>
 <div class="code">
 
@@ -104,19 +120,12 @@ Singletons
 </div>
 
 <div class="doc">
-**************************************************  Operations  ************************************************** 
-</div>
-<div class="code">
+<a name="lab111"></a><h2 class="section">Operations</h2>
 
-<br/>
-<span class="comment">(*&nbsp;Definition&nbsp;cset_lvar&nbsp;(l&nbsp;:&nbsp;atom)&nbsp;:=<br/>
-&nbsp;&nbsp;(cset_set&nbsp;AtomSet.F.empty&nbsp;NatSet.F.empty&nbsp;(AtomSet.F.singleton&nbsp;l)).&nbsp;*)</span><br/>
+ 
+<div class="paragraph"> </div>
 
-<br/>
-</div>
-
-<div class="doc">
-Predicates for determining if a capture set explicity references
+ Predicates for determining if a capture set explicity references
     a variable -- used for determining if a capture set is well formed.
     Don't use these predicates for determining if a capture set
     captures a variable, as one needs to also test cset_universal. 
@@ -161,14 +170,14 @@ Capture set unions are what you'd expect.
 </div>
 <div class="code">
 <span class="id" title="keyword">Definition</span> <a name="cset_union"><span class="id" title="definition">cset_union</span></a> (<span class="id" title="var">c1</span> <span class="id" title="var">c2</span> : <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a>) : <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a> :=<br/>
-&nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#cset_set"><span class="id" title="constructor">cset_set</span></a> <br/>
+&nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#cset_set"><span class="id" title="constructor">cset_set</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.Util.Atom.html#AtomSet.F.union"><span class="id" title="axiom">AtomSet.F.union</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_fvars"><span class="id" title="definition">cset_fvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c1"><span class="id" title="variable">c1</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_fvars"><span class="id" title="definition">cset_fvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c2"><span class="id" title="variable">c2</span></a>))<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.Util.Nat.html#NatSet.F.union"><span class="id" title="axiom">NatSet.F.union</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_bvars"><span class="id" title="definition">cset_bvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c1"><span class="id" title="variable">c1</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_bvars"><span class="id" title="definition">cset_bvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c2"><span class="id" title="variable">c2</span></a>))<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.Util.Label.html#LabelSet.F.union"><span class="id" title="axiom">LabelSet.F.union</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_lvars"><span class="id" title="definition">cset_lvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c1"><span class="id" title="variable">c1</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_lvars"><span class="id" title="definition">cset_lvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c2"><span class="id" title="variable">c2</span></a>)).<br/>
 
 <br/>
 <span class="id" title="keyword">Definition</span> <a name="cset_subset_dec"><span class="id" title="definition">cset_subset_dec</span></a> (<span class="id" title="var">C</span> <span class="id" title="var">D</span> : <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a>) :=<br/>
-&nbsp;&nbsp;<a class="idref" href="Top.Util.Atom.html#AtomSet.F.subset"><span class="id" title="axiom">AtomSet.F.subset</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_fvars"><span class="id" title="definition">cset_fvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#C"><span class="id" title="variable">C</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_fvars"><span class="id" title="definition">cset_fvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#D"><span class="id" title="variable">D</span></a>) <br/>
+&nbsp;&nbsp;<a class="idref" href="Top.Util.Atom.html#AtomSet.F.subset"><span class="id" title="axiom">AtomSet.F.subset</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_fvars"><span class="id" title="definition">cset_fvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#C"><span class="id" title="variable">C</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_fvars"><span class="id" title="definition">cset_fvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#D"><span class="id" title="variable">D</span></a>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#9ddeac0ab66152bd1d64bedb507a795e"><span class="id" title="notation">&amp;&amp;</span></a> <a class="idref" href="Top.Util.Nat.html#NatSet.F.subset"><span class="id" title="axiom">NatSet.F.subset</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_bvars"><span class="id" title="definition">cset_bvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#C"><span class="id" title="variable">C</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_bvars"><span class="id" title="definition">cset_bvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#D"><span class="id" title="variable">D</span></a>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#9ddeac0ab66152bd1d64bedb507a795e"><span class="id" title="notation">&amp;&amp;</span></a> <a class="idref" href="Top.Util.Label.html#LabelSet.F.subset"><span class="id" title="axiom">LabelSet.F.subset</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_lvars"><span class="id" title="definition">cset_lvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#C"><span class="id" title="variable">C</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_lvars"><span class="id" title="definition">cset_lvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#D"><span class="id" title="variable">D</span></a>).<br/>
 
@@ -176,7 +185,9 @@ Capture set unions are what you'd expect.
 </div>
 
 <div class="doc">
-**************************************************  Logical Predicates  ************************************************** 
+<a name="lab112"></a><h2 class="section">Logical Predicates</h2>
+
+ 
 </div>
 <div class="code">
 
@@ -186,15 +197,17 @@ Capture set unions are what you'd expect.
 
 <br/>
 <span class="id" title="keyword">Definition</span> <a name="cset_subset_prop"><span class="id" title="definition">cset_subset_prop</span></a> (<span class="id" title="var">c</span> : <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a>) (<span class="id" title="var">d</span> : <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a>) : <span class="id" title="keyword">Prop</span> :=<br/>
-&nbsp;&nbsp;<a class="idref" href="Top.Util.Atom.html#AtomSet.F.Subset"><span class="id" title="definition">AtomSet.F.Subset</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_fvars"><span class="id" title="definition">cset_fvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c"><span class="id" title="variable">c</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_fvars"><span class="id" title="definition">cset_fvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#d"><span class="id" title="variable">d</span></a>) <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">∧</span></a> <a class="idref" href="Top.Util.Nat.html#NatSet.F.Subset"><span class="id" title="definition">NatSet.F.Subset</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_bvars"><span class="id" title="definition">cset_bvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c"><span class="id" title="variable">c</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_bvars"><span class="id" title="definition">cset_bvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#d"><span class="id" title="variable">d</span></a>) <br/>
+&nbsp;&nbsp;<a class="idref" href="Top.Util.Atom.html#AtomSet.F.Subset"><span class="id" title="definition">AtomSet.F.Subset</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_fvars"><span class="id" title="definition">cset_fvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c"><span class="id" title="variable">c</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_fvars"><span class="id" title="definition">cset_fvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#d"><span class="id" title="variable">d</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">∧</span></a> <a class="idref" href="Top.Util.Nat.html#NatSet.F.Subset"><span class="id" title="definition">NatSet.F.Subset</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_bvars"><span class="id" title="definition">cset_bvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c"><span class="id" title="variable">c</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_bvars"><span class="id" title="definition">cset_bvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#d"><span class="id" title="variable">d</span></a>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">∧</span></a> <a class="idref" href="Top.Util.Label.html#LabelSet.F.Subset"><span class="id" title="definition">LabelSet.F.Subset</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_lvars"><span class="id" title="definition">cset_lvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c"><span class="id" title="variable">c</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_lvars"><span class="id" title="definition">cset_lvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#d"><span class="id" title="variable">d</span></a>).<br/>
 
 <br/>
 </div>
 
 <div class="doc">
-**************************************************  Properties  ************************************************** 
+<a name="lab113"></a><h2 class="section">Properties</h2>
+
+ 
 </div>
 <div class="code">
 
@@ -211,29 +224,29 @@ Capture set unions are what you'd expect.
 &nbsp;&nbsp;<span class="id" title="keyword">Variable</span> <a name="Props.C"><span class="id" title="variable">C</span></a> <a name="Props.D"><span class="id" title="variable">D</span></a> <a name="Props.C1"><span class="id" title="variable">C1</span></a> <a name="Props.C2"><span class="id" title="variable">C2</span></a> <a name="Props.C3"><span class="id" title="variable">C3</span></a> : <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a>.<br/>
 
 <br/>
-&nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a name="cset_bvar_mem_iff"><span class="id" title="lemma">cset_bvar_mem_iff</span></a> : <br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a name="cset_bvar_mem_iff"><span class="id" title="lemma">cset_bvar_mem_iff</span></a> :<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_bvar"><span class="id" title="definition">cset_references_bvar</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.k"><span class="id" title="variable">k</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#4bfb4f2d0721ba668e3a802ab1b745a1"><span class="id" title="notation">↔</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_bvar_dec"><span class="id" title="definition">cset_references_bvar_dec</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.k"><span class="id" title="variable">k</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#true"><span class="id" title="constructor">true</span></a>.<br/>
- 
+
 <br/>
 &nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a name="cset_fvar_mem_iff"><span class="id" title="lemma">cset_fvar_mem_iff</span></a> :<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_fvar"><span class="id" title="definition">cset_references_fvar</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.a"><span class="id" title="variable">a</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#4bfb4f2d0721ba668e3a802ab1b745a1"><span class="id" title="notation">↔</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_fvar_dec"><span class="id" title="definition">cset_references_fvar_dec</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.a"><span class="id" title="variable">a</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#true"><span class="id" title="constructor">true</span></a>.<br/>
- 
+
 <br/>
 &nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a name="cset_lvar_mem_iff"><span class="id" title="lemma">cset_lvar_mem_iff</span></a> :<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_lvar"><span class="id" title="definition">cset_references_lvar</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#4bfb4f2d0721ba668e3a802ab1b745a1"><span class="id" title="notation">↔</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_lvar_dec"><span class="id" title="definition">cset_references_lvar_dec</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#true"><span class="id" title="constructor">true</span></a>.<br/>
- 
+
 <br/>
-&nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a name="cset_bvar_not_mem_iff"><span class="id" title="lemma">cset_bvar_not_mem_iff</span></a> : <br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a name="cset_bvar_not_mem_iff"><span class="id" title="lemma">cset_bvar_not_mem_iff</span></a> :<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_bvar"><span class="id" title="definition">cset_references_bvar</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.k"><span class="id" title="variable">k</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#4bfb4f2d0721ba668e3a802ab1b745a1"><span class="id" title="notation">↔</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_bvar_dec"><span class="id" title="definition">cset_references_bvar_dec</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.k"><span class="id" title="variable">k</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#false"><span class="id" title="constructor">false</span></a>.<br/>
- 
+
 <br/>
 &nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a name="cset_fvar_not_mem_iff"><span class="id" title="lemma">cset_fvar_not_mem_iff</span></a> :<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_fvar"><span class="id" title="definition">cset_references_fvar</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.a"><span class="id" title="variable">a</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#4bfb4f2d0721ba668e3a802ab1b745a1"><span class="id" title="notation">↔</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_fvar_dec"><span class="id" title="definition">cset_references_fvar_dec</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.a"><span class="id" title="variable">a</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#false"><span class="id" title="constructor">false</span></a>.<br/>
- 
+
 <br/>
 &nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a name="cset_lvar_not_mem_iff"><span class="id" title="lemma">cset_lvar_not_mem_iff</span></a> :<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_lvar"><span class="id" title="definition">cset_references_lvar</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#4bfb4f2d0721ba668e3a802ab1b745a1"><span class="id" title="notation">↔</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_lvar_dec"><span class="id" title="definition">cset_references_lvar_dec</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#false"><span class="id" title="constructor">false</span></a>.<br/>
- 
+
 <br/>
 &nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a name="fvars_1"><span class="id" title="lemma">fvars_1</span></a> : <a class="idref" href="Top.SystemC.CaptureSets.html#cset_fvars"><span class="id" title="definition">cset_fvars</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_set"><span class="id" title="constructor">cset_set</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.A"><span class="id" title="variable">A</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.N"><span class="id" title="variable">N</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.R"><span class="id" title="variable">R</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.A"><span class="id" title="variable">A</span></a>.<br/>
  
@@ -317,19 +330,19 @@ Capture set unions are what you'd expect.
  
 <br/>
 &nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a name="union_sub_1"><span class="id" title="lemma">union_sub_1</span></a> : <a class="idref" href="Top.SystemC.CaptureSets.html#cset_subset_prop"><span class="id" title="definition">cset_subset_prop</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.D"><span class="id" title="variable">D</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_union"><span class="id" title="definition">cset_union</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.D"><span class="id" title="variable">D</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.D"><span class="id" title="variable">D</span></a>.<br/>
- 
+
 <br/>
 &nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a name="union_sub_2"><span class="id" title="lemma">union_sub_2</span></a> : <a class="idref" href="Top.SystemC.CaptureSets.html#cset_subset_prop"><span class="id" title="definition">cset_subset_prop</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.D"><span class="id" title="variable">D</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.D"><span class="id" title="variable">D</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_union"><span class="id" title="definition">cset_union</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.D"><span class="id" title="variable">D</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a>.<br/>
- 
+
 <br/>
 &nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a name="union_subset_distribute_1"><span class="id" title="lemma">union_subset_distribute_1</span></a> : <a class="idref" href="Top.SystemC.CaptureSets.html#cset_subset_prop"><span class="id" title="definition">cset_subset_prop</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C1"><span class="id" title="variable">C1</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C2"><span class="id" title="variable">C2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_subset_prop"><span class="id" title="definition">cset_subset_prop</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_union"><span class="id" title="definition">cset_union</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C1"><span class="id" title="variable">C1</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.D"><span class="id" title="variable">D</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_union"><span class="id" title="definition">cset_union</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.C2"><span class="id" title="variable">C2</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#Props.D"><span class="id" title="variable">D</span></a>).<br/>
- 
+
 <br/>
 <span class="id" title="keyword">End</span> <a class="idref" href="Top.SystemC.CaptureSets.html#Props"><span class="id" title="section">Props</span></a>.<br/>
 
 <br/>
 <span class="comment">(*&nbsp;TODO&nbsp;defined&nbsp;here&nbsp;to&nbsp;avoid&nbsp;all&nbsp;the&nbsp;implicit&nbsp;arguments&nbsp;*)</span><br/>
-<span class="id" title="keyword">Lemma</span> <a name="subset_lvar_1"><span class="id" title="lemma">subset_lvar_1</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">R</span> <span class="id" title="var">C</span> <span class="id" title="var">l</span>, <br/>
+<span class="id" title="keyword">Lemma</span> <a name="subset_lvar_1"><span class="id" title="lemma">subset_lvar_1</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">R</span> <span class="id" title="var">C</span> <span class="id" title="var">l</span>,<br/>
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#cset_subset_prop"><span class="id" title="definition">cset_subset_prop</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_lvar"><span class="id" title="definition">cset_references_lvar</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_lvar"><span class="id" title="definition">cset_references_lvar</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#l"><span class="id" title="variable">l</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#C"><span class="id" title="variable">C</span></a>.<br/>
  
 <br/>
@@ -343,7 +356,7 @@ Capture set unions are what you'd expect.
 <br/>
 
 <br/>
-<span class="comment">(*&nbsp;Some&nbsp;subset&nbsp;properties&nbsp;*)</span><br/>
+<span class="comment">(*&nbsp;***&nbsp;Some&nbsp;subset&nbsp;properties&nbsp;*)</span><br/>
 <span class="id" title="keyword">Lemma</span> <a name="subset_refl"><span class="id" title="lemma">subset_refl</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">C</span>,<br/>
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#cset_subset_prop"><span class="id" title="definition">cset_subset_prop</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#C"><span class="id" title="variable">C</span></a>.<br/>
 
@@ -362,68 +375,14 @@ Capture set unions are what you'd expect.
 <br/>
 
 <br/>
-<span class="comment">(***********)</span><br/>
-<span class="comment">(*&nbsp;Tactics&nbsp;*)</span><br/>
-<span class="comment">(***********)</span><br/>
-
-<br/>
-
-<br/>
-
-<br/>
-
-<br/>
-
-<br/>
-<span class="id" title="keyword">Lemma</span> <a name="funion_empty_idempotent"><span class="id" title="lemma">funion_empty_idempotent</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">xs</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.Util.Nat.html#NatSet.F.union"><span class="id" title="axiom">NatSet.F.union</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a> <a class="idref" href="Top.Util.Nat.html#848efb4c948b9a6292c23ceb48fa2d40"><span class="id" title="notation">{}</span></a><a class="idref" href="Top.Util.Nat.html#848efb4c948b9a6292c23ceb48fa2d40"><span class="id" title="notation">N</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a>.<br/>
- 
-<br/>
-<span class="id" title="keyword">Lemma</span> <a name="empty_funion_idempotent"><span class="id" title="lemma">empty_funion_idempotent</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">xs</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.Util.Nat.html#NatSet.F.union"><span class="id" title="axiom">NatSet.F.union</span></a> <a class="idref" href="Top.Util.Nat.html#848efb4c948b9a6292c23ceb48fa2d40"><span class="id" title="notation">{}</span></a><a class="idref" href="Top.Util.Nat.html#848efb4c948b9a6292c23ceb48fa2d40"><span class="id" title="notation">N</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a>.<br/>
- 
-<br/>
-<span class="id" title="keyword">Lemma</span> <a name="union_empty_idempotent"><span class="id" title="lemma">union_empty_idempotent</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">xs</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.Util.Atom.html#AtomSet.F.union"><span class="id" title="axiom">AtomSet.F.union</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a> <a class="idref" href="Top.Util.Metatheory.html#0a1b312427021aedeeb9d59198d8ee69"><span class="id" title="notation">{}</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a>.<br/>
- 
-<br/>
-<span class="id" title="keyword">Lemma</span> <a name="empty_union_idempotent"><span class="id" title="lemma">empty_union_idempotent</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">xs</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.Util.Atom.html#AtomSet.F.union"><span class="id" title="axiom">AtomSet.F.union</span></a> <a class="idref" href="Top.Util.Metatheory.html#0a1b312427021aedeeb9d59198d8ee69"><span class="id" title="notation">{}</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a>.<br/>
- 
-<br/>
-<span class="id" title="keyword">Lemma</span> <a name="lunion_empty_idempotent"><span class="id" title="lemma">lunion_empty_idempotent</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">xs</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.Util.Label.html#LabelSet.F.union"><span class="id" title="axiom">LabelSet.F.union</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a> <a class="idref" href="Top.Util.Label.html#6d5f914ca8d436a7f90e0b9be989e988"><span class="id" title="notation">{}</span></a><a class="idref" href="Top.Util.Label.html#6d5f914ca8d436a7f90e0b9be989e988"><span class="id" title="notation">L</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a>.<br/>
- 
-<br/>
-<span class="id" title="keyword">Lemma</span> <a name="empty_lunion_idempotent"><span class="id" title="lemma">empty_lunion_idempotent</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">xs</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.Util.Label.html#LabelSet.F.union"><span class="id" title="axiom">LabelSet.F.union</span></a> <a class="idref" href="Top.Util.Label.html#6d5f914ca8d436a7f90e0b9be989e988"><span class="id" title="notation">{}</span></a><a class="idref" href="Top.Util.Label.html#6d5f914ca8d436a7f90e0b9be989e988"><span class="id" title="notation">L</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a>.<br/>
- 
-<br/>
-
-<br/>
-<span class="id" title="keyword">Lemma</span> <a name="cunion_empty_idempotent"><span class="id" title="lemma">cunion_empty_idempotent</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">xs</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#cset_union"><span class="id" title="definition">cset_union</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">{}</span></a><a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a>.<br/>
- 
-<br/>
-<span class="id" title="keyword">Lemma</span> <a name="empty_cunion_idempotent"><span class="id" title="lemma">empty_cunion_idempotent</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">xs</span>,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#cset_union"><span class="id" title="definition">cset_union</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">{}</span></a><a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">C</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#xs"><span class="id" title="variable">xs</span></a>.<br/>
- 
-<br/>
-
-<br/>
-
-<br/>
-
-<br/>
-<span class="id" title="keyword">Tactic Notation</span> "csetsimpl" "in" <span class="id" title="var">hyp</span>(<span class="id" title="var">H</span>) := <span class="id" title="var">csetsimplIn</span> <span class="id" title="var">H</span>.<br/>
-
-<br/>
 
 <br/>
 </div>
 
 <div class="doc">
-**************************************************  Locally Namelesss  ************************************************** 
+<a name="lab114"></a><h2 class="section">Locally Namelesss</h2>
+
+ 
 </div>
 <div class="code">
 
@@ -449,9 +408,9 @@ Opening a capture set with a bound variable d<span class="inlinecode"><a class="
 </div>
 <div class="code">
 <span class="id" title="keyword">Definition</span> <a name="open_cset"><span class="id" title="definition">open_cset</span></a> (<span class="id" title="var">k</span> : <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a>) (<span class="id" title="var">c</span> : <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a>) (<span class="id" title="var">d</span> : <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a>) : <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a> :=<br/>
-&nbsp;&nbsp;<span class="id" title="keyword">if</span> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_bvar_dec"><span class="id" title="definition">cset_references_bvar_dec</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#k"><span class="id" title="variable">k</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#d"><span class="id" title="variable">d</span></a> <span class="id" title="keyword">then</span> <br/>
+&nbsp;&nbsp;<span class="id" title="keyword">if</span> <a class="idref" href="Top.SystemC.CaptureSets.html#cset_references_bvar_dec"><span class="id" title="definition">cset_references_bvar_dec</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#k"><span class="id" title="variable">k</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#d"><span class="id" title="variable">d</span></a> <span class="id" title="keyword">then</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#cset_union"><span class="id" title="definition">cset_union</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c"><span class="id" title="variable">c</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_remove_bvar"><span class="id" title="definition">cset_remove_bvar</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#k"><span class="id" title="variable">k</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#d"><span class="id" title="variable">d</span></a>)<br/>
-&nbsp;&nbsp;<span class="id" title="keyword">else</span> <br/>
+&nbsp;&nbsp;<span class="id" title="keyword">else</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#d"><span class="id" title="variable">d</span></a>.<br/>
 
 <br/>
@@ -469,7 +428,7 @@ Substituting a capture set with a free variable d<span class="inlinecode"><a cla
 
 <br/>
 <span class="id" title="keyword">Lemma</span> <a name="subst_over_subset"><span class="id" title="lemma">subst_over_subset</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">C1</span> <span class="id" title="var">C2</span> <span class="id" title="var">D</span> <span class="id" title="var">x</span>,<br/>
-&nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#cset_subset_prop"><span class="id" title="definition">cset_subset_prop</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#C1"><span class="id" title="variable">C1</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#C2"><span class="id" title="variable">C2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <br/>
+&nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#cset_subset_prop"><span class="id" title="definition">cset_subset_prop</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#C1"><span class="id" title="variable">C1</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#C2"><span class="id" title="variable">C2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#cset_subset_prop"><span class="id" title="definition">cset_subset_prop</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#subst_cset"><span class="id" title="definition">subst_cset</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#D"><span class="id" title="variable">D</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#C1"><span class="id" title="variable">C1</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#subst_cset"><span class="id" title="definition">subst_cset</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#D"><span class="id" title="variable">D</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#C2"><span class="id" title="variable">C2</span></a>).<br/>
 
 <br/>
@@ -528,14 +487,9 @@ Substituting a capture set with a free variable d<span class="inlinecode"><a cla
 <br/>
 
 <br/>
-<span class="comment">(*&nbsp;unfold&nbsp;subst_cb,&nbsp;subst_cset,&nbsp;cset_references_fvar_dec,&nbsp;cset_fvar,&nbsp;cset_remove_fvar,&nbsp;cset_union.&nbsp;&nbsp;<br/>
-&nbsp;&nbsp;destruct&nbsp;C1;&nbsp;destruct_set_mem&nbsp;X&nbsp;(singleton&nbsp;x)...&nbsp;fsetdec.&nbsp;*)</span><br/>
-
-<br/>
 <span class="id" title="keyword">Lemma</span> <a name="open_cset_rec_capt_aux"><span class="id" title="lemma">open_cset_rec_capt_aux</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">c</span> <span class="id" title="var">j</span> <span class="id" title="var">V</span> <span class="id" title="var">i</span> <span class="id" title="var">U</span>,<br/>
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#i"><span class="id" title="variable">i</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#a0a5068f83a704fcfbda8cd473a6cfea"><span class="id" title="notation">≠</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#j"><span class="id" title="variable">j</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#capt"><span class="id" title="definition">capt</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#V"><span class="id" title="variable">V</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
-&nbsp;&nbsp;<span class="comment">(*&nbsp;TODO&nbsp;probably,&nbsp;we&nbsp;also&nbsp;want&nbsp;disjointness&nbsp;of&nbsp;labels&nbsp;here?&nbsp;*)</span><br/>
 &nbsp;&nbsp;<a class="idref" href="Top.Util.Atom.html#fbbd51ffbc33667d3bdfed095f0f0c23"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.CaptureSets.html#cset_fvars"><span class="id" title="definition">cset_fvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#V"><span class="id" title="variable">V</span></a><a class="idref" href="Top.Util.Atom.html#fbbd51ffbc33667d3bdfed095f0f0c23"><span class="id" title="notation">)</span></a> <a class="idref" href="Top.Util.Atom.html#fbbd51ffbc33667d3bdfed095f0f0c23"><span class="id" title="notation">`</span></a><a class="idref" href="Top.Util.Atom.html#fbbd51ffbc33667d3bdfed095f0f0c23"><span class="id" title="notation">disjoint</span></a><a class="idref" href="Top.Util.Atom.html#fbbd51ffbc33667d3bdfed095f0f0c23"><span class="id" title="notation">`</span></a> <a class="idref" href="Top.Util.Atom.html#fbbd51ffbc33667d3bdfed095f0f0c23"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.CaptureSets.html#cset_fvars"><span class="id" title="definition">cset_fvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#U"><span class="id" title="variable">U</span></a><a class="idref" href="Top.Util.Atom.html#fbbd51ffbc33667d3bdfed095f0f0c23"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;<a class="idref" href="Top.Util.Label.html#labels_disjoint"><span class="id" title="definition">labels_disjoint</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_lvars"><span class="id" title="definition">cset_lvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#V"><span class="id" title="variable">V</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_lvars"><span class="id" title="definition">cset_lvars</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#U"><span class="id" title="variable">U</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.CaptureSets.html#open_cset"><span class="id" title="definition">open_cset</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#j"><span class="id" title="variable">j</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#V"><span class="id" title="variable">V</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c"><span class="id" title="variable">c</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#open_cset"><span class="id" title="definition">open_cset</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#i"><span class="id" title="variable">i</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#U"><span class="id" title="variable">U</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#open_cset"><span class="id" title="definition">open_cset</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#j"><span class="id" title="variable">j</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#V"><span class="id" title="variable">V</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c"><span class="id" title="variable">c</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
