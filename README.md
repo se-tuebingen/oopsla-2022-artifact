@@ -97,7 +97,7 @@ following actions.
 > Depending on your setup, installation might take some time.
 > Compiling the Coq proofs takes approximately 20min on an 2.5 GHz Intel Core i7 with 16GB memory.
 
-Make sure you have the correct version of Coq installed. We developed our proofs with Coq version 8.10.2. The easiest way to compile the proofs is to use Docker and the [Dockerfile](https://github.com/se-tuebingen/oopsla-2022-artifact/blob/main/coq/Dockerfile), which we prepared.
+Make sure you have the correct version of Coq installed. We developed our proofs with Coq version `8.10.2`. The easiest way to compile the proofs is to use Docker and the [Dockerfile](https://github.com/se-tuebingen/oopsla-2022-artifact/blob/main/coq/Dockerfile), which we prepared.
 
 Clone the artifact repository
 ```
@@ -123,14 +123,34 @@ docker run -it --name systemc-proofs-container systemc-proofs-image
 ```
 
 This will start a shell in the `/home/coq` directory with a copy of the proofs
-in `/home/proofs`.
+in `/home/proofs`. The `Dockerimage` already runs all necessary actions
+to set up the proofs (that is, `coq_makefile`).
 
 Navigate to the proofs and build them:
 ```
 cd /home/proofs
 make
 ```
-Compiling the proofs takes about 20min.
+Compiling the proofs takes about 20min. In the kick-the-tires phase you can
+abort the compilation after seeing initial output like
+
+<details>
+```
+make[1]: Entering directory '/home/proofs'
+COQDEP VFILES
+make[1]: Nothing to be done for 'Makefile'.
+make[1]: Leaving directory '/home/proofs'
+rm -fr html
+make[1]: Entering directory '/home/proofs'
+"coqc"  -q   -R . Top Util/Taktiks.v
+"coqc"  -q   -R . Top Util/FSetNotin.v
+"coqc"  -q   -R . Top Util/ListFacts.v
+"coqc"  -q   -R . Top Util/FiniteSets.v
+"coqc"  -q   -R . Top Util/FSetDecide.v
+"coqc"  -q   -R . Top Util/Atom.v
+...
+```
+</details>
 
 #### Cleanup
 
@@ -144,3 +164,10 @@ docker image rm -f systemc-proofs-image
 
 
 ## Step-By-Step
+
+### Functional
+
+### Reusable
+
+### Available
+We will make our artifact available via Zenodo.
