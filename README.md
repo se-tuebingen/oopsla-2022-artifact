@@ -38,7 +38,7 @@ For the kick-the-tires phase, please perform the following steps, which should n
 
 2. Visit the [tutorial page](https://se-tuebingen.github.io/oopsla-2022-artifact/tutorial/#repls)
    and click the `run` button on the right. The compiler will be loaded, the example above will
-   be executed and it should output "Hello World!\n()".
+   be executed and it should output `"Hello World!\n()"`.
 
 
 ### Kick-the-tires: Coq Proofs
@@ -53,6 +53,7 @@ For the CI run that corresponds to this release, please visit:
 
 TODO WE NEED TO UPDATE THE LINK
 
+<details>
 To manually navigate to this run, you may select the `build` job and expand `Run coq-community/docker-coq-action@v1`, and finally expand `Build`. You should see the output of `coqc`, which
 should look like
 
@@ -87,6 +88,7 @@ should look like
   -> installed proofs.dev
   Done.
 ```
+</details>
 
 #### Alternative: locally compile the Coq proofs
 Alternatively, you can also compile the coq proofs yourself by performing the
