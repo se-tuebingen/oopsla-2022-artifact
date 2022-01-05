@@ -4,3 +4,4 @@
 *.vos
 *.aux
 .coqdeps.d
+html
