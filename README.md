@@ -27,7 +27,7 @@ The website contains
 We claim reusability of the proofs and the interactive demo, but not of the calculus _implementation_ itself.
 
 ### Kick-the-tires: Demo Website
-For the kick-the-tires phase, please perform the following steps, which should not require more than 1 minute:
+For the kick-the-tires phase, please perform the following steps, which should not require more than 1-2 minutes:
 
 1. Visit the prepared [artifact website](https://se-tuebingen.github.io/oopsla-2022-artifact/).
    It is hosted on github and will not reveal any information to us.
