@@ -33,8 +33,8 @@ jobs:
       working-directory: demo-sources
       run: bundle exec jekyll build --baseurl /oopsla-2022-artifact
 
-    - name: Copy coq documentation
-      run: cp -r coq/html demo-sources/_site/proofs
+    # - name: Copy coq documentation
+    #  run: cp -r coq/html demo-sources/_site/proofs
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.6
