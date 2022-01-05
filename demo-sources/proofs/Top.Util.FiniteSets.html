@@ -1,0 +1,72 @@
+---
+layout: coqdoc
+parent: Proofs
+---
+<h1 class="libtitle">Top.Util.FiniteSets</h1>
+
+<div class="code">
+</div>
+
+<div class="doc">
+A library for finite sets with extensional equality.
+
+<div class="paragraph"> </div>
+
+    Author: Brian Aydemir. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab12"></a><h1 class="section">Interface</h1>
+
+<div class="paragraph"> </div>
+
+ The following interface wraps the standard library's finite set
+    interface with an additional property: extensional equality. 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Module</span> <span class="id" title="keyword">Type</span> <a name="S"><span class="id" title="module">S</span></a>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Declare Module</span> <a name="S.E"><span class="id" title="module">E</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Structures.OrderedTypeEx.html#UsualOrderedType"><span class="id" title="module">UsualOrderedType</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Declare Module</span> <a name="S.F"><span class="id" title="module">F</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.FSets.FSetInterface.html#S"><span class="id" title="module">FSetInterface.S</span></a> <span class="id" title="keyword">with</span> <span class="id" title="keyword">Module</span> <span class="id" title="var">E</span> := <a class="idref" href="Top.Util.FiniteSets.html#S.E"><span class="id" title="module">E</span></a>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Parameter</span> <a name="S.eq_if_Equal"><span class="id" title="axiom">eq_if_Equal</span></a> :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">∀</span> <span class="id" title="var">s</span> <span class="id" title="var">s'</span> : <a class="idref" href="Top.Util.FiniteSets.html#S.t"><span class="id" title="axiom">F.t</span></a>, <a class="idref" href="Top.Util.FiniteSets.html#S.Equal"><span class="id" title="definition">F.Equal</span></a> <a class="idref" href="Top.Util.FiniteSets.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="Top.Util.FiniteSets.html#s'"><span class="id" title="variable">s'</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <a class="idref" href="Top.Util.FiniteSets.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.Util.FiniteSets.html#s'"><span class="id" title="variable">s'</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">End</span> <a class="idref" href="Top.Util.FiniteSets.html#S"><span class="id" title="module">S</span></a>.<br/>
+
+<br/>
+<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab13"></a><h1 class="section">Implementation</h1>
+
+<div class="paragraph"> </div>
+
+ For documentation purposes, we hide the implementation of a
+    functor implementing the above interface.  We note only that the
+    implementation here assumes (as an axiom) that proof irrelevance
+    holds. 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Module</span> <a name="Make"><span class="id" title="module">Make</span></a> (<span class="id" title="var">X</span> : <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Structures.OrderedTypeEx.html#UsualOrderedType"><span class="id" title="module">UsualOrderedType</span></a>) &lt;: <a class="idref" href="Top.Util.FiniteSets.html#S"><span class="id" title="module">S</span></a> <span class="id" title="keyword">with</span> <span class="id" title="keyword">Module</span> <span class="id" title="var">E</span> := <a class="idref" href="Top.Util.FiniteSets.html#X"><span class="id" title="module">X</span></a>.<br/>
+
+<br/>
+
+<br/>
+<span class="id" title="keyword">End</span> <a class="idref" href="Top.Util.FiniteSets.html#Make"><span class="id" title="module">Make</span></a>.<br/>
+</div>

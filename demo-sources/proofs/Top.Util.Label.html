@@ -1,0 +1,355 @@
+---
+layout: coqdoc
+parent: Proofs
+---
+<h1 class="libtitle">Top.Util.Label</h1>
+
+<div class="code">
+</div>
+
+<div class="doc">
+Support for atoms, i.e., objects with decidable equality.  We
+    provide here the ability to generate an atom fresh for any finite
+    collection, e.g., the lemma <span class="inlinecode"><a class="idref" href="Top.Util.Atom.html#atom_fresh_for_set"><span class="id" title="lemma">atom_fresh_for_set</span></a></span>, and a tactic to
+    pick an atom fresh for the current proof context.
+
+<div class="paragraph"> </div>
+
+    Authors: Arthur Charguéraud and Brian Aydemir.
+
+<div class="paragraph"> </div>
+
+    Implementation note: In older versions of Coq, <span class="inlinecode"><span class="id" title="library">OrderedTypeEx</span></span>
+    redefines decimal constants to be integers and not natural
+    numbers.  The following scope declaration is intended to address
+    this issue.  In newer versions of Coq, the declaration should be
+    benign. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+
+<br/>
+<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab41"></a><h1 class="section">Definition</h1>
+
+<div class="paragraph"> </div>
+
+ Labels are structureless objects such that we can always generate
+    one fresh from a finite collection.  Equality on labels is <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#X.E.eq"><span class="id" title="axiom">eq</span></a></span> and
+    decidable.  We use Coq's module system to make abstract the
+    implementation of labels.  The <span class="inlinecode"><span class="id" title="keyword">Export</span></span> <span class="inlinecode"><a class="idref" href="Top.Util.Label.html#LabelImpl"><span class="id" title="module">LabelImpl</span></a></span> line below allows
+    us to refer to the type <span class="inlinecode"><a class="idref" href="Top.Util.Atom.html#AtomImpl.atom"><span class="id" title="definition">atom</span></a></span> and its properties without having
+    to qualify everything with "<span class="inlinecode"><a class="idref" href="Top.Util.Label.html#LabelImpl"><span class="id" title="module">LabelImpl</span></a>.</span>". 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Module</span> <span class="id" title="keyword">Type</span> <a name="LABEL"><span class="id" title="module">LABEL</span></a>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Parameter</span> <a name="LABEL.label"><span class="id" title="axiom">label</span></a> : <span class="id" title="keyword">Set</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Parameter</span> <a name="LABEL.label_fresh_for_list"><span class="id" title="axiom">label_fresh_for_list</span></a> :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">∀</span> (<span class="id" title="var">xs</span> : <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="Top.Util.Label.html#LABEL.label"><span class="id" title="axiom">label</span></a>), <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">{</span></a><span class="id" title="var">x</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">:</span></a> <a class="idref" href="Top.Util.Label.html#LABEL.label"><span class="id" title="axiom">label</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">|</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">List.In</span></a> <a class="idref" href="Top.Util.Label.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.Label.html#xs"><span class="id" title="variable">xs</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">}</span></a>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Declare Module</span> <a name="LABEL.Label_as_OT"><span class="id" title="module">Label_as_OT</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Structures.OrderedTypeEx.html#UsualOrderedType"><span class="id" title="module">UsualOrderedType</span></a> <span class="id" title="keyword">with</span> <span class="id" title="keyword">Definition</span> <span class="id" title="var">t</span> := <a class="idref" href="Top.Util.Label.html#LABEL.label"><span class="id" title="axiom">label</span></a>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Parameter</span> <a name="LABEL.eq_label_dec"><span class="id" title="axiom">eq_label_dec</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span> : <a class="idref" href="Top.Util.Label.html#LABEL.label"><span class="id" title="axiom">label</span></a>, <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">{</span></a><a class="idref" href="Top.Util.Label.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.Util.Label.html#y"><span class="id" title="variable">y</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">}</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">+</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">{</span></a><a class="idref" href="Top.Util.Label.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#a0a5068f83a704fcfbda8cd473a6cfea"><span class="id" title="notation">≠</span></a> <a class="idref" href="Top.Util.Label.html#y"><span class="id" title="variable">y</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">}</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">End</span> <a class="idref" href="Top.Util.Label.html#LABEL"><span class="id" title="module">LABEL</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The implementation of the above interface is hidden for
+    documentation purposes. 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Module</span> <a name="LabelImpl"><span class="id" title="module">LabelImpl</span></a> : <a class="idref" href="Top.Util.Label.html#LABEL"><span class="id" title="module">LABEL</span></a>.<br/>
+
+<br/>
+
+<br/>
+<span class="id" title="keyword">End</span> <a class="idref" href="Top.Util.Label.html#LabelImpl"><span class="id" title="module">LabelImpl</span></a>.<br/>
+
+<br/>
+
+<br/>
+<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab42"></a><h1 class="section">Finite sets of labels</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab43"></a><h2 class="section">Definitions</h2>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Module</span> <a name="LabelSet"><span class="id" title="module">LabelSet</span></a> : <a class="idref" href="Top.Util.FiniteSets.html#S"><span class="id" title="module">FiniteSets.S</span></a> <span class="id" title="keyword">with</span> <span class="id" title="keyword">Module</span> <span class="id" title="var">E</span> := <a class="idref" href="Top.Util.Label.html#LabelImpl.Label_as_OT"><span class="id" title="module">Label_as_OT</span></a> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="Top.Util.FiniteSets.html#Make"><span class="id" title="module">FiniteSets.Make</span></a> <a class="idref" href="Top.Util.Label.html#LabelImpl.Label_as_OT"><span class="id" title="module">Label_as_OT</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The type <span class="inlinecode"><a class="idref" href="Top.Util.Label.html#labels"><span class="id" title="abbreviation">labels</span></a></span> is the type of finite sets of <span class="inlinecode"><a class="idref" href="Top.Util.Label.html#LabelImpl.label"><span class="id" title="definition">label</span></a></span>s. 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Notation</span> <a name="labels"><span class="id" title="abbreviation">labels</span></a> := <a class="idref" href="Top.Util.Label.html#t"><span class="id" title="axiom">LabelSet.F.t</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Notation</span> <a name="6d5f914ca8d436a7f90e0b9be989e988"><span class="id" title="notation">&quot;</span></a>{}L" :=<br/>
+&nbsp;&nbsp;<a class="idref" href="Top.Util.Label.html#empty"><span class="id" title="axiom">LabelSet.F.empty</span></a> : <span class="id" title="var">metatheory_scope</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Basic operations on finite sets of labels are available, in the
+    remainder of this file, without qualification.  We use <span class="inlinecode"><span class="id" title="keyword">Import</span></span>
+    instead of <span class="inlinecode"><span class="id" title="keyword">Export</span></span> in order to avoid unnecessary namespace
+    pollution. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+We instantiate two modules which provide useful lemmas and tactics
+    work working with finite sets of labels. 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Module</span> <a name="LabelSetDecide"><span class="id" title="module">LabelSetDecide</span></a> := <a class="idref" href="Top.Util.FSetDecide.html#Decide"><span class="id" title="module">FSetDecide.Decide</span></a> <a class="idref" href="Top.Util.Label.html#LabelSet.F"><span class="id" title="module">LabelSet.F</span></a>.<br/>
+<span class="id" title="keyword">Module</span> <a name="LabelSetNotin"><span class="id" title="module">LabelSetNotin</span></a>  := <a class="idref" href="Top.Util.FSetNotin.html#Notin"><span class="id" title="module">FSetNotin.Notin</span></a>   <a class="idref" href="Top.Util.Label.html#LabelSet.F"><span class="id" title="module">LabelSet.F</span></a>.<br/>
+<span class="id" title="keyword">Module</span> <a name="LabelSetFacts"><span class="id" title="module">LabelSetFacts</span></a>  := <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.FSets.FSetFacts.html#Facts"><span class="id" title="module">FSetFacts.Facts</span></a>   <a class="idref" href="Top.Util.Label.html#LabelSet.F"><span class="id" title="module">LabelSet.F</span></a>.<br/>
+<span class="id" title="keyword">Module</span> <a name="LabelSetProperties"><span class="id" title="module">LabelSetProperties</span></a> := <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.FSets.FSetProperties.html#Properties"><span class="id" title="module">FSetProperties.Properties</span></a> <a class="idref" href="Top.Util.Label.html#LabelSet.F"><span class="id" title="module">LabelSet.F</span></a>.<br/>
+
+<br/>
+<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab44"></a><h2 class="section">Tactics for working with finite sets of labels</h2>
+
+<div class="paragraph"> </div>
+
+ The tactic <span class="inlinecode"><span class="id" title="var">fsetdec</span></span> is a general purpose decision procedure
+    for solving facts about finite sets of labels. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The tactic <span class="inlinecode"><span class="id" title="var">notin_simpl</span></span> simplifies all hypotheses of the form <span class="inlinecode">(~</span>
+    <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.x"><span class="id" title="variable">x</span></a></span> <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a>)</span>, where <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a></span> is constructed from the empty set, singleton
+    sets, and unions. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The tactic <span class="inlinecode"><span class="id" title="var">notin_solve</span></span>, solves goals of the form <span class="inlinecode">(~</span> <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.x"><span class="id" title="variable">x</span></a></span> <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a>)</span>,
+    where <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a></span> is constructed from the empty set, singleton sets, and
+    unions.  The goal must be provable from hypothesis of the form
+    simplified by <span class="inlinecode"><span class="id" title="var">notin_simpl</span></span>. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+<span class="comment">(*&nbsp;***********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab45"></a><h2 class="section">Lemmas for working with finite sets of labels</h2>
+
+<div class="paragraph"> </div>
+
+ We make some lemmas about finite sets of labels available without
+    qualification by using abbreviations. 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Notation</span> <a name="leq_if_Equal"><span class="id" title="abbreviation">leq_if_Equal</span></a>        := <a class="idref" href="Top.Util.Label.html#eq_if_Equal"><span class="id" title="axiom">LabelSet.eq_if_Equal</span></a>.<br/>
+<span class="id" title="keyword">Notation</span> <a name="lnotin_empty"><span class="id" title="abbreviation">lnotin_empty</span></a>        := <a class="idref" href="Top.Util.Label.html#notin_empty"><span class="id" title="lemma">LabelSetNotin.notin_empty</span></a>.<br/>
+<span class="id" title="keyword">Notation</span> <a name="lnotin_singleton"><span class="id" title="abbreviation">lnotin_singleton</span></a>    := <a class="idref" href="Top.Util.Label.html#notin_singleton"><span class="id" title="lemma">LabelSetNotin.notin_singleton</span></a>.<br/>
+<span class="id" title="keyword">Notation</span> <a name="lnotin_singleton_rw"><span class="id" title="abbreviation">lnotin_singleton_rw</span></a> := <a class="idref" href="Top.Util.Label.html#notin_singleton_rw"><span class="id" title="lemma">LabelSetNotin.notin_singleton_rw</span></a>.<br/>
+<span class="id" title="keyword">Notation</span> <a name="lnotin_union"><span class="id" title="abbreviation">lnotin_union</span></a>        := <a class="idref" href="Top.Util.Label.html#notin_union"><span class="id" title="lemma">LabelSetNotin.notin_union</span></a>.<br/>
+
+<br/>
+<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab46"></a><h1 class="section">Additional properties</h1>
+
+<div class="paragraph"> </div>
+
+ One can generate an label fresh for a given finite set of labels. 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="label_fresh_for_set"><span class="id" title="lemma">label_fresh_for_set</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">L</span> : <a class="idref" href="Top.Util.Label.html#labels"><span class="id" title="abbreviation">labels</span></a>, <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">{</span></a> <span class="id" title="var">x</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">:</span></a> <a class="idref" href="Top.Util.Label.html#label"><span class="id" title="axiom">label</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">|</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.Label.html#In"><span class="id" title="axiom">In</span></a> <a class="idref" href="Top.Util.Label.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.Label.html#L"><span class="id" title="variable">L</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">}</span></a>.<br/>
+
+<br/>
+<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab47"></a><h1 class="section">Additional tactics</h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab48"></a><h2 class="section"><a name="pick_fresh"></a> Picking a fresh label</h2>
+
+<div class="paragraph"> </div>
+
+ We define three tactics which, when combined, provide a simple
+    mechanism for picking a fresh label.  We demonstrate their use
+    below with an example, the <span class="inlinecode"><span class="id" title="var">example_pick_fresh</span></span> tactic.
+
+<div class="paragraph"> </div>
+
+   <span class="inlinecode">(<span class="id" title="var">gather_labels_with</span></span> <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a>)</span> returns the union of <span class="inlinecode">(<a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.x"><span class="id" title="variable">x</span></a>)</span>, where <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.x"><span class="id" title="variable">x</span></a></span>
+   ranges over all objects in the context such that <span class="inlinecode">(<a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.x"><span class="id" title="variable">x</span></a>)</span> is
+   well typed.  The return type of <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a></span> should be <span class="inlinecode"><a class="idref" href="Top.Util.Label.html#labels"><span class="id" title="abbreviation">labels</span></a></span>.  The
+   complexity of this tactic is due to the fact that there is no
+   support in <span class="inlinecode"><span class="id" title="keyword">Ltac</span></span> for folding a function over the context. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<span class="inlinecode">(<span class="id" title="var">beautify_lset</span></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#V"><span class="id" title="variable">V</span></a>)</span> takes a set <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#V"><span class="id" title="variable">V</span></a></span> built as a union of finite
+    sets and returns the same set with empty sets removed and union
+    operations associated to the right.  Duplicate sets are also
+    removed from the union. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The tactic <span class="inlinecode">(<span class="id" title="var">pick</span></span> <span class="inlinecode"><span class="id" title="tactic">fresh</span></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Infrastructure.html#Y"><span class="id" title="variable">Y</span></a></span> <span class="inlinecode"><span class="id" title="keyword">for</span></span> <span class="inlinecode"><a class="idref" href="Top.Util.Atom.html#L"><span class="id" title="variable">L</span></a>)</span> takes a finite set of labels <span class="inlinecode"><a class="idref" href="Top.Util.Atom.html#L"><span class="id" title="variable">L</span></a></span>
+    and a fresh name <span class="inlinecode"><a class="idref" href="Top.SystemC.Infrastructure.html#Y"><span class="id" title="variable">Y</span></a></span>, and adds to the context an label with name
+    <span class="inlinecode"><a class="idref" href="Top.SystemC.Infrastructure.html#Y"><span class="id" title="variable">Y</span></a></span> and a proof that <span class="inlinecode">(~</span> <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Infrastructure.html#Y"><span class="id" title="variable">Y</span></a></span> <span class="inlinecode"><a class="idref" href="Top.Util.Atom.html#L"><span class="id" title="variable">L</span></a>)</span>, i.e., that <span class="inlinecode"><a class="idref" href="Top.SystemC.Infrastructure.html#Y"><span class="id" title="variable">Y</span></a></span> is fresh for
+    <span class="inlinecode"><a class="idref" href="Top.Util.Atom.html#L"><span class="id" title="variable">L</span></a></span>.  The tactic will fail if <span class="inlinecode"><a class="idref" href="Top.SystemC.Infrastructure.html#Y"><span class="id" title="variable">Y</span></a></span> is already declared in the
+    context. 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Tactic Notation</span> "pick" "fresh" "label" <span class="id" title="var">ident</span>(<span class="id" title="var">Y</span>) "for" <span class="id" title="keyword">constr</span>(<span class="id" title="var">L</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">let</span> <span class="id" title="var">Fr</span> := <span class="id" title="tactic">fresh</span> "Fr" <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">let</span> <span class="id" title="var">L</span> := <span class="id" title="var">beautify_lset</span> <span class="id" title="var">L</span> <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;(<span class="id" title="tactic">destruct</span> (<a class="idref" href="Top.Util.Label.html#label_fresh_for_set"><span class="id" title="lemma">label_fresh_for_set</span></a> <span class="id" title="var">L</span>) <span class="id" title="keyword">as</span> [<span class="id" title="var">Y</span> <span class="id" title="var">Fr</span>]).<br/>
+
+<br/>
+<span class="comment">(*&nbsp;**********************************************************************&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a name="lab49"></a><h2 class="section">Demonstration</h2>
+
+<div class="paragraph"> </div>
+
+ The <span class="inlinecode"><span class="id" title="var">example_pick_fresh</span></span> tactic below illustrates the general
+    pattern for using the above three tactics to define a tactic which
+    picks a fresh label.  The pattern is as follows:
+<ul class="doclist">
+<li> Repeatedly invoke <span class="inlinecode"><span class="id" title="var">gather_labels_with</span></span>, using functions with
+        different argument types each time.
+
+</li>
+<li> Union together the result of the calls, and invoke
+        <span class="inlinecode">(<span class="id" title="var">pick</span></span> <span class="inlinecode"><span class="id" title="tactic">fresh</span></span> <span class="inlinecode">...</span> <span class="inlinecode"><span class="id" title="keyword">for</span></span> <span class="inlinecode">...)</span> with that union of sets. 
+</li>
+</ul>
+
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="example_pick_fresh_use"><span class="id" title="lemma">example_pick_fresh_use</span></a> : <span class="id" title="keyword">∀</span> (<span class="id" title="var">x</span> <span class="id" title="var">y</span> <span class="id" title="var">z</span> : <a class="idref" href="Top.Util.Label.html#label"><span class="id" title="axiom">label</span></a>) (<span class="id" title="var">L1</span> <span class="id" title="var">L2</span> <span class="id" title="var">L3</span>: <a class="idref" href="Top.Util.Label.html#labels"><span class="id" title="abbreviation">labels</span></a>), <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#True"><span class="id" title="inductive">True</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span> <span class="id" title="var">z</span> <span class="id" title="var">L1</span> <span class="id" title="var">L2</span> <span class="id" title="var">L3</span>. <span class="id" title="var">example_pick_fresh</span> <span class="id" title="var">k</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+At this point in the proof, we have a new label <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.k"><span class="id" title="variable">k</span></a></span> and a
+      hypothesis <span class="inlinecode"><span class="id" title="var">Fr</span></span> <span class="inlinecode">:</span> <span class="inlinecode">¬</span> <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.k"><span class="id" title="variable">k</span></a></span> <span class="inlinecode">(<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a></span> <span class="inlinecode"><span class="id" title="var">L1</span></span> <span class="inlinecode">(<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a></span> <span class="inlinecode"><span class="id" title="var">L2</span></span> <span class="inlinecode">(<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a></span> <span class="inlinecode"><span class="id" title="var">L3</span></span> <span class="inlinecode">(<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a></span>
+      <span class="inlinecode">(<a class="idref" href="Top.Util.Metatheory.html#singleton"><span class="id" title="abbreviation">singleton</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.x"><span class="id" title="variable">x</span></a>)</span> <span class="inlinecode">(<a class="idref" href="Top.Util.FSetNotin.html#X.union"><span class="id" title="axiom">union</span></a></span> <span class="inlinecode">(<a class="idref" href="Top.Util.Metatheory.html#singleton"><span class="id" title="abbreviation">singleton</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.y"><span class="id" title="variable">y</span></a>)</span> <span class="inlinecode">(<a class="idref" href="Top.Util.Metatheory.html#singleton"><span class="id" title="abbreviation">singleton</span></a></span> <span class="inlinecode"><a class="idref" href="Top.Util.ListFacts.html#z"><span class="id" title="variable">z</span></a>))))))</span>. 
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">trivial</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+
+<br/>
+<span class="id" title="keyword">Notation</span> <a name="25b572a80049518aa8c08d07d03430c9"><span class="id" title="notation">&quot;</span></a>x =l= y" := (<a class="idref" href="Top.Util.Label.html#eq_label_dec"><span class="id" title="axiom">eq_label_dec</span></a> <span class="id" title="var">x</span> <span class="id" title="var">y</span>) (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 67) : <span class="id" title="var">metatheory_scope</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a name="labels_disjoint"><span class="id" title="definition">labels_disjoint</span></a> (<span class="id" title="var">xs</span> : <a class="idref" href="Top.Util.Label.html#labels"><span class="id" title="abbreviation">labels</span></a>) (<span class="id" title="var">ys</span>: <a class="idref" href="Top.Util.Label.html#labels"><span class="id" title="abbreviation">labels</span></a>) : <span class="id" title="keyword">Prop</span> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="Top.Util.Label.html#Empty"><span class="id" title="definition">LabelSet.F.Empty</span></a> (<a class="idref" href="Top.Util.Label.html#inter"><span class="id" title="axiom">LabelSet.F.inter</span></a> <a class="idref" href="Top.Util.Label.html#xs"><span class="id" title="variable">xs</span></a> <a class="idref" href="Top.Util.Label.html#ys"><span class="id" title="variable">ys</span></a>).<br/>
+</div>
