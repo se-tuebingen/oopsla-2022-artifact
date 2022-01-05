@@ -1538,11 +1538,37 @@ figure.highlight pre, figure.highlight code { padding: 0; margin: 0; border: 0; 
 
 @media print { .site-footer, .site-button, #edit-this-page, #back-to-top, .site-nav, .main-header { display: none !important; } .side-bar { width: 100%; height: auto; border-right: 0 !important; } .site-header { border-bottom: 1px solid #44434d; } .site-title { font-size: 16px !important; font-weight: 700 !important; } .text-small { font-size: 8pt !important; } pre.highlight { border: 1px solid #44434d; } .main { max-width: none; margin-left: 0; } }
 
+#coqdoc a[href]:hover, #coqdoc [clickable]:hover { background-color: rgba(0, 0, 0, 0.1); cursor: pointer; }
+
+#coqdoc img { display: block; max-width: 80%; margin: 1em auto; }
+
+#coqdoc img.fig { box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1); border: 1px solid #eee; }
+
+#coqdoc div.paragraph { margin-top: 0.5em; }
+
+#coqdoc .inlinecode, #coqdoc .code, #coqdoc #main pre { font-family: monospace; font-size: 14px; }
+
+#coqdoc .inlinecode a, #coqdoc .code a, #coqdoc #main pre a { color: #5c5962; }
+
+#coqdoc .code a { background-image: none; }
+
+#coqdoc .id[type="constructor"], #coqdoc .id[type="projection"], #coqdoc .id[type="method"], #coqdoc .id[title="constructor"], #coqdoc .id[title="projection"], #coqdoc .id[title="method"] { color: #A30E16; }
+
+#coqdoc .id[type="var"], #coqdoc .id[type="variable"], #coqdoc .id[title="var"], #coqdoc .id[title="variable"] { color: inherit; }
+
+#coqdoc .id[type="definition"], #coqdoc .id[type="record"], #coqdoc .id[type="class"], #coqdoc .id[type="instance"], #coqdoc .id[type="inductive"], #coqdoc .id[type="library"], #coqdoc .id[title="definition"], #coqdoc .id[title="record"], #coqdoc .id[title="class"], #coqdoc .id[title="instance"], #coqdoc .id[title="inductive"], #coqdoc .id[title="library"] { color: #A6650F; }
+
+#coqdoc .id[type="lemma"], #coqdoc .id[title="lemma"] { color: #188B0C; }
+
+#coqdoc .id[type="keyword"], #coqdoc .id[type="notation"], #coqdoc .id[type="abbreviation"], #coqdoc .id[title="keyword"], #coqdoc .id[title="notation"], #coqdoc .id[title="abbreviation"] { color: #2874AE; }
+
+#coqdoc .comment { color: #808080; }
+
 p, h1, h2, h3, h4, h5, h6, li { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
 .main-content { font-family: Georgia,'times new roman',times,serif; }
 
-.main-content p { text-justify: inter-word; text-align: justify; }
+.main-content p, .main-content div.paragraph { text-justify: inter-word; text-align: justify; }
 
 .main-content pre { padding: 1em; margin-top: 20px; position: relative; border-radius: 2px; overflow: visible; }
 
