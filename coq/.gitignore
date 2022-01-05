@@ -5,3 +5,7 @@
 *.aux
 .coqdeps.d
 html
+Makefile.conf
+Makefile.coq
+Makefile.coq.conf
+
