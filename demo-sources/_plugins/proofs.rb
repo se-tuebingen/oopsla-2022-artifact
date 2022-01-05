@@ -21,7 +21,18 @@ module Proofs
       proofsPages.each do |id, page|
         title_match = title_rx.match page.content
         unless title_match.nil?
-          page.data['title'] = title_match[1]
+
+          title = title_match[1]
+
+          # This code is specific to this paper! Drop 'Top.' module prefix
+          title = title.sub(/Top\./, '')
+
+          # Only add titles to SystemC files, all others will be there, but hidden.
+          if title.start_with? "SystemC"
+            # Also drop SystemC module prefix
+            title = title.sub(/SystemC\./, '')
+            page.data['title'] = title
+          end
           # Jekyll.logger.warn title_match[1]
         end
       end
