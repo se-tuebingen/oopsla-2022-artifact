@@ -1,3 +1,10 @@
+(** #
+<div class="source">
+  The source of this file can be found on
+  <a href="{{site.github}}/blob/main/coq/SystemC/Substitution.v">Github</a>.
+</div>
+# *)
+
 Require Export Taktiks.
 Require Export SystemC.Lemmas.
 

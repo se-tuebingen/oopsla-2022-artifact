@@ -1,3 +1,10 @@
+(** #
+<div class="source">
+  The source of this file can be found on
+  <a href="{{site.github}}/blob/main/coq/SystemC/Infrastructure.v">Github</a>.
+</div>
+# *)
+
 Require Import Taktiks.
 Require Export SystemC.Definitions.
 

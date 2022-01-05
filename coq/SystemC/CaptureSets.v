@@ -1,3 +1,10 @@
+(** #
+<div class="source">
+  The source of this file can be found on
+  <a href="{{site.github}}/blob/main/coq/SystemC/CaptureSets.v">Github</a>.
+</div>
+# *)
+
 Require Import Metatheory.
 Require Import Tactics.
 Require Import OrderedTypeEx.

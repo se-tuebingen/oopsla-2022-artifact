@@ -1,3 +1,10 @@
+(** #
+<div class="source">
+  The source of this file can be found on
+  <a href="{{site.github}}/blob/main/coq/SystemC/Examples.v">Github</a>.
+</div>
+# *)
+
 Require Import SystemC.Definitions.
 Require Import Coq.Program.Tactics.
 Require Import SystemC.Lemmas.
