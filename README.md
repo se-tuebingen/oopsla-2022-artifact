@@ -40,6 +40,11 @@ For the kick-the-tires phase, please perform the following steps, which should n
    and click the `run` button on the right. The compiler will be loaded, the example above will
    be executed and it should output `"Hello World!\n()"`.
 
+3. Visit the [tutorial page](https://se-tuebingen.github.io/oopsla-2022-artifact/tutorial/index.html#editors)
+   and click the `typecheck and run` button on the right. The compiler will be loaded, the example above will be type checked. Hover over `println` and check that it shows the type signature.
+   Replace the call to `println` with `1 + ""` to introduce a type error and click `typecheck`
+   (or <Cmd>+Enter / <Ctrl>+Enter). A type error should be visible.
+
 
 ### Kick-the-tires: Coq Proofs
 We believe it is not strictly necessary to compile the Coq proofs yourself. Instead,
