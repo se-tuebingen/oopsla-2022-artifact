@@ -1,4 +1,10 @@
-(** Support for atoms, i.e., objects with decidable equality.  We
+(**
+   * IMPORTANT
+    _THIS IS A COPY OF THE ATOMS FILE, RENAMED TO LABELS_
+ **)
+
+(**
+    Support for atoms, i.e., objects with decidable equality.  We
     provide here the ability to generate an atom fresh for any finite
     collection, e.g., the lemma [atom_fresh_for_set], and a tactic to
     pick an atom fresh for the current proof context.
@@ -23,7 +29,6 @@ Require Import FSetNotin.
 Require Import ListFacts.
 
 
-(* ********************************************************************** *)
 (** * Definition *)
 
 (** Labels are structureless objects such that we can always generate
@@ -86,7 +91,7 @@ Module LabelImpl : LABEL.
   Module Facts := OrderedTypeFacts Label_as_OT.
 
   Definition eq_label_dec : forall x y : label, {x = y} + {x <> y} :=
-    Facts.eq_dec. 
+    Facts.eq_dec.
 
   (* end hide *)
 
@@ -95,11 +100,9 @@ End LabelImpl.
 Export LabelImpl.
 
 
-(* ********************************************************************** *)
 (** * Finite sets of labels *)
 
 
-(* ********************************************************************** *)
 (** ** Definitions *)
 
 Module LabelSet : FiniteSets.S with Module E := Label_as_OT :=
@@ -127,7 +130,6 @@ Module LabelSetNotin  := FSetNotin.Notin   LabelSet.F.
 Module LabelSetFacts  := FSetFacts.Facts   LabelSet.F.
 Module LabelSetProperties := FSetProperties.Properties LabelSet.F.
 
-(* *********************************************************************** *)
 (** ** Tactics for working with finite sets of labels *)
 
 (** The tactic [fsetdec] is a general purpose decision procedure
@@ -149,7 +151,6 @@ Ltac lnotin_simpl := LabelSetNotin.notin_simpl_hyps.
 Ltac lnotin_solve := LabelSetNotin.notin_solve.
 
 
-(* *********************************************************************** *)
 (** ** Lemmas for working with finite sets of labels *)
 
 (** We make some lemmas about finite sets of labels available without
@@ -162,7 +163,6 @@ Notation lnotin_singleton_rw := LabelSetNotin.notin_singleton_rw.
 Notation lnotin_union        := LabelSetNotin.notin_union.
 
 
-(* ********************************************************************** *)
 (** * Additional properties *)
 
 (** One can generate an label fresh for a given finite set of labels. *)
@@ -175,11 +175,9 @@ Proof.
 Qed.
 
 
-(* ********************************************************************** *)
 (** * Additional tactics *)
 
 
-(* ********************************************************************** *)
 (** ** #<a name="pick_fresh"></a># Picking a fresh label *)
 
 (** We define three tactics which, when combined, provide a simple
@@ -236,7 +234,6 @@ Tactic Notation "pick" "fresh" "label" ident(Y) "for" constr(L) :=
   (destruct (label_fresh_for_set L) as [Y Fr]).
 
 
-(* ********************************************************************** *)
 (** ** Demonstration *)
 
 (** The [example_pick_fresh] tactic below illustrates the general

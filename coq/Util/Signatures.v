@@ -1,3 +1,9 @@
+(**
+   * IMPORTANT
+    _THIS IS A COPY OF THE Environment FILE, RENAMED TO Signatures_
+ **)
+
+
 (** Operations, lemmas, and tactics for working with environments,
     association lists whose keys are labels.  Unless stated otherwise,
     implicit arguments will not be declared by default.
@@ -26,7 +32,6 @@ Import LabelSet.F.
 Hint Unfold E.eq : core.
 
 
-(* ********************************************************************** *)
 (** * #<a name="overview"></a># Overview *)
 
 (** In the remainder of this library, we define a number of
@@ -37,7 +42,6 @@ Notation "[ x ]" := (cons x nil).
 
 Module Signatures.
 
-(* ********************************************************************** *)
 (** * #<a name="functions"></a># Functions on environments *)
 
 (** Implicit arguments will be declared by default for the definitions
@@ -81,7 +85,6 @@ End Definitions.
 Unset Implicit Arguments.
 
 
-(* ********************************************************************** *)
 (** * #<a name="env_rel"></a># Relations on environments *)
 
 (** Implicit arguments will be declared by default for the definitions
@@ -114,7 +117,6 @@ End Relations.
 Unset Implicit Arguments.
 
 
-(* ********************************************************************** *)
 (** * #<a name="op_prop"></a># Properties of operations *)
 
 Section OpProperties.
@@ -213,7 +215,6 @@ Qed.
 End OpProperties.
 
 
-(* ********************************************************************** *)
 (** * #<a name="auto1"></a># Automation and tactics (I) *)
 
 (** ** [simpl_env] *)
@@ -306,13 +307,12 @@ Tactic Notation "rewrite_env" constr(E) "in" hyp(H) :=
 
 Hint Constructors ok : core.
 
-(* 
+(*
 
 TODO adding this hint globally causes lsetdec to not terminate...
 
 Hint Extern 1 (~ In _ _) => simpl_env in *; lsetdec : core. *)
 
-(* ********************************************************************** *)
 (** * #<a name="props"></a># Properties of well-formedness and freshness *)
 
 Section OkProperties.
@@ -389,7 +389,6 @@ Qed.
 End OkProperties.
 
 
-(* ********************************************************************** *)
 (** * #<a name="binds_prop"></a># Properties of [binds] *)
 
 Section BindsProperties.
@@ -477,7 +476,6 @@ Qed.
 End BindsProperties.
 
 
-(* ********************************************************************** *)
 (** * #<a name="auto2"></a># Automation and tactics (II) *)
 
 (** ** Hints *)
@@ -545,7 +543,6 @@ Ltac binds_cases H :=
   end.
 
 
-(* *********************************************************************** *)
 (** * #<a name="binds_prop2"></a># Additional properties of [binds] *)
 
 (** The following lemmas are proven in manner that should be
@@ -639,10 +636,9 @@ Qed.
 End AdditionalBindsProperties.
 
 
-(* *********************************************************************** *)
 (** * #<a name="auto3"></a># Automation and tactics (III) *)
 
-(* 
+(*
 Hint Resolve binds_map binds_concat_ok binds_weaken binds_weaken_at_head : core.
 
 Hint Immediate binds_remove_mid binds_remove_mid_cons : core. *)

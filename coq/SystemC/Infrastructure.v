@@ -1,7 +1,15 @@
 Require Import Taktiks.
 Require Export SystemC.Definitions.
 
-(*  Free Variables *)
+(** This file is a (more-or-less) straight forward adaptation of
+    the infrastructure code that is necessary to work with locally nameless.
+
+    All lemmas and proofs are just concerned with binding and are not especially
+    interesting. *)
+
+(** ** Free Variables *)
+
+(** *** Free Expression Variables *)
 Fixpoint fv_ee (e : exp) {struct e} : atoms :=
   match e with
   | exp_bvar i => {}
@@ -32,7 +40,7 @@ with fv_eb (b : blk) {struct b} : atoms :=
   | blk_handler l => {}
   end.
 
-(* Block term variables *)
+(** *** Free Block Term Variables *)
 Fixpoint fv_be (e : exp) {struct e} : atoms :=
   match e with
   | exp_bvar i => {}
@@ -63,7 +71,7 @@ with fv_bb (b : blk) {struct b} : atoms :=
   | blk_handler l => {}
   end.
 
-(* Block type variables *)
+(** *** Free Block Type Variables *)
 Fixpoint fv_cvt (T : vtyp) {struct T} : atoms :=
   match T with
   | typ_base => {}
@@ -111,6 +119,7 @@ with fv_cb (b : blk) {struct b} : atoms :=
   | blk_handler l => {}
   end.
 
+(** *** Free Type Variables *)
 Fixpoint fv_tvt (T : vtyp) {struct T} : atoms :=
 match T with
   | typ_base => {}
@@ -207,8 +216,7 @@ Tactic Notation "pick" "fresh" ident(x) :=
   let L := gather_atoms in (pick fresh x for L).
 
 
-(* *********************************************************************** *)
-(** * #<a name="apply_fresh"></a># The "[pick fresh and apply]" tactic *)
+(** *** #<a name="apply_fresh"></a># The "[pick fresh and apply]" tactic *)
 
 (** This tactic is implementation specific only because of its
     reliance on [gather_atoms], which is itself implementation
@@ -403,14 +411,12 @@ Proof with auto*.
 Qed.
 
 
-(** ************************************ **)
-(** Opening Closed Lemmas *)
+(** ** Opening Closed Lemmas *)
 (** The naming scheme of the aux lemmas is:
-
-    open_<<<EXPR>>>e_rec j u e = open_<<<CE>>>_rec i P C (open_<<<EXPR>>>_rec j u e)
-
+<<
+    open_EXPRe_rec j u e = open_CE_rec i P C (open_EXPR_rec j u e)
+>>
 **)
-(** ************************************ **)
 
 Lemma open_cvt_rec_capt_aux : forall T j V i U,
   i <> j ->
@@ -884,9 +890,8 @@ Proof with eauto using open_cvt_rec_vtype, open_cbt_rec_btype.
 Qed.
 
 
-(** ************************************ **)
-(** Substitution / Opening Lemmas        **)
-(** ************************************ **)
+(** * Substitution / Opening Lemmas
+ **************************************)
 
 Lemma subst_ee_open_ee_rec : forall e1 e2 x u k,
   expr u ->

@@ -13,7 +13,6 @@ Require Import Sorting.
 Require Import Relations.
 
 
-(* ********************************************************************** *)
 (** * List membership *)
 
 Lemma not_in_cons :
@@ -46,7 +45,7 @@ Proof.
 Qed.
 
 
-(* ********************************************************************** *)
+
 (** * List inclusion *)
 
 Lemma incl_nil :
@@ -85,7 +84,6 @@ Proof.
 Qed.
 
 
-(* ********************************************************************** *)
 (** * Setoid facts *)
 
 Lemma InA_iff_In :
@@ -102,7 +100,6 @@ Proof.
 Qed.
 
 
-(* ********************************************************************* *)
 (** * Equality proofs for lists *)
 
 Section EqRectList.
@@ -122,7 +119,6 @@ Qed.
 End EqRectList.
 
 
-(* ********************************************************************** *)
 (** * Decidable sorting and uniqueness of proofs *)
 
 Section DecidableSorting.
@@ -202,7 +198,6 @@ End UniqueSortingProofs.
 End DecidableSorting.
 
 
-(* ********************************************************************** *)
 (** * Equality on sorted lists *)
 
 Section Equality_ext.

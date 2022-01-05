@@ -29,9 +29,12 @@ Require Export Coq.Program.Equality.
     - #<a href="##machine-typing">Abstract Machine Typing</a>#
 *)
 
-(** * #<a name="syntax"></a>#  Syntax
 
-    The definitions here reflect the definitions in Figure 1 from the paper.
+(**
+  * #<a name="syntax"></a>#  Syntax
+  **********************************************************)
+
+(** The definitions here reflect the definitions in Figure 1 from the paper.
 
     Please note that we base our proofs on a
     #<a href="https://www.cis.upenn.edu/~plclub/popl08-tutorial/code/coqdoc/Fsub_Definitions.html">locally nameless representation</a>#.
@@ -43,8 +46,11 @@ Require Export Coq.Program.Equality.
     *)
 
 
-(** ** #<a name="syntax-types"></a># Syntax of Types
-  Here, we define the syntax of types, as defined in Figure 1 in the paper.
+(**
+ ** #<a name="syntax-types"></a># Syntax of Types
+ *************************************************************)
+
+(** Here, we define the syntax of types, as defined in Figure 1 in the paper.
 
   #<img src="img/syntax-types.png" alt="Syntax of types" class="fig" />#  *)
 
@@ -86,8 +92,12 @@ with btyp : Type :=
     as a function type [T1 -> T2] as for instance can be seen in rule TRY in Figure 2. *)
 
 
-(** ** #<a name="syntax-terms"></a># Syntax of Terms
-    In the following, we define the syntax of expressions, statements, and blocks.
+
+(**
+ ** #<a name="syntax-terms"></a># Syntax of Terms
+ **********************************************************)
+
+(** In the following, we define the syntax of expressions, statements, and blocks.
 
     #<img src="img/syntax-terms.png" alt="Syntax of terms" class="fig" /># *)
 
@@ -483,7 +493,9 @@ with block : blk -> Prop :=
 
 
 
-(** * #<a name="env"></a># Environments and Signatures *)
+(**
+ * #<a name="env"></a># Environments and Signatures
+ **********************************************************)
 
 (** ** Environments
     Like in the paper, we use a single environment for value, block, and type abstraction.
@@ -814,9 +826,11 @@ Inductive wf_sig : sig -> Prop :=
 (* end hide *)
 
 
-(** * #<a name="typing"></a># Typing
+(**
+ * #<a name="typing"></a># Typing
+ **********************************************************)
 
-    Like in the paper, we model typing as three mutually inductive relations.
+(** Like in the paper, we model typing as three mutually inductive relations.
 
     Note that we use notation [C |= D] (pronounced "C admits D") instead
     of subset inclusion [D <= C] as it is used in the paper. *)
@@ -828,9 +842,11 @@ Reserved Notation "E @ R ; Q |-stm s ~: T" (at level 70, R at next level, Q at n
 
 (** Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in coqdoc. *)
 
-(** ** #<a name="typing-expression"></a># Expression Typing
+(**
+ ** #<a name="typing-expression"></a># Expression Typing
+ **********************************************************)
 
-    #<img src="img/typing-expressions.png" alt="Typing of expressions" class="fig" /># *)
+(** #<img src="img/typing-expressions.png" alt="Typing of expressions" class="fig" /># *)
 Inductive etyping : env -> sig -> exp -> vtyp -> Prop :=
   | typing_base : forall E Q,
       wf_env E ->
@@ -856,9 +872,11 @@ where "E ; Q |-exp e ~: T" := (etyping E Q e T)
     conditions explicit, which are left implicit in the paper. *)
 
 
-(** ** #<a name="typing-block"></a># Block Typing
+(**
+ ** #<a name="typing-block"></a># Block Typing
+ **********************************************************)
 
-    #<img src="img/typing-blocks.png" alt="Typing of blocks" class="fig" /># *)
+(** #<img src="img/typing-blocks.png" alt="Typing of blocks" class="fig" /># *)
 with btyping : env -> cap -> sig -> blk -> btyp -> Prop :=
 
   | typing_bvar_tracked : forall E R Q f S1,
@@ -942,9 +960,11 @@ with btyping : env -> cap -> sig -> blk -> btyp -> Prop :=
 
 where "E @ R ; Q |-blk b ~: S" := (btyping E R Q b S)
 
-(** ** #<a name="typing-statement"></a># Statement Typing
+(**
+ ** #<a name="typing-statement"></a># Statement Typing
+ **********************************************************)
 
-    #<img src="img/typing-statements.png" alt="Typing of statements" class="fig" /># *)
+(** #<img src="img/typing-statements.png" alt="Typing of statements" class="fig" /># *)
 with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
 
   | typing_ret : forall E R Q e T,
@@ -1054,8 +1074,11 @@ Scheme etyping_mutind := Induction for etyping Sort Prop
 
 Combined Scheme typing_ind from etyping_mutind, styping_mutind, btyping_mutind.
 
-(** * #<a name="semantics"></a># Operational Semantics
-    As described in the appendix of the paper, we mechanize the operational semantics
+(**
+ * #<a name="semantics"></a># Operational Semantics
+ **********************************************************)
+
+(** As described in the appendix of the paper, we mechanize the operational semantics
     in form of an abstract machine.
 
     However, the operational semantics is of a hybrid form: We _only_ use the abstract
@@ -1067,11 +1090,13 @@ Combined Scheme typing_ind from etyping_mutind, styping_mutind, btyping_mutind.
     the trivial ones. *)
 
 
-(** ** #<a name="values"></a># Values
-    Values are defined in the paper in the appendix.
+(**
+ ** #<a name="values"></a># Values
+ **********************************************************)
 
-    #<img src="img/values.png" alt="Values" class="fig" />#
-    *)
+(** Values are defined in the paper in the appendix.
+
+    #<img src="img/values.png" alt="Values" class="fig" /># *)
 
 Inductive evalue : exp -> Prop :=
   | value_const :
@@ -1094,8 +1119,11 @@ with bvalue : blk -> Prop :=
   | value_handler : forall l,
       bvalue (blk_handler l).
 
- (** ** #<a name="redexes"></a># Machine Redexes
-    Since we mechanize the operational semantics in terms of an abstract machine, we also
+(**
+ ** #<a name="redexes"></a># Machine Redexes
+ **********************************************************)
+
+(** Since we mechanize the operational semantics in terms of an abstract machine, we also
     define a predicate that describes when a statement can only be reduced in a larger context. *)
 
 Inductive machine_redex : stm -> Prop :=
@@ -1112,9 +1140,11 @@ Inductive machine_redex : stm -> Prop :=
       evalue e ->
       machine_redex (stm_throw (blk_handler l) e).
 
-(** ** #<a name="semantics-trivial"></a># Trivial Reduction
+(**
+ ** #<a name="semantics-trivial"></a># Trivial Reduction
+ **********************************************************)
 
-    #<img src="img/machine-semantics-trivial.png" alt="Semantics" class="fig" /># *)
+(** #<img src="img/machine-semantics-trivial.png" alt="Semantics" class="fig" /># *)
 
 
 Reserved Notation "e1 -->b e2" (at level 69).
@@ -1200,10 +1230,11 @@ where "b1 -->s b2" := (sred b1 b2)
 
 
 
-(** ** #<a name="stacks"></a># Stacks / Contexts
+(**
+ ** #<a name="stacks"></a># Stacks / Contexts
+ **********************************************************)
 
-    #<img src="img/contexts.png" alt="contexts" class="fig" />#  **)
-
+(** #<img src="img/contexts.png" alt="contexts" class="fig" />#  *)
 
 Inductive frame : Type :=
   (* val _ : T = []; s  *)
@@ -1299,8 +1330,11 @@ Inductive typing_cnt : cap -> sig -> ctx -> vtyp -> vtyp -> Prop :=
 where "R ; Q |-cnt K ~: T1 ~> T2" := (typing_cnt R Q K T1 T2).
 
 
-(** ** #<a name="abstract-machine"></a># Abstract Machine
-    The abstract machine can be in one of two states.
+(**
+ ** #<a name="abstract-machine"></a># Abstract Machine
+ **********************************************************)
+
+(** The abstract machine can be in one of two states.
     - either we simply step within a context [state_step],
     - or we unwind the stack to search for a delimiter [state_wind]. *)
 Inductive state : Type :=

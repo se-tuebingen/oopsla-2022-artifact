@@ -25,9 +25,9 @@ Require Import Atom.
 Import AtomSet.F.
 Hint Unfold E.eq : core.
 
-
-(* ********************************************************************** *)
-(** * #<a name="overview"></a># Overview *)
+(**
+ * #<a name="overview"></a># Overview
+ ************************************************************************)
 
 (** An environment is a list of pairs, where the first component of
     each pair is an [atom].  We view the second component of each pair
@@ -59,8 +59,10 @@ Notation "[ x ]" := (cons x nil).
     environments. *)
 
 
-(* ********************************************************************** *)
-(** * #<a name="functions"></a># Functions on environments *)
+
+(**
+ * #<a name="functions"></a># Functions on environments
+ ************************************************************************)
 
 (** Implicit arguments will be declared by default for the definitions
     in this section. *)
@@ -103,8 +105,10 @@ End Definitions.
 Unset Implicit Arguments.
 
 
-(* ********************************************************************** *)
-(** * #<a name="env_rel"></a># Relations on environments *)
+
+(**
+ * #<a name="env_rel"></a># Relations on environments
+ ************************************************************************)
 
 (** Implicit arguments will be declared by default for the definitions
     in this section. *)
@@ -136,8 +140,10 @@ End Relations.
 Unset Implicit Arguments.
 
 
-(* ********************************************************************** *)
-(** * #<a name="op_prop"></a># Properties of operations *)
+
+(**
+ * #<a name="op_prop"></a># Properties of operations
+ ************************************************************************)
 
 Section OpProperties.
 Variable A B : Type.
@@ -235,8 +241,9 @@ Qed.
 End OpProperties.
 
 
-(* ********************************************************************** *)
-(** * #<a name="auto1"></a># Automation and tactics (I) *)
+(**
+ * #<a name="auto1"></a># Automation and tactics (I)
+ ************************************************************************)
 
 (** ** [simpl_env] *)
 
@@ -405,8 +412,9 @@ Qed.
 End OkProperties.
 
 
-(* ********************************************************************** *)
-(** * #<a name="binds_prop"></a># Properties of [binds] *)
+(**
+ * #<a name="binds_prop"></a># Properties of [binds]
+ ************************************************************************)
 
 Section BindsProperties.
 Variable A B : Type.
@@ -490,8 +498,9 @@ Qed.
 End BindsProperties.
 
 
-(* ********************************************************************** *)
-(** * #<a name="auto2"></a># Automation and tactics (II) *)
+(**
+ * #<a name="auto2"></a># Automation and tactics (II)
+ ************************************************************************)
 
 (** ** Hints *)
 
@@ -558,8 +567,9 @@ Ltac binds_cases H :=
   end.
 
 
-(* *********************************************************************** *)
-(** * #<a name="binds_prop2"></a># Additional properties of [binds] *)
+(**
+ * #<a name="binds_prop2"></a># Additional properties of [binds]
+ ************************************************************************)
 
 (** The following lemmas are proven in manner that should be
     independent of the concrete definition of [binds]. *)
@@ -649,7 +659,6 @@ Qed.
 End AdditionalBindsProperties.
 
 
-(* *********************************************************************** *)
 (** * #<a name="auto3"></a># Automation and tactics (III) *)
 
 Hint Resolve binds_map binds_concat_ok binds_weaken binds_weaken_at_head : core.

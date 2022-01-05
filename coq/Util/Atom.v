@@ -23,8 +23,9 @@ Require Import FSetNotin.
 Require Import ListFacts.
 
 
-(* ********************************************************************** *)
-(** * Definition *)
+(**
+ * Definition
+ ************************************************************************)
 
 (** Atoms are structureless objects such that we can always generate
     one fresh from a finite collection.  Equality on atoms is [eq] and
@@ -86,7 +87,7 @@ Module AtomImpl : ATOM.
   Module Facts := OrderedTypeFacts Atom_as_OT.
 
   Definition eq_atom_dec : forall x y : atom, {x = y} + {x <> y} :=
-    Facts.eq_dec. 
+    Facts.eq_dec.
 
   (* end hide *)
 
@@ -95,12 +96,15 @@ End AtomImpl.
 Export AtomImpl.
 
 
-(* ********************************************************************** *)
-(** * Finite sets of atoms *)
+
+(**
+ * Finite sets of atoms
+ ************************************************************************)
 
 
-(* ********************************************************************** *)
-(** ** Definitions *)
+(**
+ ** Definitions
+ ************************************************************************)
 
 Module AtomSet : FiniteSets.S with Module E := Atom_as_OT :=
   FiniteSets.Make Atom_as_OT.
@@ -124,7 +128,7 @@ Module AtomSetNotin  := FSetNotin.Notin   AtomSet.F.
 Module AtomSetFacts  := FSetFacts.Facts   AtomSet.F.
 Module AtomSetProperties := FSetProperties.Properties AtomSet.F.
 
-(* *********************************************************************** *)
+
 (** ** Tactics for working with finite sets of atoms *)
 
 (** The tactic [fsetdec] is a general purpose decision procedure
@@ -146,7 +150,6 @@ Ltac notin_simpl := AtomSetNotin.notin_simpl_hyps.
 Ltac notin_solve := AtomSetNotin.notin_solve.
 
 
-(* *********************************************************************** *)
 (** ** Lemmas for working with finite sets of atoms *)
 
 (** We make some lemmas about finite sets of atoms available without
@@ -159,8 +162,9 @@ Notation notin_singleton_rw := AtomSetNotin.notin_singleton_rw.
 Notation notin_union        := AtomSetNotin.notin_union.
 
 
-(* ********************************************************************** *)
-(** * Additional properties *)
+(**
+ * Additional properties
+ ************************************************************************)
 
 (** One can generate an atom fresh for a given finite set of atoms. *)
 
@@ -172,11 +176,11 @@ Proof.
 Qed.
 
 
-(* ********************************************************************** *)
-(** * Additional tactics *)
+(**
+ * Additional tactics
+ ************************************************************************)
 
 
-(* ********************************************************************** *)
 (** ** #<a name="pick_fresh"></a># Picking a fresh atom *)
 
 (** We define three tactics which, when combined, provide a simple
@@ -233,8 +237,9 @@ Tactic Notation "pick" "fresh" ident(Y) "for" constr(L) :=
   (destruct (atom_fresh_for_set L) as [Y Fr]).
 
 
-(* ********************************************************************** *)
-(** ** Demonstration *)
+(**
+ ** Demonstration
+ *)
 
 (** The [example_pick_fresh] tactic below illustrates the general
     pattern for using the above three tactics to define a tactic which

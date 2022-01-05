@@ -1,8 +1,8 @@
-(**************************************************************)
-(* FSetDecide.v                                               *)
-(*                                                            *)
-(* Author: Aaron Bohannon                                     *)
-(**************************************************************)
+(**
+  FSetDecide.v
+
+  Author: Aaron Bohannon
+ **************************************************************)
 
 (** This file implements a decision procedure for a certain
     class of propositions involving finite sets.  *)

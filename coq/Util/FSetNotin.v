@@ -8,16 +8,19 @@ Set Implicit Arguments.
 Require Import FSetInterface.
 
 
-(* *********************************************************************** *)
-(** * Implementation *)
+
+(**
+ * Implementation
+ ************************************************************************)
 
 Module Notin (X : FSetInterface.S).
 
 Import X.
 
 
-(* *********************************************************************** *)
-(** ** Facts about set (non-)membership *)
+(**
+ ** Facts about set (non-)membership
+ *)
 
 Lemma in_singleton : forall x,
   In x (singleton x).
@@ -74,7 +77,6 @@ Proof.
 Qed.
 
 
-(* *********************************************************************** *)
 (** ** Rewriting non-membership facts *)
 
 Lemma notin_singleton_rw : forall x y,
@@ -86,7 +88,7 @@ Proof.
 Qed.
 
 
-(* *********************************************************************** *)
+
 (** ** Tactics *)
 
 (** The tactic [notin_simpl_hyps] destructs all hypotheses of the form
@@ -126,7 +128,7 @@ Ltac notin_solve :=
   solve [ trivial | congruence | intuition auto ].
 
 
-(* *********************************************************************** *)
+
 (** ** Examples and test cases *)
 
 Lemma test_notin_solve_1 : forall x E F G,

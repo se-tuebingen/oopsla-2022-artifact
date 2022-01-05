@@ -18,7 +18,7 @@ Module NatSetImpl : NATSET.
   Module OT := Nat_as_OT.
   Module Facts := OrderedTypeFacts OT.
   Definition eq_nat_dec : forall x y : nat, {x = y} + {x <> y} :=
-    Facts.eq_dec. 
+    Facts.eq_dec.
   (* end hide *)
 End NatSetImpl.
 
@@ -39,7 +39,6 @@ Module NatSetNotin  := FSetNotin.Notin   NatSet.F.
 Module NatSetFacts  := FSetFacts.Facts NatSet.F.
 Module NatSetProperties := FSetProperties.Properties NatSet.F.
 
-(* *********************************************************************** *)
 (** ** Tactics for working with finite sets of nats *)
 
 (** The tactic [fnsetdec] is a general purpose decision procedure

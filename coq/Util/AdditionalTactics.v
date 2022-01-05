@@ -4,8 +4,9 @@ Require Export String.
 Open Scope string_scope.
 
 
-(* *********************************************************************** *)
-(** * Extensions of the standard library *)
+(**
+ * Extensions of the standard library
+ ************************************************************************)
 
 (** "[remember c as x in |-]" replaces the term [c] by the identifier
     [x] in the conclusion of the current goal and introduces the
@@ -36,8 +37,10 @@ Ltac apply_first_hyp :=
   end.
 
 
-(* *********************************************************************** *)
-(** * Variations on [auto] *)
+
+(**
+ * Variations on [auto]
+ ************************************************************************)
 
 (** The [auto*] and [eauto*] tactics are intended to be "stronger"
     versions of the [auto] and [eauto] tactics.  Similar to [auto] and
@@ -59,8 +62,9 @@ Tactic Notation "eauto" "*" integer(n) :=
   try solve [ congruence | eauto n | intuition (eauto n) ].
 
 
-(* *********************************************************************** *)
-(** * Delineating cases in proofs *)
+(**
+ * Delineating cases in proofs
+ ************************************************************************)
 
 (** This section was taken from the POPLmark Wiki
     ( http://alliance.seas.upenn.edu/~plclub/cgi-bin/poplmark/ ). *)

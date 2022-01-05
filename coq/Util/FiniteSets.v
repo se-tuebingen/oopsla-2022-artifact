@@ -7,7 +7,6 @@ Require Import ListFacts.
 Require Import Coq.Logic.ProofIrrelevance.
 
 
-(* *********************************************************************** *)
 (** * Interface *)
 
 (** The following interface wraps the standard library's finite set
@@ -24,7 +23,6 @@ Module Type S.
 End S.
 
 
-(* *********************************************************************** *)
 (** * Implementation *)
 
 (** For documentation purposes, we hide the implementation of a

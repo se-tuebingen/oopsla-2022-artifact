@@ -1,8 +1,11 @@
 Require Export Taktiks.
 Require Export SystemC.Lemmas.
 
-(* ********************************************************************** *)
-(** ** Weakening (5) *)
+(**
+ * Weakening
+ ****************************************)
+
+(** The standard lemmas for weakening the environment in typing. *)
 
 Ltac solve_weakening := simpl_env;
   eauto 5 using wf_cap_weakening,
@@ -168,6 +171,10 @@ Proof.
   repeat split; try fsetdec; try fnsetdec; try lsetdec.
 Qed.
 
+(**
+ * Capture Subsumption
+ ****************************************)
+
 (** Here we show that capture subsumption on blocks and statements is admissible. *)
 Lemma btyping_weaken_restriction : forall C E R Q b S1,
   R |= C ->
@@ -206,14 +213,20 @@ Proof with solve_weakening; eauto using restriction_transitive.
   - econstructor...
 Qed.
 
-(************************************************************************ *)
-(** ** Substitution preserves typing (8) *)
+
+(**
+ * Substitution
+ ****************************************)
+
+(** We show the standard property that substitution preserves typing. *)
 
 Ltac solve_substitution := simpl_env; eauto 4 using
   wf_vtyp_strengthening,
   wf_btyp_strengthening,
   wf_env_strengthening,
   wf_cap_strengthening.
+
+(** *** Substitution of expressions into terms *)
 
 Lemma etyping_through_subst_ee : forall U E F Q x T e u,
   etyping (F ++ [(x, bind_val U)] ++ E) Q e T ->
@@ -307,7 +320,7 @@ Ltac solve_substitution_blk := simpl_env; eauto 4 using
   wf_env_strengthening_blk,
   wf_cap_strengthening_blk.
 
-(* Monomorphic blocks *)
+(** *** Substitution of monomorphic blocks into terms *)
 Lemma etyping_through_subst_be : forall U C E F Q x T e u,
   etyping (F ++ [(x, bind_blk U (capture C))] ++ E) Q e T ->
   btyping E C Q u U ->
@@ -401,7 +414,7 @@ Ltac solve_subst_tracked := simpl_env; eauto 4 using
   wf_vtyp_from_sig_binds,
   wf_vtyp_from_sig_binds_val.
 
-(* polymorphic blocks *)
+(** *** Substitution of polymorphic blocks into terms *)
 Lemma etyping_through_subst_ce : forall (C : cap) U E F Q x T e u,
   etyping (F ++ [(x, bind_blk U tracked)] ++ E) Q e T ->
   wf_cap E C ->
@@ -609,7 +622,8 @@ Ltac solve_subst_type := simpl_env; eauto 4 using wf_env_subst_tbind, wf_vtyp_su
   wf_btyp_subst_tbind, wf_vtyp_from_binds_typ, wf_cap_subst_tbind,
   vtype_from_wf_vtyp, btype_from_wf_btyp.
 
-
+(** *** Substitution of types into terms
+    We use our own induction principle to speed up termination checking. *)
 Lemma typing_through_subst_t_ : forall U E Q X,
 (forall E_ Q_ e T,
   etyping E_ Q_ e T ->
@@ -646,7 +660,7 @@ Proof with solve_subst_type.
     try rename select (binds _ _ _) into HBinds;
     try rename select (wf_vtyp _ _) into WfVTyp;
     try apply ok_from_wf_env in WfEnv as OkEnv.
-  (** etyping *)
+  (* etyping *)
   - econstructor...
   - econstructor...
     binds_cases HBinds...
@@ -659,7 +673,7 @@ Proof with solve_subst_type.
     * apply binds_head...
       eapply binds_map with (f := (subst_tbind X U)) in H0...
   - econstructor...
-  (** styping *)
+  (* styping *)
   - econstructor...
   - pick fresh x and apply typing_val...
     assert (exp_fvar x = subst_te X U x) as Xsubst...
@@ -729,7 +743,7 @@ Proof with solve_subst_type.
     pose proof (styping_regular _ _ _ _ _ (s0 f ltac:(notin_solve) kont ltac:(notin_solve))) as [WfEnv1 _].
     solve using assumption and solve_subst_type.
   - econstructor...
-  (** btyping *)
+  (* btyping *)
   - eapply typing_bvar_tracked...
     binds_cases HBinds...
     * replace (subst_tbt X U S1) with S1...
@@ -789,6 +803,7 @@ Proof with solve_subst_type.
     apply subst_tvt_fresh. eapply notin_fv_tvt_wf...
 Qed.
 
+(** We now can state the lemmas as it is more common, using the helper above *)
 Lemma etyping_through_subst_te: forall U E F Q X e T,
   wf_vtyp E U ->
   etyping (F ++ [(X, bind_typ)] ++ E) Q e T ->

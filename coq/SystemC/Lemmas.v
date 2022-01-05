@@ -3,8 +3,17 @@ Require Import Taktiks.
 Require Import Signatures.
 Require Import Coq.Program.Tactics.
 
-(* ********************************************************************** *)
-(** * #<a name="wft"></a># Properties of [wf_typ] *)
+(** This file mostly contains lemmas about wellformedness.
+    Properties of wellformed types, capability sets, typing judgements
+    and so forth.
+
+    It finally also contains regularity properties: given a typing judgements
+    we can extract information about the compontents. In particular, we
+    know that certain components are locally closed, wellformed, etc. *)
+
+(**
+ * #<a name="wft"></a># Properties of Wellformedness
+ *************************************************************)
 
 (** If a type is well-formed in an environment, then it is locally
     closed. *)
@@ -442,8 +451,9 @@ Proof with simpl_env; eauto
     apply wf_btyp_subst_tracked with (C := C) in H...
 Qed.
 
-(* ********************************************************************** *)
-(** * #<a name="oktwft"></a># Properties of [wf_env] and [wf_typ] *)
+(**
+ * #<a name="oktwft"></a># Properties of Wellformed Environments
+ ****************************************************************)
 
 Lemma ok_from_wf_env : forall E,
   wf_env E ->
@@ -531,8 +541,8 @@ Proof with eauto*.
 Qed.
 
 
-(* ********************************************************************** *)
-(** * #<a name="okt"></a># Properties of [wf_env] *)
+
+(** ** #<a name="okt"></a># Properties of [wf_env] *)
 
 (** These properties are analogous to the properties that we need to
     show for the typing relations. *)
@@ -570,8 +580,8 @@ Proof with eauto 6 using wf_vtyp_subst_tracked, wf_btyp_subst_tracked, wf_cap_su
   constructor...
 Qed.
 
-(* ********************************************************************** *)
-(** * #<a name="subst"></a># Environment is unchanged by substitution for a fresh name *)
+
+(** *** #<a name="subst"></a># Environment is unchanged by substitution for a fresh name *)
 
 
 Lemma notin_fv_cap_wf : forall E (X : atom) C,
@@ -728,6 +738,8 @@ Ltac split_hyps :=
   repeat match goal with
   | H : _ /\ _ |- _ => destruct H
   end.
+
+(** ** Properties about free variables *)
 
 Lemma notin_fv_ee_opened_ee : forall x k s1 s2,
   x `notin` fv_ee s1 ->
@@ -1247,8 +1259,9 @@ Proof with simpl_env; eauto*.
   eapply wf_btyp_subst_tbind...
 Qed.
 
-(* ********************************************************************** *)
-(** * #<a name="regularity"></a># Regularity of relations *)
+(**
+ * #<a name="regularity"></a># Regularity of relations
+ ******************************************************)
 
 Ltac solve_regular := simpl_env; eauto using
   wf_vtyp_from_binds_typ,
@@ -1435,8 +1448,10 @@ Proof with eauto.
     intuition.
 Qed.
 
-(* *********************************************************************** *)
-(** * #<a name="auto"></a># Automation *)
+
+(**
+ * #<a name="auto"></a># Automation
+ ***********************************************************************)
 
 (** The lemma [ok_from_wf_env] was already added above as a hint since it
     helps blur the distinction between [wf_env] and [ok] in proofs.

@@ -44,4 +44,3 @@ Ltac solve_using_assumption follow :=
 
 Tactic Notation "solve" "using" "assumption" "and" tactic3(tac) :=
   solve_using_assumption tac.
-
