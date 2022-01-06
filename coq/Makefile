@@ -19,13 +19,15 @@ else
 VS := $(VS_IN_PROJ)
 endif
 
-all: html
+all: proofs
 
 clean: $(COQMAKEFILE)
 	@$(MAKE) -f $(COQMAKEFILE) $@
 	rm -f $(COQMAKEFILE)
 
-html: $(COQMAKEFILE) $(VS)
+proofs: $(COQMAKEFILE) $(VS)
+
+html: proofs
 	rm -fr html
 	@$(MAKE) -f $(COQMAKEFILE) $@
 	cp $(EXTRA_DIR)/resources/* html
