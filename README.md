@@ -6,15 +6,15 @@ This github repository constitutes the artifact for our paper
 > Jonathan Immanuel Brachthäuser, Philipp Schuster, Edward Lee, Aleksander Boruch-Gruszecki.
 > Conditionally accepteed at OOPSLA 2022.
 
+## Overview
+
 The artifact consists of two parts:
 
-1. Coq proofs, proving soundness of the calculus System C
-2. A website featuring an implementation of System C with examples that can be typechecked, edited, and run.
+1. `coq/`: Coq proofs, proving soundness of the calculus System C
+2. `demo-sources/`: A website featuring an implementation of System C with examples that can be typechecked, edited, and run.
 
-## Getting Started
 While the repository contains the sources of the website, we do not propose to
-build the website yourself. Instead, we use github-pages to host the artifact,
-which is available at
+build the website yourself. Instead, we use github-pages (branch [`gh-pages`](https://github.com/se-tuebingen/oopsla-2022-artifact/tree/gh-pages)) to host the artifact, which is made available at:
 
   <https://se-tuebingen.github.io/oopsla-2022-artifact/>
 
@@ -25,6 +25,8 @@ The website contains
 - [An executable implementation](https://se-tuebingen.github.io/oopsla-2022-artifact/tutorial/) of the calculus.
 
 We claim reusability of the proofs and the interactive demo, but not of the calculus _implementation_ itself.
+
+## Getting Started
 
 ### Kick-the-tires: Demo Website
 For the kick-the-tires phase, please perform the following steps, which should not require more than 1-2 minutes:
@@ -49,6 +51,10 @@ For the kick-the-tires phase, please perform the following steps, which should n
 ### Kick-the-tires: Coq Proofs
 We believe it is not strictly necessary to compile the Coq proofs yourself. Instead,
 we have set up continuation integration (github action) to compile the proofs.
+As an alternative, we also provide a `Dockerfile` that should simplify compiling
+the proofs on your own machine.
+  
+#### Alternative 1: Checkout the CI build
 
 To check validity of the proofs, you may visit the [github action](https://github.com/se-tuebingen/oopsla-2022-artifact/actions/workflows/proof-ci.yml) page that contains successful compilation runs of Coq.
 
@@ -95,7 +101,7 @@ should look like
 ```
 </details>
 
-#### Alternative: locally compile the Coq proofs
+#### Alternative 2: Locally compile Coq proofs
 Alternatively, you can also compile the coq proofs yourself by performing the
 following actions.
 
