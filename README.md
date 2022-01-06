@@ -53,7 +53,7 @@ The released artifact comes with a zipped version of the website (`website.zip`)
 It is packaged as a static website (with JavaScript) and needs to be served
 from a local webserver to function correctly.
 For the reviewer's convenience, we prepared scripts that start such a web server
-Extract the zip file `website.zip`, navigate into the unzipped directory (i.e. `demo/`), and
+Extract the zip file `website.zip`, navigate into the unzipped directory (i.e. `website/`), and
 run `start.sh` (on linux) / `start.mac.sh` (on mac) / `start.bat` (on windows).
 You should now be able to point your web browser to `http://localhost:8000`.
 
@@ -66,7 +66,7 @@ and run one via:
 
 ```
 npm install -g http-server
-cd demo/
+cd website/
 http-server -p 8000
 ```
 
