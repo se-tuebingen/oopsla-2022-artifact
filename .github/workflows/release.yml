@@ -55,7 +55,7 @@ jobs:
         coq_version: "8.10"
         before_script: |
           startGroup "Workaround permission issue"
-          sudo chown -R coq:coq .  # <--
+          sudo chown -R coq:coq ./coq  # <--
           endGroup
         script: |
           startGroup "Build project"
