@@ -14,3 +14,8 @@ Util/Signatures.v
 Util/Metatheory.v
 SystemC/CaptureSets.v
 SystemC/Definitions.v
+SystemC/Infrastructure.v
+SystemC/Lemmas.v
+SystemC/Substitution.v
+SystemC/Soundness.v
+SystemC/Examples.v
