@@ -245,7 +245,7 @@ This example is a little more complicated.  Here, we throw while evaluating a va
 <pre><code class="language-effekt">
 def example3() {
   try {
-    val x = cap.doSomething()
+    val x = cap.doSomething();
     0
   } with cap : S0 {
     def doSomething() {
@@ -276,6 +276,13 @@ Naturally, it returns an Int/<span class="inlinecode"><a class="idref" href="Top
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#empty"><span class="id" title="abbreviation">empty</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">@</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">{}</span></a><a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">;</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">|-</span></a><a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">stm</span></a> <a class="idref" href="Top.SystemC.Examples.html#try_apply_throw"><span class="id" title="definition">try_apply_throw</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">~:</span></a> <a class="idref" href="Top.SystemC.Examples.html#try_apply_throw_typ"><span class="id" title="definition">try_apply_throw_typ</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+The reduction steps for this statement are a little more complicated.  First,
+    as before, we shift the try statement onto the stack as a handler frame. 
+</div>
+<div class="code">
 <span class="id" title="keyword">Lemma</span> <a name="try_apply_throw_s1"><span class="id" title="lemma">try_apply_throw_s1</span></a> :<br/>
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Examples.html#try_apply_throw"><span class="id" title="definition">try_apply_throw</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#top"><span class="id" title="abbreviation">top</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a><a class="idref" href="Top.SystemC.Definitions.html#e92f2993feae095c395ce5261340adfe"><span class="id" title="notation">--&gt;</span></a><br/>
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#stm_val"><span class="id" title="constructor">stm_val</span></a> <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#stm_throw"><span class="id" title="constructor">stm_throw</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#blk_handler"><span class="id" title="constructor">blk_handler</span></a> <a class="idref" href="Top.SystemC.Examples.html#l1"><span class="id" title="axiom">l1</span></a>) (<a class="idref" href="Top.SystemC.Definitions.html#exp_const"><span class="id" title="constructor">exp_const</span></a>)) (<a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#exp_bvar"><span class="id" title="constructor">exp_bvar</span></a> 0))<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">)</span></a><br/>
@@ -284,6 +291,12 @@ Naturally, it returns an Int/<span class="inlinecode"><a class="idref" href="Top
 &nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+Next, we mark that we are evaluating a binding with a K frame.  
+</div>
+<div class="code">
 <span class="id" title="keyword">Lemma</span> <a name="try_apply_throw_s2"><span class="id" title="lemma">try_apply_throw_s2</span></a> :<br/>
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#stm_val"><span class="id" title="constructor">stm_val</span></a> <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#stm_throw"><span class="id" title="constructor">stm_throw</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#blk_handler"><span class="id" title="constructor">blk_handler</span></a> <a class="idref" href="Top.SystemC.Examples.html#l1"><span class="id" title="axiom">l1</span></a>) <a class="idref" href="Top.SystemC.Definitions.html#exp_const"><span class="id" title="constructor">exp_const</span></a>) (<a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#exp_bvar"><span class="id" title="constructor">exp_bvar</span></a> 0))<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">)</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a> <a class="idref" href="Top.SystemC.Examples.html#l1"><span class="id" title="axiom">l1</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">{}</span></a><a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">C</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> <a class="idref" href="Top.SystemC.Definitions.html#exp_const"><span class="id" title="constructor">exp_const</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="Top.SystemC.Definitions.html#top"><span class="id" title="abbreviation">top</span></a><br/>
@@ -295,6 +308,13 @@ Naturally, it returns an Int/<span class="inlinecode"><a class="idref" href="Top
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+We throw in the presence of a K frame and a matching H (handler) frame,
+    which causes the K frame to be unwound... 
+</div>
+<div class="code">
 <span class="id" title="keyword">Lemma</span> <a name="try_apply_throw_s3"><span class="id" title="lemma">try_apply_throw_s3</span></a> :<br/>
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〈</span></a> <a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#stm_throw"><span class="id" title="constructor">stm_throw</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#blk_handler"><span class="id" title="constructor">blk_handler</span></a> <a class="idref" href="Top.SystemC.Examples.html#l1"><span class="id" title="axiom">l1</span></a>) <a class="idref" href="Top.SystemC.Definitions.html#exp_const"><span class="id" title="constructor">exp_const</span></a><a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">)</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">|</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#K"><span class="id" title="constructor">K</span></a> <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#exp_bvar"><span class="id" title="constructor">exp_bvar</span></a> 0))<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">((</span></a><a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a> <a class="idref" href="Top.SystemC.Examples.html#l1"><span class="id" title="axiom">l1</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">{}</span></a><a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">C</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> <a class="idref" href="Top.SystemC.Definitions.html#exp_const"><span class="id" title="constructor">exp_const</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="Top.SystemC.Definitions.html#top"><span class="id" title="abbreviation">top</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">)</span></a><br/>
@@ -307,6 +327,12 @@ Naturally, it returns an Int/<span class="inlinecode"><a class="idref" href="Top
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">〉</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+... 
+</div>
+<div class="code">
 <span class="id" title="keyword">Lemma</span> <a name="try_apply_throw_s4"><span class="id" title="lemma">try_apply_throw_s4</span></a> :<br/>
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">〈</span></a><a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">throw</span></a> <a class="idref" href="Top.SystemC.Examples.html#l1"><span class="id" title="axiom">l1</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">#</span></a> <a class="idref" href="Top.SystemC.Definitions.html#exp_const"><span class="id" title="constructor">exp_const</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">|</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#K"><span class="id" title="constructor">K</span></a> <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#exp_bvar"><span class="id" title="constructor">exp_bvar</span></a> 0))<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">((</span></a><a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a> <a class="idref" href="Top.SystemC.Examples.html#l1"><span class="id" title="axiom">l1</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">{}</span></a><a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">C</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> <a class="idref" href="Top.SystemC.Definitions.html#exp_const"><span class="id" title="constructor">exp_const</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="Top.SystemC.Definitions.html#top"><span class="id" title="abbreviation">top</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">)</span></a><br/>
@@ -320,6 +346,12 @@ Naturally, it returns an Int/<span class="inlinecode"><a class="idref" href="Top
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">〉</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+... and the matching H frame to be shifted off the frame to be evaluated. 
+</div>
+<div class="code">
 <span class="id" title="keyword">Lemma</span> <a name="try_apply_throw_s5"><span class="id" title="lemma">try_apply_throw_s5</span></a> :<br/>
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">〈</span></a><a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">throw</span></a> <a class="idref" href="Top.SystemC.Examples.html#l1"><span class="id" title="axiom">l1</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">#</span></a> <a class="idref" href="Top.SystemC.Definitions.html#exp_const"><span class="id" title="constructor">exp_const</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">|</span></a> <a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">(</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a> <a class="idref" href="Top.SystemC.Examples.html#l1"><span class="id" title="axiom">l1</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">{}</span></a><a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">C</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> <a class="idref" href="Top.SystemC.Definitions.html#exp_const"><span class="id" title="constructor">exp_const</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="Top.SystemC.Definitions.html#top"><span class="id" title="abbreviation">top</span></a><a class="idref" href="Top.SystemC.Definitions.html#451cabffa5606fdf421b1d78bf6b4957"><span class="id" title="notation">)</span></a><br/>
@@ -332,328 +364,124 @@ Naturally, it returns an Int/<span class="inlinecode"><a class="idref" href="Top
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#8b2651044cf89693157aa065ea56f2b9"><span class="id" title="notation">〉</span></a>.<br/>
 
 <br/>
-<span class="comment">(*<br/>
-Lemma&nbsp;cset_references_bvar_evidently&nbsp;:&nbsp;forall&nbsp;A&nbsp;(t&nbsp;s&nbsp;:&nbsp;A)&nbsp;i,<br/>
-&nbsp;&nbsp;(if&nbsp;cset_references_bvar_dec&nbsp;i&nbsp;(cset_bvar&nbsp;i)&nbsp;then&nbsp;t&nbsp;else&nbsp;s)&nbsp;=&nbsp;t.<br/>
-Proof.<br/>
-&nbsp;&nbsp;intros.<br/>
-&nbsp;&nbsp;cbv.<br/>
-&nbsp;&nbsp;destruct_if;&nbsp;<span class="inlinecode"><span class="id" title="tactic">reflexivity</span></span> <span class="inlinecode">|</span>.<br/>
-&nbsp;&nbsp;rewrite_set_facts_in&nbsp;Heqb.<br/>
-&nbsp;&nbsp;fnsetdec.<br/>
-Qed.<br/>
-Lemma&nbsp;cset_references_bvar_evidently_empty&nbsp;:&nbsp;forall&nbsp;A&nbsp;(t&nbsp;s&nbsp;:&nbsp;A)&nbsp;i,<br/>
-&nbsp;&nbsp;(if&nbsp;cset_references_bvar_dec&nbsp;i&nbsp;{}C&nbsp;then&nbsp;t&nbsp;else&nbsp;s)&nbsp;=&nbsp;s.<br/>
-Proof.<br/>
-&nbsp;&nbsp;intros.<br/>
-&nbsp;&nbsp;cbv.<br/>
-&nbsp;&nbsp;destruct_if;&nbsp;<span class="inlinecode">|<span class="id" title="tactic">reflexivity</span></span>.<br/>
-&nbsp;&nbsp;rewrite_set_facts_in&nbsp;Heqb.<br/>
-&nbsp;&nbsp;fnsetdec.<br/>
-Qed.<br/>
-Lemma&nbsp;cset_references_bvar_evidently_not&nbsp;:&nbsp;forall&nbsp;A&nbsp;(t&nbsp;s&nbsp;:&nbsp;A)&nbsp;i&nbsp;j,<br/>
-&nbsp;&nbsp;i&nbsp;&lt;&gt;&nbsp;j&nbsp;-&gt;<br/>
-&nbsp;&nbsp;(if&nbsp;cset_references_bvar_dec&nbsp;i&nbsp;(cset_bvar&nbsp;j)&nbsp;then&nbsp;t&nbsp;else&nbsp;s)&nbsp;=&nbsp;s.<br/>
-Proof.<br/>
-&nbsp;&nbsp;intros.<br/>
-&nbsp;&nbsp;cbv.<br/>
-&nbsp;&nbsp;destruct_if;&nbsp;<span class="inlinecode">|<span class="id" title="tactic">reflexivity</span></span>.<br/>
-&nbsp;&nbsp;rewrite_set_facts_in&nbsp;Heqb.<br/>
-&nbsp;&nbsp;fnsetdec.<br/>
-Qed.<br/>
-Lemma&nbsp;cset_references_bvar_evidently_fvar&nbsp;:&nbsp;forall&nbsp;A&nbsp;(t&nbsp;s&nbsp;:&nbsp;A)&nbsp;i&nbsp;x,<br/>
-&nbsp;&nbsp;(if&nbsp;cset_references_bvar_dec&nbsp;i&nbsp;(cset_fvar&nbsp;x)&nbsp;then&nbsp;t&nbsp;else&nbsp;s)&nbsp;=&nbsp;s.<br/>
-Proof.<br/>
-&nbsp;&nbsp;intros.<br/>
-&nbsp;&nbsp;cbv.<br/>
-&nbsp;&nbsp;destruct_if;&nbsp;<span class="inlinecode">|<span class="id" title="tactic">reflexivity</span></span>.<br/>
-&nbsp;&nbsp;rewrite_set_facts_in&nbsp;Heqb.<br/>
-&nbsp;&nbsp;fnsetdec.<br/>
-Qed.<br/>
-Lemma&nbsp;cset_references_bvar_evidently_lvar&nbsp;:&nbsp;forall&nbsp;A&nbsp;(t&nbsp;s&nbsp;:&nbsp;A)&nbsp;i&nbsp;l,<br/>
-&nbsp;&nbsp;(if&nbsp;cset_references_bvar_dec&nbsp;i&nbsp;(cset_lvar&nbsp;l)&nbsp;then&nbsp;t&nbsp;else&nbsp;s)&nbsp;=&nbsp;s.<br/>
-Proof.<br/>
-&nbsp;&nbsp;intros.<br/>
-&nbsp;&nbsp;cbv.<br/>
-&nbsp;&nbsp;destruct_if;&nbsp;<span class="inlinecode">|<span class="id" title="tactic">reflexivity</span></span>.<br/>
-&nbsp;&nbsp;rewrite_set_facts_in&nbsp;Heqb.<br/>
-&nbsp;&nbsp;fnsetdec.<br/>
-Qed.<br/>
-Lemma&nbsp;cset_remove_bvar_evidently&nbsp;:&nbsp;forall&nbsp;i,&nbsp;cset_remove_bvar&nbsp;i&nbsp;(cset_bvar&nbsp;i)&nbsp;=&nbsp;{}C.<br/>
-Proof.&nbsp;intro.&nbsp;cbv.&nbsp;f_equal.&nbsp;csetdec.&nbsp;Qed.<br/>
-<br/>
-Lemma&nbsp;cset_union_empty&nbsp;:&nbsp;forall&nbsp;C,&nbsp;cset_union&nbsp;C&nbsp;{}C&nbsp;=&nbsp;C.<br/>
-Proof.&nbsp;intro.&nbsp;cbv.&nbsp;destruct&nbsp;C.&nbsp;csetdec.&nbsp;Qed.<br/>
-<br/>
-Hint&nbsp;Rewrite&nbsp;cset_references_bvar_evidently&nbsp;:&nbsp;csets.<br/>
-Hint&nbsp;Rewrite&nbsp;cset_references_bvar_evidently_empty&nbsp;:&nbsp;csets.<br/>
-Hint&nbsp;Rewrite&nbsp;cset_references_bvar_evidently_fvar&nbsp;:&nbsp;csets.<br/>
-Hint&nbsp;Rewrite&nbsp;cset_references_bvar_evidently_lvar&nbsp;:&nbsp;csets.<br/>
-Hint&nbsp;Rewrite&nbsp;cset_references_bvar_evidently_not&nbsp;using&nbsp;congruence&nbsp;:&nbsp;csets.<br/>
-<br/>
-Hint&nbsp;Rewrite&nbsp;cset_remove_bvar_evidently&nbsp;:&nbsp;csets.<br/>
-Hint&nbsp;Rewrite&nbsp;cset_union_empty&nbsp;:&nbsp;csets.<br/>
-<br/>
-Ltac&nbsp;cleanup&nbsp;:=<br/>
-&nbsp;&nbsp;cbv&nbsp;<span class="inlinecode"><span class="id" title="var">open_cvt_rec</span></span> <span class="inlinecode"><span class="id" title="var">open_cset</span></span> <span class="inlinecode"><span class="id" title="var">open_cvt_rec</span></span> <span class="inlinecode"><span class="id" title="var">open_cbt_rec</span></span>;&nbsp;csetsimpl.<br/>
-<br/>
-Definition&nbsp;cap_return_tm&nbsp;:=<br/>
-&nbsp;&nbsp;(stm_try&nbsp;{}C&nbsp;typ_base&nbsp;typ_base<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stm_val&nbsp;(typ_capt&nbsp;(typ_vfun&nbsp;typ_base&nbsp;typ_base)&nbsp;(cset_bvar&nbsp;0))<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stm_try&nbsp;(cset_bvar&nbsp;0)&nbsp;typ_base&nbsp;typ_base<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stm_def&nbsp;(cset_bvar&nbsp;1)&nbsp;(typ_vfun&nbsp;typ_base&nbsp;typ_base)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(blk_vabs&nbsp;typ_base&nbsp;(stm_throw&nbsp;(blk_bvar&nbsp;1)&nbsp;exp_const))<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stm_ret&nbsp;(exp_box&nbsp;(cset_bvar&nbsp;2)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(blk_bvar&nbsp;0))))<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stm_ret&nbsp;(exp_box&nbsp;(cset_bvar&nbsp;1)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(blk_vabs&nbsp;typ_base&nbsp;(stm_ret&nbsp;exp_const)))))<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stm_vapp&nbsp;(blk_unbox&nbsp;(exp_bvar&nbsp;0))&nbsp;exp_const))<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stm_ret&nbsp;exp_const))<br/>
+</div>
+
+<div class="doc">
+Here is a more complicated example:
+
+<pre><code class="language-effekt">
+def example4() {
+  try {
+    interface S1 {
+      def doSomethingElse(): Unit => Int at {cap}
+    }
+
+    val thunk = 
+      try {
+        def f() {
+          cap.doSomething()
+        }
+        f
+      } with cap2 : S1 {
+        def doSomethingElse() {
+          def g() {
+            0
+          }
+          box {cap} g
+        }
+      };
+    thunk()
+  } with cap : S0 {
+    def doSomething() {
+      0
+    }
+  }
+}
+</code></pre>
+    
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a name="cap_return_tm"><span class="id" title="definition">cap_return_tm</span></a> :=<br/>
+&nbsp;&nbsp;(<a class="idref" href="Top.SystemC.Definitions.html#stm_try"><span class="id" title="constructor">stm_try</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">{}</span></a><a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a> <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.SystemC.Definitions.html#stm_val"><span class="id" title="constructor">stm_val</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#typ_capt"><span class="id" title="constructor">typ_capt</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#typ_vfun"><span class="id" title="constructor">typ_vfun</span></a> <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a> <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a>) (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_bvar"><span class="id" title="definition">cset_bvar</span></a> 0))<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.SystemC.Definitions.html#stm_try"><span class="id" title="constructor">stm_try</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_bvar"><span class="id" title="definition">cset_bvar</span></a> 0) <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a> <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.SystemC.Definitions.html#stm_def"><span class="id" title="constructor">stm_def</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_bvar"><span class="id" title="definition">cset_bvar</span></a> 1) (<a class="idref" href="Top.SystemC.Definitions.html#typ_vfun"><span class="id" title="constructor">typ_vfun</span></a> <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a> <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.SystemC.Definitions.html#blk_vabs"><span class="id" title="constructor">blk_vabs</span></a> <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#stm_throw"><span class="id" title="constructor">stm_throw</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#blk_bvar"><span class="id" title="constructor">blk_bvar</span></a> 1) <a class="idref" href="Top.SystemC.Definitions.html#exp_const"><span class="id" title="constructor">exp_const</span></a>))<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#exp_box"><span class="id" title="constructor">exp_box</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_bvar"><span class="id" title="definition">cset_bvar</span></a> 2)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.SystemC.Definitions.html#blk_bvar"><span class="id" title="constructor">blk_bvar</span></a> 0))))<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#exp_box"><span class="id" title="constructor">exp_box</span></a> (<a class="idref" href="Top.SystemC.CaptureSets.html#cset_bvar"><span class="id" title="definition">cset_bvar</span></a> 1)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.SystemC.Definitions.html#blk_vabs"><span class="id" title="constructor">blk_vabs</span></a> <a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> <a class="idref" href="Top.SystemC.Definitions.html#exp_const"><span class="id" title="constructor">exp_const</span></a>)))))<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.SystemC.Definitions.html#stm_vapp"><span class="id" title="constructor">stm_vapp</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#blk_unbox"><span class="id" title="constructor">blk_unbox</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#exp_bvar"><span class="id" title="constructor">exp_bvar</span></a> 0)) <a class="idref" href="Top.SystemC.Definitions.html#exp_const"><span class="id" title="constructor">exp_const</span></a>))<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.SystemC.Definitions.html#stm_ret"><span class="id" title="constructor">stm_ret</span></a> <a class="idref" href="Top.SystemC.Definitions.html#exp_const"><span class="id" title="constructor">exp_const</span></a>))<br/>
 .<br/>
+</div>
+
+<div class="doc">
+Naturally, it is also well-typed. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Lemma</span> <a name="cap_return_typing0"><span class="id" title="lemma">cap_return_typing0</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">∃</span></a> <span class="id" title="var">T</span><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">,</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#styping"><span class="id" title="inductive">styping</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">{}</span></a><a class="idref" href="Top.SystemC.CaptureSets.html#c345676e3b4c0f0924b673b43219aba7"><span class="id" title="notation">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Examples.html#cap_return_tm"><span class="id" title="definition">cap_return_tm</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Examples.html#T"><span class="id" title="variable">T</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">)</span></a>.<br/>
+
 <br/>
-Ltac&nbsp;sig_binds_dec&nbsp;:=<br/>
-&nbsp;&nbsp;cbv&nbsp;<span class="inlinecode"><span class="id" title="var">Signatures.binds</span></span> <span class="inlinecode"><span class="id" title="var">Signatures.get</span></span>;&nbsp;simpl;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;repeat&nbsp;first&nbsp;<span class="inlinecode"></span> <span class="inlinecode"><span class="id" title="tactic">reflexivity</span></span> <span class="inlinecode">|</span> <span class="inlinecode"><span class="id" title="var">destruct_if</span>;</span> <span class="inlinecode"><span class="id" title="tactic">try</span></span> <span class="inlinecode"><span class="id" title="tactic">congruence</span></span>.<br/>
+</div>
+
+<div class="doc">
+Definitions can be desugared at some cost into block applications
+    and boxes.  Note that we insert an <tt>unbox</tt> to work around
+    System C's automatic box inferencing.
+
+<pre><code class="language-effekt">
+def example5Def {c : S0} {
+  def C() {
+    c.doSomething();
+    0
+  }
+  // body here...
+  0
+}
+
+def example5DefSugar {c : S0} {
+  (unbox {(C : () => Int at {c}) => 
+    // body here
+    0})
+  (box {() => c.doSomething(); 0})
+}
+</code></pre>
+        
+
+</div>
+<div class="code">
+
 <br/>
-Lemma&nbsp;cap_return_typing1&nbsp;:<br/>
-&nbsp;&nbsp;(nil&nbsp;@&nbsp;(cset_lvar&nbsp;l1)&nbsp;;&nbsp;(l2,&nbsp;bind_sig&nbsp;typ_base&nbsp;typ_base)&nbsp;::&nbsp;(l1,&nbsp;bind_sig&nbsp;typ_base&nbsp;typ_base)&nbsp;::&nbsp;nil<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-blk&nbsp;(blk_vabs&nbsp;typ_base&nbsp;(stm_throw&nbsp;(blk_handler&nbsp;l1)&nbsp;exp_const))<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~:&nbsp;(typ_vfun&nbsp;typ_base&nbsp;typ_base)).<br/>
-Proof&nbsp;with&nbsp;crush.<br/>
-&nbsp;&nbsp;Require&nbsp;Import&nbsp;SystemC.Soundness.<br/>
-&nbsp;&nbsp;pick&nbsp;fresh&nbsp;x&nbsp;and&nbsp;apply&nbsp;typing_vabs.<br/>
-&nbsp;&nbsp;cbv&nbsp;<span class="inlinecode"><span class="id" title="var">open_es</span></span> <span class="inlinecode"><span class="id" title="var">open_es_rec</span></span>.<br/>
-&nbsp;&nbsp;pose&nbsp;proof&nbsp;(l1l2).<br/>
-&nbsp;&nbsp;econstructor;&nbsp;try&nbsp;instantiate&nbsp;(1&nbsp;:=&nbsp;typ_base);&nbsp;repeat&nbsp;(constructor;&nbsp;try&nbsp;fsetdec;&nbsp;try&nbsp;lsetdec)...<br/>
-&nbsp;&nbsp;sig_binds_dec.<br/>
-Qed.<br/>
+<span class="id" title="keyword">Definition</span> <a name="sugar_def"><span class="id" title="definition">sugar_def</span></a> (<span class="id" title="var">C</span> : <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a>) (<span class="id" title="var">S1</span> : <a class="idref" href="Top.SystemC.Definitions.html#btyp"><span class="id" title="inductive">btyp</span></a>) (<span class="id" title="var">b</span> : <a class="idref" href="Top.SystemC.Definitions.html#blk"><span class="id" title="inductive">blk</span></a>) (<span class="id" title="var">s</span> : <a class="idref" href="Top.SystemC.Definitions.html#stm"><span class="id" title="inductive">stm</span></a>) : <a class="idref" href="Top.SystemC.Definitions.html#stm"><span class="id" title="inductive">stm</span></a> :=<br/>
+&nbsp;&nbsp;(<a class="idref" href="Top.SystemC.Definitions.html#stm_vapp"><span class="id" title="constructor">stm_vapp</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#blk_vabs"><span class="id" title="constructor">blk_vabs</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#typ_capt"><span class="id" title="constructor">typ_capt</span></a> <a class="idref" href="Top.SystemC.Examples.html#S1"><span class="id" title="variable">S1</span></a> <a class="idref" href="Top.SystemC.Examples.html#C"><span class="id" title="variable">C</span></a>) <a class="idref" href="Top.SystemC.Examples.html#s"><span class="id" title="variable">s</span></a>) (<a class="idref" href="Top.SystemC.Definitions.html#exp_box"><span class="id" title="constructor">exp_box</span></a> <a class="idref" href="Top.SystemC.Examples.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Examples.html#b"><span class="id" title="variable">b</span></a>)).<br/>
+
 <br/>
-Lemma&nbsp;cap_return_typing2&nbsp;:&nbsp;forall&nbsp;x,<br/>
-&nbsp;&nbsp;(styping<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((x,&nbsp;bind_blk&nbsp;(typ_vfun&nbsp;typ_base&nbsp;typ_base)&nbsp;(capture&nbsp;(cset_lvar&nbsp;l1)))&nbsp;::&nbsp;nil)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(cset_lvar&nbsp;l1)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((l2,&nbsp;bind_sig&nbsp;typ_base&nbsp;typ_base)&nbsp;::&nbsp;(l1,&nbsp;bind_sig&nbsp;typ_base&nbsp;typ_base)&nbsp;::&nbsp;nil)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(stm_ret&nbsp;(exp_box&nbsp;(cset_lvar&nbsp;l1)&nbsp;(blk_fvar&nbsp;x)))<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(typ_capt&nbsp;(typ_vfun&nbsp;typ_base&nbsp;typ_base)&nbsp;(cset_lvar&nbsp;l1))).<br/>
-Proof&nbsp;with&nbsp;crush.<br/>
-&nbsp;&nbsp;intro&nbsp;x.<br/>
-&nbsp;&nbsp;assert&nbsp;(wf_sig&nbsp;nil)&nbsp;by&nbsp;constructor.<br/>
-&nbsp;&nbsp;assert<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(wf_cap&nbsp;<span class="inlinecode">(<span class="id" title="var">x</span>,</span> <span class="inlinecode"><span class="id" title="var">bind_blk</span></span> <span class="inlinecode">(<span class="id" title="var">typ_vfun</span></span> <span class="inlinecode"><span class="id" title="var">typ_base</span></span> <span class="inlinecode"><span class="id" title="var">typ_base</span>)</span> <span class="inlinecode">(<span class="id" title="var">capture</span></span> <span class="inlinecode">(<span class="id" title="var">cset_lvar</span></span> <span class="inlinecode"><span class="id" title="var">l1</span>)))</span>&nbsp;(cset_lvar&nbsp;l1)).&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;constructor.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;intros&nbsp;?&nbsp;?.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;fsetdec.<br/>
-&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;rapply&nbsp;typing_ret...<br/>
-&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;eapply&nbsp;typing_bvar_capture...<br/>
-&nbsp;&nbsp;-&nbsp;constructor...<br/>
-&nbsp;&nbsp;-&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;(pose&nbsp;proof&nbsp;l1l2);&nbsp;lsetdec.<br/>
-Qed.<br/>
+<span class="id" title="keyword">Definition</span> <a name="sugar_var"><span class="id" title="definition">sugar_var</span></a> (<span class="id" title="var">x</span> : <a class="idref" href="Top.Util.Atom.html#AtomImpl.atom"><span class="id" title="axiom">atom</span></a>) : <a class="idref" href="Top.SystemC.Definitions.html#blk"><span class="id" title="inductive">blk</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.SystemC.Definitions.html#blk_unbox"><span class="id" title="constructor">blk_unbox</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#exp_fvar"><span class="id" title="constructor">exp_fvar</span></a> <a class="idref" href="Top.SystemC.Examples.html#x"><span class="id" title="variable">x</span></a>)).<br/>
+
 <br/>
-Set&nbsp;Nested&nbsp;Proofs&nbsp;Allowed.<br/>
+<span class="id" title="keyword">Lemma</span> <a name="sugar_def_typing"><span class="id" title="lemma">sugar_def_typing</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">L</span> <span class="id" title="var">E</span> <span class="id" title="var">R</span> <span class="id" title="var">b</span> <span class="id" title="var">s</span> (<span class="id" title="var">C</span> : <a class="idref" href="Top.SystemC.CaptureSets.html#cap"><span class="id" title="inductive">cap</span></a>) <span class="id" title="var">Q</span> <span class="id" title="var">S1</span> <span class="id" title="var">T2</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Examples.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="Top.SystemC.Definitions.html#11f615684d43d5ff020d0ffb9a3d8457"><span class="id" title="notation">|=</span></a> <a class="idref" href="Top.SystemC.Examples.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#wf_cap"><span class="id" title="inductive">wf_cap</span></a> <a class="idref" href="Top.SystemC.Examples.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="Top.SystemC.Examples.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#wf_cap"><span class="id" title="inductive">wf_cap</span></a> <a class="idref" href="Top.SystemC.Examples.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="Top.SystemC.Examples.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Examples.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b0e42b705cf240294735f1d77c92cb6a"><span class="id" title="notation">@</span></a> <a class="idref" href="Top.SystemC.Examples.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b0e42b705cf240294735f1d77c92cb6a"><span class="id" title="notation">;</span></a> <a class="idref" href="Top.SystemC.Examples.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b0e42b705cf240294735f1d77c92cb6a"><span class="id" title="notation">|-</span></a><a class="idref" href="Top.SystemC.Definitions.html#b0e42b705cf240294735f1d77c92cb6a"><span class="id" title="notation">blk</span></a> <a class="idref" href="Top.SystemC.Examples.html#b"><span class="id" title="variable">b</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b0e42b705cf240294735f1d77c92cb6a"><span class="id" title="notation">~:</span></a> <a class="idref" href="Top.SystemC.Examples.html#S1"><span class="id" title="variable">S1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">(</span></a><span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> : <a class="idref" href="Top.Util.Atom.html#AtomImpl.atom"><span class="id" title="axiom">atom</span></a>, <a class="idref" href="Top.SystemC.Examples.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="Top.Util.Metatheory.html#afed8734a485685888dccb4f977f99dd"><span class="id" title="notation">`</span></a><a class="idref" href="Top.Util.Metatheory.html#afed8734a485685888dccb4f977f99dd"><span class="id" title="notation">notin</span></a><a class="idref" href="Top.Util.Metatheory.html#afed8734a485685888dccb4f977f99dd"><span class="id" title="notation">`</span></a> <a class="idref" href="Top.SystemC.Examples.html#L"><span class="id" title="variable">L</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">(</span></a><a class="idref" href="Top.Util.Environment.html#1e2518ff2e78f907c94429897ac7861a"><span class="id" title="notation">[</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Examples.html#x"><span class="id" title="variable">x</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a> <a class="idref" href="Top.SystemC.Definitions.html#bind_val"><span class="id" title="constructor">bind_val</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#typ_capt"><span class="id" title="constructor">typ_capt</span></a> <a class="idref" href="Top.SystemC.Examples.html#S1"><span class="id" title="variable">S1</span></a> <a class="idref" href="Top.SystemC.Examples.html#C"><span class="id" title="variable">C</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a><a class="idref" href="Top.Util.Environment.html#1e2518ff2e78f907c94429897ac7861a"><span class="id" title="notation">]</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="Top.SystemC.Examples.html#E"><span class="id" title="variable">E</span></a><a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">)</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">@</span></a> <a class="idref" href="Top.SystemC.Examples.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">;</span></a> <a class="idref" href="Top.SystemC.Examples.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">|-</span></a><a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">stm</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Definitions.html#open_es"><span class="id" title="definition">open_es</span></a> <a class="idref" href="Top.SystemC.Examples.html#s"><span class="id" title="variable">s</span></a> <a class="idref" href="Top.SystemC.Examples.html#x"><span class="id" title="variable">x</span></a><a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">)</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">~:</span></a> <a class="idref" href="Top.SystemC.Examples.html#T2"><span class="id" title="variable">T2</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Examples.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">@</span></a> <a class="idref" href="Top.SystemC.Examples.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">;</span></a> <a class="idref" href="Top.SystemC.Examples.html#Q"><span class="id" title="variable">Q</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">|-</span></a><a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">stm</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Examples.html#sugar_def"><span class="id" title="definition">sugar_def</span></a> <a class="idref" href="Top.SystemC.Examples.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="Top.SystemC.Examples.html#S1"><span class="id" title="variable">S1</span></a> <a class="idref" href="Top.SystemC.Examples.html#b"><span class="id" title="variable">b</span></a> <a class="idref" href="Top.SystemC.Examples.html#s"><span class="id" title="variable">s</span></a><a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">)</span></a> <a class="idref" href="Top.SystemC.Definitions.html#9cede441202180a620a73f1df5e6bca6"><span class="id" title="notation">~:</span></a> <a class="idref" href="Top.SystemC.Examples.html#T2"><span class="id" title="variable">T2</span></a>.<br/>
+
 <br/>
-Lemma&nbsp;wf_cap_union&nbsp;:&nbsp;forall&nbsp;E&nbsp;C&nbsp;D,<br/>
-&nbsp;&nbsp;wf_cap&nbsp;E&nbsp;C&nbsp;-&gt;<br/>
-&nbsp;&nbsp;wf_cap&nbsp;E&nbsp;D&nbsp;-&gt;<br/>
-&nbsp;&nbsp;wf_cap&nbsp;E&nbsp;(cset_union&nbsp;C&nbsp;D).<br/>
-Proof.<br/>
-&nbsp;&nbsp;intros&nbsp;*&nbsp;WfC&nbsp;WfD.<br/>
-&nbsp;&nbsp;destruct&nbsp;C;&nbsp;destruct&nbsp;D.<br/>
-&nbsp;&nbsp;cbv.<br/>
-&nbsp;&nbsp;inversion&nbsp;WfC;&nbsp;inversion&nbsp;WfD;&nbsp;subst.<br/>
-&nbsp;&nbsp;csetsimpl.<br/>
-&nbsp;&nbsp;constructor.<br/>
-&nbsp;&nbsp;intros&nbsp;?&nbsp;?.<br/>
-&nbsp;&nbsp;rewrite&nbsp;AtomSetFacts.union_iff&nbsp;in&nbsp;H.<br/>
-&nbsp;&nbsp;eauto*.<br/>
-Qed.<br/>
-<br/>
-Ltac&nbsp;cleanup&nbsp;::=<br/>
-&nbsp;&nbsp;cbv&nbsp;<span class="inlinecode"></span>
-      <span class="inlinecode"><span class="id" title="var">open_es</span></span> <span class="inlinecode"><span class="id" title="var">open_es_rec</span></span> <span class="inlinecode"><span class="id" title="var">open_bs</span></span> <span class="inlinecode"><span class="id" title="var">open_bs_rec</span></span>
-      <span class="inlinecode"><span class="id" title="var">open_cvt</span></span> <span class="inlinecode"><span class="id" title="var">open_cvt_rec</span></span> <span class="inlinecode"><span class="id" title="var">open_cbt</span></span> <span class="inlinecode"><span class="id" title="var">open_cbt_rec</span></span> <span class="inlinecode"><span class="id" title="var">open_cs</span></span> <span class="inlinecode"><span class="id" title="var">open_cs_rec</span></span> <span class="inlinecode"><span class="id" title="var">open_cset</span></span>;&nbsp;csetsimpl.<br/>
-<br/>
-Ltac&nbsp;solve_wf_cap_cset_fvar&nbsp;:=<br/>
-&nbsp;&nbsp;constructor;<br/>
-&nbsp;&nbsp;intros&nbsp;?&nbsp;?;<br/>
-&nbsp;&nbsp;match&nbsp;goal&nbsp;with<br/>
-&nbsp;&nbsp;|&nbsp;H&nbsp;:&nbsp;?x&nbsp;`in`&nbsp;singleton&nbsp;?y&nbsp;|-&nbsp;_&nbsp;=&gt;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;assert&nbsp;(x&nbsp;=&nbsp;y)&nbsp;by&nbsp;fsetdec;&nbsp;subst<br/>
-&nbsp;&nbsp;end;<br/>
-&nbsp;&nbsp;eexists;&nbsp;binds_dec.<br/>
-<br/>
-Lemma&nbsp;cap_return_typing0&nbsp;:&nbsp;exists&nbsp;T,<br/>
-&nbsp;&nbsp;(styping&nbsp;nil&nbsp;{}C&nbsp;nil<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cap_return_tm<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T).<br/>
-Proof&nbsp;with&nbsp;crush.<br/>
-&nbsp;&nbsp;eexists.<br/>
-&nbsp;&nbsp;unfold&nbsp;cap_return_tm.<br/>
-&nbsp;&nbsp;pose&nbsp;proof&nbsp;wf_cap_empty.<br/>
-&nbsp;&nbsp;Lemma&nbsp;wf_sig_nil&nbsp;:&nbsp;wf_sig&nbsp;nil.&nbsp;constructor.&nbsp;Qed.<br/>
-&nbsp;&nbsp;pose&nbsp;proof&nbsp;wf_sig_nil.<br/>
-&nbsp;&nbsp;pick&nbsp;fresh&nbsp;x&nbsp;and&nbsp;apply&nbsp;typing_try...&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;cleanup.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;pick&nbsp;fresh&nbsp;y&nbsp;and&nbsp;apply&nbsp;typing_val...&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pick&nbsp;fresh&nbsp;z&nbsp;and&nbsp;apply&nbsp;typing_try.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;crush.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;solve_wf_cap_cset_fvar.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;solve_wf_cap_cset_fvar.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleanup.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pick&nbsp;fresh&nbsp;xx&nbsp;and&nbsp;apply&nbsp;typing_def.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;crush.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;solve_wf_cap_cset_fvar.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assert&nbsp;(z&nbsp;&lt;&gt;&nbsp;x)&nbsp;by&nbsp;fsetdec.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pick&nbsp;fresh&nbsp;yx&nbsp;and&nbsp;apply&nbsp;typing_vabs;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assert&nbsp;(yx&nbsp;&lt;&gt;&nbsp;z)&nbsp;by&nbsp;fsetdec;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assert&nbsp;(yx&nbsp;&lt;&gt;&nbsp;x)&nbsp;by&nbsp;fsetdec.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleanup.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eapply&nbsp;typing_throw;&nbsp;try&nbsp;instantiate&nbsp;(1&nbsp;:=&nbsp;typ_base)...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply&nbsp;typing_bvar_tracked.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;trivial.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;solve_wf_cap_cset_fvar.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;binds_dec.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;crush.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;econstructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;repeat&nbsp;(constructor;&nbsp;simpl_env;&nbsp;try&nbsp;fsetdec).<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleanup.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assert&nbsp;(z&nbsp;&lt;&gt;&nbsp;x)&nbsp;by&nbsp;fsetdec.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assert&nbsp;(xx&nbsp;&lt;&gt;&nbsp;z)&nbsp;by&nbsp;fsetdec.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assert&nbsp;(xx&nbsp;&lt;&gt;&nbsp;x)&nbsp;by&nbsp;fsetdec.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor.<br/>
-<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;solve_wf_cap_cset_fvar.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eapply&nbsp;typing_bvar_capture.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5:&nbsp;binds_dec.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4:&nbsp;crush.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;trivial.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;solve_wf_cap_cset_fvar.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;solve_wf_cap_cset_fvar.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;apply&nbsp;wf_cap_union;&nbsp;solve_wf_cap_cset_fvar.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleanup.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;solve_wf_cap_cset_fvar...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;solve_wf_cap_cset_fvar...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pick&nbsp;fresh&nbsp;zx&nbsp;and&nbsp;apply&nbsp;typing_vabs.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleanup.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assert&nbsp;(z&nbsp;&lt;&gt;&nbsp;x)&nbsp;by&nbsp;fsetdec.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assert&nbsp;(zx&nbsp;&lt;&gt;&nbsp;z)&nbsp;by&nbsp;fsetdec.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assert&nbsp;(zx&nbsp;&lt;&gt;&nbsp;x)&nbsp;by&nbsp;fsetdec.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;solve_wf_cap_cset_fvar...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;trivial.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:&nbsp;solve_wf_cap_cset_fvar.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;solve_wf_cap_cset_fvar.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;cleanup.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;eapply&nbsp;typing_vapp...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assert&nbsp;(y&nbsp;&lt;&gt;&nbsp;x)&nbsp;by&nbsp;fsetdec.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;econstructor.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply&nbsp;typing_evar.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3:&nbsp;binds_dec.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;trivial.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;solve_wf_cap_cset_fvar.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;crush.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;solve_wf_cap_cset_fvar.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assert&nbsp;(y&nbsp;&lt;&gt;&nbsp;x)&nbsp;by&nbsp;fsetdec.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;{<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;solve_wf_cap_cset_fvar.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;constructor...<br/>
-&nbsp;&nbsp;constructor...<br/>
-Qed.<br/>
-<br/>
-<span class="comment">(*&nbsp;def&nbsp;C&nbsp;x:&nbsp;S&nbsp;=&nbsp;b;&nbsp;s&nbsp;&nbsp;&nbsp;.=&nbsp;&nbsp;&nbsp;((x&nbsp;:&nbsp;C&nbsp;S)&nbsp;=&gt;&nbsp;s)(box&nbsp;C&nbsp;b)&nbsp;*)</span><br/>
-Definition&nbsp;sugar_def&nbsp;(C&nbsp;:&nbsp;cap)&nbsp;(S1&nbsp;:&nbsp;btyp)&nbsp;(b&nbsp;:&nbsp;blk)&nbsp;(s&nbsp;:&nbsp;stm)&nbsp;:&nbsp;stm&nbsp;:=<br/>
-&nbsp;&nbsp;(stm_vapp&nbsp;(blk_vabs&nbsp;(typ_capt&nbsp;S1&nbsp;C)&nbsp;s)&nbsp;(exp_box&nbsp;C&nbsp;b)).<br/>
-<br/>
-Definition&nbsp;sugar_var&nbsp;(x&nbsp;:&nbsp;atom)&nbsp;:&nbsp;blk&nbsp;:=<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(blk_unbox&nbsp;(exp_fvar&nbsp;x)).<br/>
-<br/>
-Lemma&nbsp;sugar_def_typing&nbsp;:&nbsp;forall&nbsp;L&nbsp;E&nbsp;R&nbsp;b&nbsp;s&nbsp;(C&nbsp;:&nbsp;cap)&nbsp;Q&nbsp;S1&nbsp;T2,<br/>
-&nbsp;&nbsp;R&nbsp;|=&nbsp;C&nbsp;-&gt;<br/>
-&nbsp;&nbsp;wf_cap&nbsp;E&nbsp;C&nbsp;-&gt;<br/>
-&nbsp;&nbsp;wf_cap&nbsp;E&nbsp;R&nbsp;-&gt;<br/>
-&nbsp;&nbsp;E&nbsp;@&nbsp;C&nbsp;;&nbsp;Q&nbsp;|-blk&nbsp;b&nbsp;~:&nbsp;S1&nbsp;-&gt;<br/>
-&nbsp;&nbsp;(forall&nbsp;x&nbsp;:&nbsp;atom,&nbsp;x&nbsp;`notin`&nbsp;L&nbsp;-&gt;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(<span class="inlinecode">(<span class="id" title="var">x</span>,</span> <span class="inlinecode"><span class="id" title="var">bind_val</span></span> <span class="inlinecode">(<span class="id" title="var">typ_capt</span></span> <span class="inlinecode"><span class="id" title="var">S1</span></span> <span class="inlinecode"><span class="id" title="var">C</span>))</span>&nbsp;++&nbsp;E)&nbsp;@&nbsp;R&nbsp;;&nbsp;Q&nbsp;|-stm&nbsp;(open_es&nbsp;s&nbsp;x)&nbsp;~:&nbsp;T2)&nbsp;-&gt;<br/>
-&nbsp;&nbsp;E&nbsp;@&nbsp;R&nbsp;;&nbsp;Q&nbsp;|-stm&nbsp;(sugar_def&nbsp;C&nbsp;S1&nbsp;b&nbsp;s)&nbsp;~:&nbsp;T2.<br/>
-Proof&nbsp;with&nbsp;crush.<br/>
-&nbsp;&nbsp;intros.&nbsp;unfold&nbsp;sugar_def.<br/>
-&nbsp;&nbsp;econstructor.<br/>
-&nbsp;&nbsp;econstructor...<br/>
-&nbsp;&nbsp;econstructor...<br/>
-Qed.<br/>
-<br/>
-Lemma&nbsp;sugar_var_typing&nbsp;:&nbsp;forall&nbsp;E&nbsp;R&nbsp;f&nbsp;S1&nbsp;C,<br/>
-&nbsp;&nbsp;wf_env&nbsp;E&nbsp;-&gt;<br/>
-&nbsp;&nbsp;wf_cap&nbsp;E&nbsp;R&nbsp;-&gt;<br/>
-&nbsp;&nbsp;R&nbsp;|=&nbsp;C&nbsp;-&gt;<br/>
-&nbsp;&nbsp;binds&nbsp;f&nbsp;(bind_val&nbsp;(typ_capt&nbsp;S1&nbsp;C))&nbsp;E&nbsp;-&gt;<br/>
-&nbsp;&nbsp;E&nbsp;@&nbsp;R&nbsp;;&nbsp;nil&nbsp;|-blk&nbsp;(sugar_var&nbsp;f)&nbsp;~:&nbsp;S1.<br/>
-Proof&nbsp;with&nbsp;crush.<br/>
-&nbsp;&nbsp;intros.<br/>
-&nbsp;&nbsp;assert&nbsp;(wf_sig&nbsp;nil)&nbsp;by&nbsp;constructor.<br/>
-&nbsp;&nbsp;econstructor...<br/>
-Qed.<br/>
-<br/>
+<span class="id" title="keyword">Lemma</span> <a name="sugar_var_typing"><span class="id" title="lemma">sugar_var_typing</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">E</span> <span class="id" title="var">R</span> <span class="id" title="var">f</span> <span class="id" title="var">S1</span> <span class="id" title="var">C</span>,<br/>
+&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#wf_env"><span class="id" title="inductive">wf_env</span></a> <a class="idref" href="Top.SystemC.Examples.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#wf_cap"><span class="id" title="inductive">wf_cap</span></a> <a class="idref" href="Top.SystemC.Examples.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="Top.SystemC.Examples.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Examples.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="Top.SystemC.Definitions.html#11f615684d43d5ff020d0ffb9a3d8457"><span class="id" title="notation">|=</span></a> <a class="idref" href="Top.SystemC.Examples.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="Top.Util.Environment.html#binds"><span class="id" title="definition">binds</span></a> <a class="idref" href="Top.SystemC.Examples.html#f"><span class="id" title="variable">f</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#bind_val"><span class="id" title="constructor">bind_val</span></a> (<a class="idref" href="Top.SystemC.Definitions.html#typ_capt"><span class="id" title="constructor">typ_capt</span></a> <a class="idref" href="Top.SystemC.Examples.html#S1"><span class="id" title="variable">S1</span></a> <a class="idref" href="Top.SystemC.Examples.html#C"><span class="id" title="variable">C</span></a>)) <a class="idref" href="Top.SystemC.Examples.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="Top.SystemC.Examples.html#E"><span class="id" title="variable">E</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b0e42b705cf240294735f1d77c92cb6a"><span class="id" title="notation">@</span></a> <a class="idref" href="Top.SystemC.Examples.html#R"><span class="id" title="variable">R</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b0e42b705cf240294735f1d77c92cb6a"><span class="id" title="notation">;</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b0e42b705cf240294735f1d77c92cb6a"><span class="id" title="notation">|-</span></a><a class="idref" href="Top.SystemC.Definitions.html#b0e42b705cf240294735f1d77c92cb6a"><span class="id" title="notation">blk</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b0e42b705cf240294735f1d77c92cb6a"><span class="id" title="notation">(</span></a><a class="idref" href="Top.SystemC.Examples.html#sugar_var"><span class="id" title="definition">sugar_var</span></a> <a class="idref" href="Top.SystemC.Examples.html#f"><span class="id" title="variable">f</span></a><a class="idref" href="Top.SystemC.Definitions.html#b0e42b705cf240294735f1d77c92cb6a"><span class="id" title="notation">)</span></a> <a class="idref" href="Top.SystemC.Definitions.html#b0e42b705cf240294735f1d77c92cb6a"><span class="id" title="notation">~:</span></a> <a class="idref" href="Top.SystemC.Examples.html#S1"><span class="id" title="variable">S1</span></a>.<br/>
+<span class="comment">(*<br/>
 <span class="comment">(**&nbsp;Finally<br/>
 def&nbsp;handleTick(prog&nbsp;:&nbsp;{()&nbsp;=&gt;&nbsp;Int}&nbsp;=&gt;&nbsp;Int)&nbsp;=&gt;&nbsp;Int&nbsp;=<br/>
 &nbsp;&nbsp;val&nbsp;stateFun&nbsp;=&nbsp;try&nbsp;{&nbsp;tick&nbsp;=&gt;<br/>

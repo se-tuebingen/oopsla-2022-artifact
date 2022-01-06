@@ -68,6 +68,102 @@ Proof.
   eexists (typ_exc typ_base typ_base). exfalso; fsetdec.
 Qed.
 
+Lemma cset_references_bvar_evidently : forall A (t s : A) i,
+  (if cset_references_bvar_dec i (cset_bvar i) then t else s) = t.
+Proof.
+  intros.
+  cbv.
+  destruct_if; [reflexivity |].
+  rewrite_set_facts_in Heqb.
+  fnsetdec.
+Qed.
+Lemma cset_references_bvar_evidently_empty : forall A (t s : A) i,
+  (if cset_references_bvar_dec i {}C then t else s) = s.
+Proof.
+  intros.
+  cbv.
+  destruct_if; [|reflexivity].
+  rewrite_set_facts_in Heqb.
+  fnsetdec.
+Qed.
+Lemma cset_references_bvar_evidently_not : forall A (t s : A) i j,
+  i <> j ->
+  (if cset_references_bvar_dec i (cset_bvar j) then t else s) = s.
+Proof.
+  intros.
+  cbv.
+  destruct_if; [|reflexivity].
+  rewrite_set_facts_in Heqb.
+  fnsetdec.
+Qed.
+Lemma cset_references_bvar_evidently_fvar : forall A (t s : A) i x,
+  (if cset_references_bvar_dec i (cset_fvar x) then t else s) = s.
+Proof.
+  intros.
+  cbv.
+  destruct_if; [|reflexivity].
+  rewrite_set_facts_in Heqb.
+  fnsetdec.
+Qed.
+Lemma cset_references_bvar_evidently_lvar : forall A (t s : A) i l,
+  (if cset_references_bvar_dec i (cset_lvar l) then t else s) = s.
+Proof.
+  intros.
+  cbv.
+  destruct_if; [|reflexivity].
+  rewrite_set_facts_in Heqb.
+  fnsetdec.
+Qed.
+Lemma cset_remove_bvar_evidently : forall i, cset_remove_bvar i (cset_bvar i) = {}C.
+Proof. intro. cbv. f_equal. csetdec. Qed.
+
+Lemma cset_union_empty : forall C, cset_union C {}C = C.
+Proof. intro. cbv. destruct C. csetdec. Qed.
+
+Hint Rewrite cset_references_bvar_evidently : csets.
+Hint Rewrite cset_references_bvar_evidently_empty : csets.
+Hint Rewrite cset_references_bvar_evidently_fvar : csets.
+Hint Rewrite cset_references_bvar_evidently_lvar : csets.
+Hint Rewrite cset_references_bvar_evidently_not using congruence : csets.
+
+Hint Rewrite cset_remove_bvar_evidently : csets.
+Hint Rewrite cset_union_empty : csets.
+
+Ltac cleanup :=
+  cbv [
+      open_es open_es_rec open_bs open_bs_rec
+      open_cvt open_cvt_rec open_cbt open_cbt_rec open_cs open_cs_rec open_cset]; csetsimpl.
+
+Ltac sig_binds_dec :=
+  cbv [Signatures.binds Signatures.get]; simpl;
+    repeat first [ reflexivity | destruct_if; try congruence].
+
+Lemma wf_sig_nil : wf_sig nil. constructor. Qed.
+
+Lemma wf_cap_union : forall E C D,
+  wf_cap E C ->
+  wf_cap E D ->
+  wf_cap E (cset_union C D).
+Proof.
+  intros * WfC WfD.
+  destruct C; destruct D.
+  cbv.
+  inversion WfC; inversion WfD; subst.
+  csetsimpl.
+  constructor.
+  intros ? ?.
+  rewrite AtomSetFacts.union_iff in H.
+  eauto*.
+Qed.
+  
+Ltac solve_wf_cap_cset_fvar :=
+    constructor;
+    intros ? ?;
+    match goal with
+    | H : ?x `in` singleton ?y |- _ =>
+      assert (x = y) by fsetdec; subst
+    end;
+    eexists; binds_dec.
 (* end hide *)
 
 (** Here is an example of a function which takes a block argument f of type [S0] and boxes it.
@@ -96,7 +192,6 @@ Ltac crush :=
 
 Lemma id_ex_typing : empty @ {}C ; nil |-blk id_ex ~: id_ex_typ.
 Proof with crush.
-(*
   eapply (typing_babs {}).
   intros...
   rewrite substZeroInSingleton.
@@ -117,8 +212,6 @@ Proof with crush.
   intros y In...
   destruct (x == y); subst...
 Qed.
-**)
-Admitted.
 
 
 (** Next, we model a simple try-catch expression which simply returns a value.
@@ -281,7 +374,7 @@ Qed.
 <pre><code class="language-effekt">
 def example3() {
   try {
-    val x = cap.doSomething()
+    val x = cap.doSomething();
     0
   } with cap : S0 {
     def doSomething() {
@@ -341,6 +434,8 @@ Proof with crush; try autorewrite with csets; simpl_env in *.
     + apply wf_cap_empty.       (* wf_cap empty *)
 Qed.
 
+(** The reduction steps for this statement are a little more complicated.  First,
+    as before, we shift the try statement onto the stack as a handler frame. *)
 Lemma try_apply_throw_s1 :
   〈 try_apply_throw | top | nil 〉-->
   〈 (stm_val typ_base (stm_throw (blk_handler l1) (exp_const)) (stm_ret (exp_bvar 0)))
@@ -352,6 +447,7 @@ Proof with crush.
   rapply step_try...
 Qed.
 
+(** Next, we mark that we are evaluating a binding with a K frame.  *)
 Lemma try_apply_throw_s2 :
   〈 (stm_val typ_base (stm_throw (blk_handler l1) exp_const) (stm_ret (exp_bvar 0)))
     | (H l1 {}C (stm_ret exp_const)) :: top
@@ -366,7 +462,8 @@ Proof with crush.
   apply stmt_val with (L := {})...
 Qed.
 
-
+(** We throw in the presence of a K frame and a matching H (handler) frame,
+    which causes the K frame to be unwound... *)
 Lemma try_apply_throw_s3 :
   〈 (stm_throw (blk_handler l1) exp_const)
     | (K typ_base (stm_ret (exp_bvar 0))) :: ((H l1 {}C (stm_ret exp_const)) :: top)
@@ -381,6 +478,7 @@ Proof with crush.
   apply step_throw...
 Qed.
 
+(** ... *)
 Lemma try_apply_throw_s4 :
   〈throw l1 # exp_const
     | (K typ_base (stm_ret (exp_bvar 0))) :: ((H l1 {}C (stm_ret exp_const)) :: top)
@@ -396,6 +494,7 @@ Proof with crush.
   apply step_unwind_1.
 Qed.
 
+(** ... and the matching H frame to be shifted off the frame to be evaluated. *)
 Lemma try_apply_throw_s5 :
   〈throw l1 # exp_const
     | ((H l1 {}C (stm_ret exp_const)) :: top)
@@ -410,71 +509,39 @@ Proof with crush.
   rapply step_handle...
 Qed.
 
-(*
-Lemma cset_references_bvar_evidently : forall A (t s : A) i,
-  (if cset_references_bvar_dec i (cset_bvar i) then t else s) = t.
-Proof.
-  intros.
-  cbv.
-  destruct_if; [reflexivity |].
-  rewrite_set_facts_in Heqb.
-  fnsetdec.
-Qed.
-Lemma cset_references_bvar_evidently_empty : forall A (t s : A) i,
-  (if cset_references_bvar_dec i {}C then t else s) = s.
-Proof.
-  intros.
-  cbv.
-  destruct_if; [|reflexivity].
-  rewrite_set_facts_in Heqb.
-  fnsetdec.
-Qed.
-Lemma cset_references_bvar_evidently_not : forall A (t s : A) i j,
-  i <> j ->
-  (if cset_references_bvar_dec i (cset_bvar j) then t else s) = s.
-Proof.
-  intros.
-  cbv.
-  destruct_if; [|reflexivity].
-  rewrite_set_facts_in Heqb.
-  fnsetdec.
-Qed.
-Lemma cset_references_bvar_evidently_fvar : forall A (t s : A) i x,
-  (if cset_references_bvar_dec i (cset_fvar x) then t else s) = s.
-Proof.
-  intros.
-  cbv.
-  destruct_if; [|reflexivity].
-  rewrite_set_facts_in Heqb.
-  fnsetdec.
-Qed.
-Lemma cset_references_bvar_evidently_lvar : forall A (t s : A) i l,
-  (if cset_references_bvar_dec i (cset_lvar l) then t else s) = s.
-Proof.
-  intros.
-  cbv.
-  destruct_if; [|reflexivity].
-  rewrite_set_facts_in Heqb.
-  fnsetdec.
-Qed.
-Lemma cset_remove_bvar_evidently : forall i, cset_remove_bvar i (cset_bvar i) = {}C.
-Proof. intro. cbv. f_equal. csetdec. Qed.
+(** Here is a more complicated example:
+#
+<pre><code class="language-effekt">
+def example4() {
+  try {
+    interface S1 {
+      def doSomethingElse(): Unit => Int at {cap}
+    }
 
-Lemma cset_union_empty : forall C, cset_union C {}C = C.
-Proof. intro. cbv. destruct C. csetdec. Qed.
-
-Hint Rewrite cset_references_bvar_evidently : csets.
-Hint Rewrite cset_references_bvar_evidently_empty : csets.
-Hint Rewrite cset_references_bvar_evidently_fvar : csets.
-Hint Rewrite cset_references_bvar_evidently_lvar : csets.
-Hint Rewrite cset_references_bvar_evidently_not using congruence : csets.
-
-Hint Rewrite cset_remove_bvar_evidently : csets.
-Hint Rewrite cset_union_empty : csets.
-
-Ltac cleanup :=
-  cbv [open_cvt_rec open_cset open_cvt_rec open_cbt_rec]; csetsimpl.
-
+    val thunk = 
+      try {
+        def f() {
+          cap.doSomething()
+        }
+        f
+      } with cap2 : S1 {
+        def doSomethingElse() {
+          def g() {
+            0
+          }
+          box {cap} g
+        }
+      };
+    thunk()
+  } with cap : S0 {
+    def doSomething() {
+      0
+    }
+  }
+}
+</code></pre>
+#    
+*)
 Definition cap_return_tm :=
   (stm_try {}C typ_base typ_base
            (stm_val (typ_capt (typ_vfun typ_base typ_base) (cset_bvar 0))
@@ -488,11 +555,7 @@ Definition cap_return_tm :=
                     (stm_vapp (blk_unbox (exp_bvar 0)) exp_const))
            (stm_ret exp_const))
 .
-
-Ltac sig_binds_dec :=
-  cbv [Signatures.binds Signatures.get]; simpl;
-    repeat first [ reflexivity | destruct_if; try congruence].
-
+(* begin hide *)
 Lemma cap_return_typing1 :
   (nil @ (cset_lvar l1) ; (l2, bind_sig typ_base typ_base) :: (l1, bind_sig typ_base typ_base) :: nil
                           |-blk (blk_vabs typ_base (stm_throw (blk_handler l1) exp_const))
@@ -530,39 +593,8 @@ Proof with crush.
     + constructor...
     + (pose proof l1l2); lsetdec.
 Qed.
-
-Set Nested Proofs Allowed.
-
-Lemma wf_cap_union : forall E C D,
-  wf_cap E C ->
-  wf_cap E D ->
-  wf_cap E (cset_union C D).
-Proof.
-  intros * WfC WfD.
-  destruct C; destruct D.
-  cbv.
-  inversion WfC; inversion WfD; subst.
-  csetsimpl.
-  constructor.
-  intros ? ?.
-  rewrite AtomSetFacts.union_iff in H.
-  eauto*.
-Qed.
-
-Ltac cleanup ::=
-  cbv [
-      open_es open_es_rec open_bs open_bs_rec
-      open_cvt open_cvt_rec open_cbt open_cbt_rec open_cs open_cs_rec open_cset]; csetsimpl.
-
-Ltac solve_wf_cap_cset_fvar :=
-  constructor;
-  intros ? ?;
-  match goal with
-  | H : ?x `in` singleton ?y |- _ =>
-    assert (x = y) by fsetdec; subst
-  end;
-  eexists; binds_dec.
-
+(* end hide *)
+(** Naturally, it is also well-typed. *)
 Lemma cap_return_typing0 : exists T,
   (styping nil {}C nil
            cap_return_tm
@@ -571,7 +603,6 @@ Proof with crush.
   eexists.
   unfold cap_return_tm.
   pose proof wf_cap_empty.
-  Lemma wf_sig_nil : wf_sig nil. constructor. Qed.
   pose proof wf_sig_nil.
   pick fresh x and apply typing_try... {
     cleanup.
@@ -698,7 +729,30 @@ Proof with crush.
   constructor...
 Qed.
 
-(* def C x: S = b; s   .=   ((x : C S) => s)(box C b) *)
+(** Definitions can be desugared at some cost into block applications
+    and boxes.  Note that we insert an <<unbox>> to work around
+    System C's automatic box inferencing.
+#
+<pre><code class="language-effekt">
+def example5Def {c : S0} {
+  def C() {
+    c.doSomething();
+    0
+  }
+  // body here...
+  0
+}
+
+def example5DefSugar {c : S0} {
+  (unbox {(C : () => Int at {c}) => 
+    // body here
+    0})
+  (box {() => c.doSomething(); 0})
+}
+</code></pre>
+#        
+*)
+  
 Definition sugar_def (C : cap) (S1 : btyp) (b : blk) (s : stm) : stm :=
   (stm_vapp (blk_vabs (typ_capt S1 C) s) (exp_box C b)).
 
@@ -731,7 +785,7 @@ Proof with crush.
   assert (wf_sig nil) by constructor.
   econstructor...
 Qed.
-
+(*
 (** Finally
 def handleTick(prog : {() => Int} => Int) => Int =
   val stateFun = try { tick =>
