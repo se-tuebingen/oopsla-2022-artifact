@@ -1540,6 +1540,10 @@ figure.highlight pre, figure.highlight code { padding: 0; margin: 0; border: 0; 
 
 div.source { background: rgba(0, 0, 0, 0.03); padding: 1em; }
 
+.id[repl]:before { content: attr(repl); }
+
+.id[repl] .hidden { font-size: 0; }
+
 #coqdoc a[href]:hover, #coqdoc [clickable]:hover { background-color: rgba(0, 0, 0, 0.1); cursor: pointer; }
 
 #coqdoc img { display: block; max-width: 80%; margin: 1em auto; }
