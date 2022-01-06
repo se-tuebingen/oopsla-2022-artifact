@@ -53,7 +53,6 @@ jobs:
     - uses: coq-community/docker-coq-action@v1
       with:
         coq_version: "8.10"
-        opam_file: "coq/proofs.opam"
         before_script: |
           startGroup "Workaround permission issue"
           sudo chown -R coq:coq .  # <--
@@ -62,7 +61,12 @@ jobs:
           startGroup "Build project"
           cd coq; make -j2
           endGroup
-        
+
+    - name: Revert permissions
+      # to avoid a warning at cleanup time
+      if: ${{ always() }}
+      run: sudo chown -R 1001:116 coq
+    
     - name: Zip compiled proofs
       run: zip -r compiled-proofs.zip coq
 
