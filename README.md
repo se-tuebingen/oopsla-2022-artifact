@@ -39,18 +39,18 @@ For the kick-the-tires phase, please perform the following steps, which should n
    The compiler for System C is compiled to JavaScript and runs in the browser, so please allow scripts to be executed.
 
 2. Visit the [tutorial page](https://se-tuebingen.github.io/oopsla-2022-artifact/tutorial/#repls)
-   and click the `run` button on the right. The compiler will be loaded, the example above will
+   and click the `run` button on the right. The compiler will be loaded, the example will
    be executed and it should output `"Hello World!\n()"`.
 
 3. Visit the [tutorial page](https://se-tuebingen.github.io/oopsla-2022-artifact/tutorial/index.html#editors)
-   and click the `typecheck and run` button on the right. The compiler will be loaded, the example above will be type checked. Hover over `println` and check that it shows the type signature.
+   and click the `typecheck and run` button on the right. The compiler will be loaded, the example will be type checked. Hover over `println` and check that it shows the type signature.
    Replace the call to `println` with `1 + ""` to introduce a type error and click `typecheck`
    (or <Cmd>+Enter / <Ctrl>+Enter). A type error should be visible.
 
 
 ### Kick-the-tires: Coq Proofs
 We believe it is not strictly necessary to compile the Coq proofs yourself. Instead,
-we have set up continuation integration (github action) to compile the proofs.
+we have set up continuous integration (github action) to compile the proofs.
 As an alternative, we also provide a `Dockerfile` that should simplify compiling
 the proofs on your own machine.
   
@@ -69,35 +69,13 @@ To manually navigate to this run, you may select the `build` job and expand `Run
 should look like
 
 ```
-- COQDEP VFILES
-  - COQC Taktiks.v
-  - COQC FSetNotin.v
-  - COQC ListFacts.v
-  - COQC FSetDecide.v
-  - COQC AdditionalTactics.v
-  - COQC FiniteSets.v
-  - COQC Atom.v
-  - COQC Label.v
-  - File "./Label.v", line 112, characters 0-56:
-  Warning: - Warning: Declaring a scope implicitly is deprecated; use in advance an
-  - explicit "Declare Scope metatheory_scope.". [undeclared-scope,deprecated]
-  - File "./Atom.v", line 269, characters 0-77:
-  Warning: - Warning: Declaring a scope implicitly is deprecated; use in advance an
-  - explicit "Declare Scope metatheory_scope.". [undeclared-scope,deprecated]
-  - COQC Environment.v
-  - COQC Signatures.v
-  - COQC Metatheory.v
-  - COQC Nat.v
-  - COQC CaptureSets.v
-  - COQC Rho_Definitions.v
-  - COQC Rho_Infrastructure.v
-  - COQC Rho_Lemmas.v
-  - COQC Rho_Substitution.v
-  - COQC Rho_Soundness.v
-  - COQC Rho_Examples.v
-  -> compiled  proofs.dev
-  -> installed proofs.dev
-  Done.
+"coqc"  -q   -R . Top Util/Taktiks.v
+"coqc"  -q   -R . Top Util/FSetNotin.v
+"coqc"  -q   -R . Top Util/ListFacts.v
+"coqc"  -q   -R . Top Util/FiniteSets.v
+"coqc"  -q   -R . Top Util/FSetDecide.v
+"coqc"  -q   -R . Top Util/Atom.v
+...
 ```
 </details>
 
