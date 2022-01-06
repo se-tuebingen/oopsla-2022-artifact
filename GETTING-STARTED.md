@@ -129,6 +129,7 @@ Compiling the proofs takes about 20min. In the kick-the-tires phase you can
 abort the compilation after seeing initial output like
 
 <details>
+   
 ```
 make[1]: Entering directory '/home/proofs'
 COQDEP VFILES
@@ -144,6 +145,7 @@ make[1]: Entering directory '/home/proofs'
 "coqc"  -q   -R . Top Util/Atom.v
 ...
 ```
+   
 </details>
 
 #### Cleanup
