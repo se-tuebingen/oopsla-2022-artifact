@@ -29,5 +29,5 @@ We claim reusability of the proofs and the interactive demo, but not of the calc
 ### Additional Instructions
 Please find additional instructions in the following two files:
 
-- `GETTING-STARTED.md ` for the kick-the-tires phase/
+- `GETTING-STARTED.md ` for the kick-the-tires phase.
 - `STEP-BY-STEP.md` for suggestions on how to proceed with the evaluation of the artifact.
