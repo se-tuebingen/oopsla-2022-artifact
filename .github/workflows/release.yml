@@ -61,7 +61,7 @@ jobs:
         # Don't use OPAM to install, but make.
         script: |
           startGroup "Build project"
-          cd coq; make clean; make -j2
+          cd coq; ls -lah; make clean; make -j2
           endGroup
 
     - name: Revert permissions
