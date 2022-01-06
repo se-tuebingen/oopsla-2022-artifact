@@ -151,7 +151,6 @@ docker container rm -f systemc-proofs-container
 docker image rm -f systemc-proofs-image
 ```
 
-
 ## Step-By-Step
 
 ### Functional
