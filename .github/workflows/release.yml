@@ -84,6 +84,7 @@ jobs:
 
   release:
     name: Create Release
+    id: create_release
     runs-on: ubuntu-latest
     needs: [build-website, compile-proofs]
     steps:
