@@ -49,7 +49,7 @@ For the kick-the-tires phase, please perform the following steps, which should n
 
 
 #### Alternative: Running the Website Locally
-The released artifact comes with a zipped version of the website (`website.zip`).
+The released artifact comes with a zipped version of the website ([`website.zip`](https://github.com/se-tuebingen/oopsla-2022-artifact/releases/latest/download/website.zip)).
 It is packaged as a static website (with JavaScript) and needs to be served
 from a local webserver to function correctly.
 For the reviewer's convenience, we prepared scripts that start such a web server
@@ -77,7 +77,7 @@ we have set up continuous integration (github action) to compile the proofs.
 As an alternative, we also provide a `Dockerfile` that should simplify compiling
 the proofs on your own machine.
   
-Additionally, for the reviewers convenience, we also provide the compiled proofs as a zip file, attached to the release (`compiled-proofs.zip`).
+Additionally, for the reviewers convenience, we also provide the compiled proofs as a zip file, attached to the release ([`compiled-proofs.zip`](https://github.com/se-tuebingen/oopsla-2022-artifact/releases/latest/download/compiled-proofs.zip)).
   
 #### Alternative 1: Checkout the CI build
 
