@@ -48,6 +48,29 @@ For the kick-the-tires phase, please perform the following steps, which should n
    (or <Cmd>+Enter / <Ctrl>+Enter). A type error should be visible.
 
 
+#### Alternative: Running the Website Locally
+The released artifact comes with a zipped version of the website (`website.zip`).
+It is packaged as a static website (with JavaScript) and needs to be served
+from a local webserver to function correctly.
+For the reviewer's convenience, we prepared scripts that start such a web server
+Extract the zip file `website.zip`, navigate into the unzipped directory (i.e. `demo/`), and
+run `start.sh` (on linux) / `start.mac.sh` (on mac) / `start.bat` (on windows).
+You should now be able to point your web browser to `http://localhost:8000`.
+
+  > For Linux and Windows users you will need Python 3 to run the demonstration.
+  > Python 3 should be installed by default or can be easily installed from
+  > your system's package manager or through the Microsoft Store (for Windows users).
+
+If you prefer to use a standard javascript webserver, you can also install
+and run one via:
+
+```
+npm install -g http-server
+cd demo/
+http-server -p 8000
+```
+
+  
 ### Kick-the-tires: Coq Proofs
 We believe it is not strictly necessary to compile the Coq proofs yourself. Instead,
 we have set up continuous integration (github action) to compile the proofs.
