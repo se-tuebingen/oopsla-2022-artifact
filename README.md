@@ -10,8 +10,8 @@ This github repository constitutes the artifact for our paper
 
 The artifact consists of two parts:
 
-1. `coq/`: Coq proofs, proving soundness of the calculus System C
-2. `demo-sources/`: A website featuring an implementation of System C with examples that can be typechecked, edited, and run.
+1. [`coq/`](./coq/): Coq proofs, proving soundness of the calculus System C
+2. [`demo-sources/`](./demo-sources/): A website featuring an implementation of System C with examples that can be typechecked, edited, and run.
 
 While the repository contains the sources of the website, we do not propose to
 build the website yourself. Instead, we use github-pages (branch [`gh-pages`](https://github.com/se-tuebingen/oopsla-2022-artifact/tree/gh-pages)) to host the artifact, which is made available at:
