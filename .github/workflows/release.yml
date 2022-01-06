@@ -1,0 +1,45 @@
+name: Release Artifacts
+
+on:
+  push:
+    branches: [ main ] # for now, build always
+    # tags:
+    #   - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+jobs:
+  build-website:
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/demo-sources/Gemfile
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+
+    - name: Install JavaScript Dependencies
+      working-directory: demo-sources
+      run: npm install
+
+    - name: Run Webpack to bundle JS files (Monaco and compiler)
+      working-directory: demo-sources
+      run: webpack
+
+    - name: Build page
+      working-directory: demo-sources
+      run: bundle exec jekyll build
+      
+    - name: Zip built website
+      working-directory: demo-sources
+      run: zip -r ../website.zip _site
+
+    - name: Save zip file
+      uses: actions/upload-artifact@v1
+      with:
+        name: website
+        path: website.zip
