@@ -84,7 +84,6 @@ jobs:
 
   release:
     name: Create Release
-    id: create_release
     runs-on: ubuntu-latest
     needs: [build-website, compile-proofs]
     steps:
@@ -103,7 +102,8 @@ jobs:
           name: compiled-proofs
           path: distribution/
 
-      - name: Create Release
+      - name: Create Release      
+        id: create_release
         uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
