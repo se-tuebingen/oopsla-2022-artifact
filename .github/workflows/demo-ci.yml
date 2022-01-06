@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-website:
 
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/demo-sources/Gemfile
