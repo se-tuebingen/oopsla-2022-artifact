@@ -3,6 +3,10 @@ div.source {
   padding: 1em;
 }
 
+.id[repl]:before{ content: attr(repl); }
+
+.id[repl] .hidden { font-size: 0; }
+
 #coqdoc {
 
   a[href]:hover, [clickable]:hover{
