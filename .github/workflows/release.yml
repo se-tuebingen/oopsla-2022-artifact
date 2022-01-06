@@ -44,3 +44,22 @@ jobs:
       with:
         name: website
         path: demo-sources/website.zip
+        
+  compile-proofs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: coq-community/docker-coq-action@v1
+      with:
+        coq_version: "8.10"
+        opam_file: "coq/proofs.opam"
+        
+    - name: Zip compiled proofs
+      run: zip -r compiled-proofs.zip coq
+
+    - name: Save zip file
+      uses: actions/upload-artifact@v1
+      with:
+        name: compiled-proofs
+        path: compiled-proofs.zip
