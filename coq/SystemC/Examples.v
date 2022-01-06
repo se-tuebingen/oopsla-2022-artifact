@@ -8,33 +8,39 @@
 Require Import SystemC.Definitions.
 Require Import Coq.Program.Tactics.
 Require Import SystemC.Lemmas.
+Require Import Signatures.
 
+(** This file contains some worked examples in Coq for System C. *)
 
-(* Block type *)
+(** As System C is concerned with tracking _effectful_ computation,
+    represented by a block type, we define a base block type [S0]
+    that is used to represent some ambient, global effectful operation
+    -- perhaps for performing I/O.
+    
+    In System C, we could define [S0] using the following:
+
+#
+<pre><code class="language-effekt">
+interface S0 {
+  def doSomething(): Int
+}
+</code></pre>
+#
+
+*)
 Parameter S0 : btyp.
 Parameter S0Wf : wf_btyp empty S0.
 Parameter S0Type : btype S0.
 
-(* Fresh labels (add more eventually)*)
-Parameter l1 l2 l3 : label.
-Axiom l1l2 : l1 <> l2.
-Axiom l1l3 : l1 <> l3.
-Axiom l2l3 : l2 <> l3.
-
-(* (f : S0) => return box {f} f  *)
-Definition id_ex : blk :=
-  blk_babs S0 (stm_ret (exp_box (cset_bvar 0) (blk_bvar 0))).
-
-(* (f : S0) -> S0 at {f} *)
-Definition id_ex_typ : btyp :=
-  typ_bfun S0 (typ_capt S0 (cset_bvar 0)).
-
-Ltac crush :=
-  eauto; simpl_env; simpl;
-    try fsetdec;
-    unfold open_bs, open_bs_rec, open_cvt, open_cvt_rec, open_cbt, open_cbt_rec, open_cs, open_cs_rec;
-    destruct (0 === 0); try contradiction;
-    fold open_bs open_bs_rec open_cvt open_cvt_rec open_cbt_rec open_cs open_cs_rec.
+(* begin hide *)
+Ltac destruct_if :=
+  match goal with
+  | |- context[if ?t then _ else _] =>
+    destruct t eqn:?
+  end.
+Ltac binds_dec :=
+  cbv [binds get]; simpl;
+    repeat first [ reflexivity | destruct_if; try congruence].
 
 Lemma substZeroInSingleton (x : atom): (open_cset 0 (cset_fvar x) (cset_bvar 0)) = (cset_fvar x).
 Proof with eauto*.
@@ -54,10 +60,43 @@ Proof with eauto.
   symmetry. apply open_cbt_rec_btype...
 Qed.
 
-Require Import Signatures.
+Lemma wf_cap_empty: forall E,
+  wf_cap E {}C.
+Proof.
+  intros.
+  constructor.
+  eexists (typ_exc typ_base typ_base). exfalso; fsetdec.
+Qed.
 
-Definition id_ex_typing : empty @ {}C ; nil |-blk id_ex ~: id_ex_typ.
+(* end hide *)
+
+(** Here is an example of a function which takes a block argument f of type [S0] and boxes it.
+    In System C, we could define this using the following:
+#
+<pre><code class="language-effekt">
+def id {f : S0} {
+  box f
+}
+</code></pre>
+# *)
+Definition id_ex : blk :=
+  blk_babs S0 (stm_ret (exp_box (cset_bvar 0) (blk_bvar 0))).
+
+(** Naturally, it would have the type <<{f : S0} => S0 at {f}>>.*)
+Definition id_ex_typ : btyp :=
+  typ_bfun S0 (typ_capt S0 (cset_bvar 0)).
+
+Ltac crush :=
+  eauto; simpl_env; simpl;
+    try fsetdec;
+    unfold open_bs, open_bs_rec, open_cvt, open_cvt_rec, open_cbt, open_cbt_rec, open_cs, open_cs_rec;
+    destruct (0 === 0); try contradiction;
+    fold open_bs open_bs_rec open_cvt open_cvt_rec open_cbt_rec open_cs open_cs_rec.
+
+
+Lemma id_ex_typing : empty @ {}C ; nil |-blk id_ex ~: id_ex_typ.
 Proof with crush.
+(*
   eapply (typing_babs {}).
   intros...
   rewrite substZeroInSingleton.
@@ -78,7 +117,31 @@ Proof with crush.
   intros y In...
   destruct (x == y); subst...
 Qed.
+**)
+Admitted.
 
+
+(** Next, we model a simple try-catch expression which simply returns a value.
+    This, written in our language, looks like:
+#
+<pre><code class="language-effekt">
+def example1() {
+  try {
+    0
+  } with cap : S0 {
+    def doSomething() {
+      0
+    }
+  }
+}
+</code></pre>
+#
+    As our formalism in Coq lacks integers (and other expression values), we model
+    our expressions and expression values in Coq using a base expression type [typ_base]
+    and a singular inhabitant of that type, namely [exp_const].
+
+
+*)
 Definition try_return_immediate_typ :=
   typ_base.
 Definition try_return_param_type :=
@@ -87,15 +150,7 @@ Definition try_return_immediate :=
   stm_try {}C try_return_param_type try_return_immediate_typ
      (stm_ret exp_const) (stm_ret exp_const).
 
-Ltac destruct_if :=
-  match goal with
-  | |- context[if ?t then _ else _] =>
-    destruct t eqn:?
-  end.
-Ltac binds_dec :=
-  cbv [binds get]; simpl;
-    repeat first [ reflexivity | destruct_if; try congruence].
-
+(** As expected, that try statement returns an <<Int>> (in our formalism, a [typ_base]). *)
 Lemma try_return_immediate_typing : empty @ {}C ; nil |-stm try_return_immediate ~: try_return_immediate_typ.
 Proof with crush; try autorewrite with csets.
   eapply (typing_try {}).
@@ -117,6 +172,15 @@ Proof with crush; try autorewrite with csets.
     + econstructor. instantiate (1 := typ_exc typ_base typ_base). fsetdec.
 Qed.
 
+(** And naturally, reduces to 0/[exp_const] as the effect is never invoked.
+    As an aside, we assume the existance of three unique, fresh labels. *)
+
+Parameter l1 l2 l3 : label.
+Axiom l1l2 : l1 <> l2.
+Axiom l1l3 : l1 <> l3.
+Axiom l2l3 : l2 <> l3.
+
+(** Now, the try expression then reduces to returning a value directly out of a handler frame. *)
 Lemma try_return_immediate_s1 :
   〈 try_return_immediate | top | nil 〉-->
   〈 (stm_ret exp_const) |
@@ -126,7 +190,7 @@ Proof with crush.
   unfold try_return_immediate.
   rapply step_try...
 Qed.
-
+(** ...which, by our reduction rules, eliminates the handler frame from the top of the stack. *)
 Lemma try_return_immediate_s2 : forall Q,
   〈 (stm_ret exp_const) | (H l1 {}C (stm_ret exp_const)) :: top | Q 〉-->
   〈 (stm_ret exp_const) | top | Q 〉.
@@ -135,6 +199,23 @@ Proof with crush.
   apply step_pop_2...
 Qed.
 
+(**
+  Similarly, next we model a try statement which actually throws something.  In System C, this can be
+  expressed using the following fragment:
+#
+<pre><code class="language-effekt">
+def example2() {
+  try {
+    cap.doSomething()
+  } with cap : S0 {
+    def doSomething() {
+      0
+    }
+  }
+}
+</code></pre>
+#
+*)
 Definition try_return_throw_typ :=
   typ_base.
 Definition try_return_throw_param_typ :=
@@ -142,7 +223,7 @@ Definition try_return_throw_param_typ :=
 Definition try_return_throw :=
   stm_try {}C try_return_throw_param_typ try_return_throw_typ (stm_throw (blk_bvar 0) exp_const) (stm_ret exp_const).
 
-
+(** Naturally, it still returns an Int/[typ_base] though. *)
 Lemma try_return_throw_typing : empty @ {}C ; nil |-stm try_return_throw ~: try_return_throw_typ.
 Proof with crush; try autorewrite with csets.
   eapply (typing_try {}).
@@ -165,6 +246,9 @@ Proof with crush; try autorewrite with csets.
     - econstructor. instantiate (1 := typ_exc typ_base typ_base). fsetdec.
 Qed.
 
+(** The reduction steps for this expression are a bit more complicated.  First, a throw
+    statement is reduced in the presence of a matching handler, which shifts evaluation
+    to that handler and unwinds from there. *)
 Lemma try_return_throw_s1 :
   〈 try_return_throw | top | nil 〉-->
   〈 (stm_throw (blk_handler l1) exp_const) |
@@ -191,20 +275,31 @@ Proof with crush.
   rapply step_handle...
 Qed.
 
+(** This example is a little more complicated.  Here, we throw while evaluating a value-binder
+    under the handler block.
+#
+<pre><code class="language-effekt">
+def example3() {
+  try {
+    val x = cap.doSomething()
+    0
+  } with cap : S0 {
+    def doSomething() {
+      0
+    }
+  }
+}
+</code></pre>
+#    
+*)
 Definition try_apply_throw_param_typ := typ_base.
 Definition try_apply_throw_typ := typ_base.
 Definition try_apply_throw :=
-  stm_try {}C try_apply_throw_param_typ try_apply_throw_typ (stm_val typ_base (stm_throw (blk_bvar 0) exp_const) (stm_ret (exp_bvar 0)))
+  stm_try {}C try_apply_throw_param_typ try_apply_throw_typ 
+    (stm_val typ_base (stm_throw (blk_bvar 0) exp_const) (stm_ret (exp_bvar 0)))
     (stm_ret (exp_const)).
 
-Lemma wf_cap_empty: forall E,
-  wf_cap E {}C.
-Proof.
-  intros.
-  constructor.
-  eexists (typ_exc typ_base typ_base). exfalso; fsetdec.
-Qed.
-
+(** Naturally, it returns an Int/[typ_base] again. *)
 Lemma try_apply_throw_typing :
   empty @ {}C ; nil |-stm try_apply_throw ~: try_apply_throw_typ.
 Proof with crush; try autorewrite with csets; simpl_env in *.
@@ -315,6 +410,7 @@ Proof with crush.
   rapply step_handle...
 Qed.
 
+(*
 Lemma cset_references_bvar_evidently : forall A (t s : A) i,
   (if cset_references_bvar_dec i (cset_bvar i) then t else s) = t.
 Proof.
@@ -1028,3 +1124,4 @@ Proof with notin_simpl; crush; try fsetdec; try fnsetdec; try lsetdec.
   Unshelve.
   all: repeat exact {}.
 Qed.
+*)
