@@ -77,6 +77,8 @@ we have set up continuous integration (github action) to compile the proofs.
 As an alternative, we also provide a `Dockerfile` that should simplify compiling
 the proofs on your own machine.
   
+Additionally, for the reviewers convenience, we also provide the compiled proofs as a zip file, attached to the release (`compiled-proofs.zip`).
+  
 #### Alternative 1: Checkout the CI build
 
 To check validity of the proofs, you may visit the [github action](https://github.com/se-tuebingen/oopsla-2022-artifact/actions/workflows/proof-ci.yml) page that contains successful compilation runs of Coq.
