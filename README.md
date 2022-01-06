@@ -69,12 +69,20 @@ To manually navigate to this run, you may select the `build` job and expand `Run
 should look like
 
 ```
-"coqc"  -q   -R . Top Util/Taktiks.v
-"coqc"  -q   -R . Top Util/FSetNotin.v
-"coqc"  -q   -R . Top Util/ListFacts.v
-"coqc"  -q   -R . Top Util/FiniteSets.v
-"coqc"  -q   -R . Top Util/FSetDecide.v
-"coqc"  -q   -R . Top Util/Atom.v
+<><> Processing actions <><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+Processing  1/2: [proofs: sh coq_makefile -f _CoqProject -o Makefile]
++ /bin/sh "-c" "coq_makefile -f _CoqProject -o Makefile" (CWD=/home/coq/.opam/4.05.0/.opam-switch/build/proofs.dev)
+Processing  1/2: [proofs: make]
++ /usr/bin/make "-j2" (CWD=/home/coq/.opam/4.05.0/.opam-switch/build/proofs.dev)
+- COQDEP VFILES
+- COQC Util/Taktiks.v
+- COQC Util/FSetNotin.v
+- COQC Util/ListFacts.v
+- COQC Util/FSetDecide.v
+- COQC Util/AdditionalTactics.v
+- COQC Util/FiniteSets.v
+- COQC Util/Atom.v
+- COQC Util/Label.v
 ...
 ```
 </details>
