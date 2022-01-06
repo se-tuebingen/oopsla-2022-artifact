@@ -54,6 +54,18 @@ jobs:
       with:
         coq_version: "8.10"
         opam_file: "coq/proofs.opam"
+        before_script: |
+          startGroup "Workaround permission issue"
+          sudo chown -R coq:coq .  # <--
+          endGroup
+        script: |
+          startGroup "Build project"
+          make -j2
+          endGroup
+        uninstall: |
+          startGroup "Clean project"
+          make clean
+          endGroup
         
     - name: Zip compiled proofs
       run: zip -r compiled-proofs.zip coq
