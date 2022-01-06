@@ -60,11 +60,7 @@ jobs:
           endGroup
         script: |
           startGroup "Build project"
-          make -j2
-          endGroup
-        uninstall: |
-          startGroup "Clean project"
-          make clean
+          cd coq; make -j2
           endGroup
         
     - name: Zip compiled proofs
