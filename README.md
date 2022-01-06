@@ -48,7 +48,7 @@ For the kick-the-tires phase, please perform the following steps, which should n
    (or <Cmd>+Enter / <Ctrl>+Enter). A type error should be visible.
 
 
-#### Alternative: Running the Website Locally
+#### Optional Alternative: Running the Website Locally
 The released artifact comes with a zipped version of the website ([`website.zip`](https://github.com/se-tuebingen/oopsla-2022-artifact/releases/latest/download/website.zip)).
 It is packaged as a static website (with JavaScript) and needs to be served
 from a local webserver to function correctly.
