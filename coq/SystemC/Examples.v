@@ -18,7 +18,6 @@ Require Import Signatures.
     -- perhaps for performing I/O.
     
     In System C, we could define [S0] using the following:
-
 #
 <pre><code class="language-effekt">
 interface S0 {
@@ -26,12 +25,10 @@ interface S0 {
 }
 </code></pre>
 #
-
 *)
 Parameter S0 : btyp.
 Parameter S0Wf : wf_btyp empty S0.
 Parameter S0Type : btype S0.
-
 (* begin hide *)
 Ltac destruct_if :=
   match goal with
@@ -41,7 +38,6 @@ Ltac destruct_if :=
 Ltac binds_dec :=
   cbv [binds get]; simpl;
     repeat first [ reflexivity | destruct_if; try congruence].
-
 Lemma substZeroInSingleton (x : atom): (open_cset 0 (cset_fvar x) (cset_bvar 0)) = (cset_fvar x).
 Proof with eauto*.
   cbv [open_cset cset_references_bvar_dec cset_bvar cset_bvars cset_union cset_fvar
@@ -49,8 +45,6 @@ Proof with eauto*.
   destruct_set_mem 0 (NatSet.F.singleton 0); f_equal;
     try fsetdec; try lsetdec; try fnsetdec...
 Qed.
-
-(* Since it is closed... *)
 Lemma substitutionS0 (x : atom) : open_cbt_rec 0 (cset_fvar x) S0 = S0.
 Proof with eauto.
   assert (btype S0). {
@@ -59,7 +53,6 @@ Proof with eauto.
   }
   symmetry. apply open_cbt_rec_btype...
 Qed.
-
 Lemma wf_cap_empty: forall E,
   wf_cap E {}C.
 Proof.
@@ -67,7 +60,6 @@ Proof.
   constructor.
   eexists (typ_exc typ_base typ_base). exfalso; fsetdec.
 Qed.
-
 Lemma cset_references_bvar_evidently : forall A (t s : A) i,
   (if cset_references_bvar_dec i (cset_bvar i) then t else s) = t.
 Proof.
@@ -116,30 +108,23 @@ Proof.
 Qed.
 Lemma cset_remove_bvar_evidently : forall i, cset_remove_bvar i (cset_bvar i) = {}C.
 Proof. intro. cbv. f_equal. csetdec. Qed.
-
 Lemma cset_union_empty : forall C, cset_union C {}C = C.
 Proof. intro. cbv. destruct C. csetdec. Qed.
-
 Hint Rewrite cset_references_bvar_evidently : csets.
 Hint Rewrite cset_references_bvar_evidently_empty : csets.
 Hint Rewrite cset_references_bvar_evidently_fvar : csets.
 Hint Rewrite cset_references_bvar_evidently_lvar : csets.
 Hint Rewrite cset_references_bvar_evidently_not using congruence : csets.
-
 Hint Rewrite cset_remove_bvar_evidently : csets.
 Hint Rewrite cset_union_empty : csets.
-
 Ltac cleanup :=
   cbv [
       open_es open_es_rec open_bs open_bs_rec
       open_cvt open_cvt_rec open_cbt open_cbt_rec open_cs open_cs_rec open_cset]; csetsimpl.
-
 Ltac sig_binds_dec :=
   cbv [Signatures.binds Signatures.get]; simpl;
     repeat first [ reflexivity | destruct_if; try congruence].
-
 Lemma wf_sig_nil : wf_sig nil. constructor. Qed.
-
 Lemma wf_cap_union : forall E C D,
   wf_cap E C ->
   wf_cap E D ->
@@ -155,7 +140,6 @@ Proof.
   rewrite AtomSetFacts.union_iff in H.
   eauto*.
 Qed.
-  
 Ltac solve_wf_cap_cset_fvar :=
     constructor;
     intros ? ?;
@@ -165,7 +149,6 @@ Ltac solve_wf_cap_cset_fvar :=
     end;
     eexists; binds_dec.
 (* end hide *)
-
 (** Here is an example of a function which takes a block argument f of type [S0] and boxes it.
     In System C, we could define this using the following:
 #
@@ -175,11 +158,18 @@ def id {f : S0} {
 }
 </code></pre>
 # *)
-Definition id_ex : blk :=
+Definition id : blk :=
   blk_babs S0 (stm_ret (exp_box (cset_bvar 0) (blk_bvar 0))).
 
-(** Naturally, it would have the type <<{f : S0} => S0 at {f}>>.*)
-Definition id_ex_typ : btyp :=
+(** Naturally, it would have the type <<{f : S0} => S0 at {f}>>.  You can see this by hovering over
+    <<id_typ>> in the following code block.
+#
+<pre><code class="language-effekt">
+def show_typ() { val id_typ = id; () }
+</code></pre>
+#
+*)
+Definition id_typ : btyp :=
   typ_bfun S0 (typ_capt S0 (cset_bvar 0)).
 
 Ltac crush :=
@@ -190,7 +180,7 @@ Ltac crush :=
     fold open_bs open_bs_rec open_cvt open_cvt_rec open_cbt_rec open_cs open_cs_rec.
 
 
-Lemma id_ex_typing : empty @ {}C ; nil |-blk id_ex ~: id_ex_typ.
+Lemma id_typing : empty @ {}C ; nil |-blk id ~: id_typ.
 Proof with crush.
   eapply (typing_babs {}).
   intros...
@@ -218,12 +208,12 @@ Qed.
     This, written in our language, looks like:
 #
 <pre><code class="language-effekt">
-def example1() {
+def try_return_immediate() {
   try {
     0
   } with cap : S0 {
     def doSomething() {
-      0
+      1
     }
   }
 }
@@ -241,7 +231,8 @@ Definition try_return_param_type :=
   typ_base.
 Definition try_return_immediate :=
   stm_try {}C try_return_param_type try_return_immediate_typ
-     (stm_ret exp_const) (stm_ret exp_const).
+     (stm_ret exp_const) (* 0 *)
+     (stm_ret exp_const) (* 1 *).
 
 (** As expected, that try statement returns an <<Int>> (in our formalism, a [typ_base]). *)
 Lemma try_return_immediate_typing : empty @ {}C ; nil |-stm try_return_immediate ~: try_return_immediate_typ.
@@ -265,8 +256,9 @@ Proof with crush; try autorewrite with csets.
     + econstructor. instantiate (1 := typ_exc typ_base typ_base). fsetdec.
 Qed.
 
-(** And naturally, reduces to 0/[exp_const] as the effect is never invoked.
-    As an aside, we assume the existance of three unique, fresh labels. *)
+(** And naturally, reduces to 0 ([exp_const]) as the effect is never invoked.
+    As an aside, we assume the existance of three unique, fresh labels, which
+    are used by our reduction semantics to uniquely identify frames on the stack. *)
 
 Parameter l1 l2 l3 : label.
 Axiom l1l2 : l1 <> l2.
@@ -276,8 +268,8 @@ Axiom l2l3 : l2 <> l3.
 (** Now, the try expression then reduces to returning a value directly out of a handler frame. *)
 Lemma try_return_immediate_s1 :
   〈 try_return_immediate | top | nil 〉-->
-  〈 (stm_ret exp_const) |
-     (H l1 {}C (stm_ret exp_const)) :: top |
+  〈 (stm_ret exp_const) (* 0 *) |
+     (H l1 {}C (stm_ret exp_const) (* 1 *)) :: top |
      (l1, bind_sig try_return_param_type try_return_immediate_typ) :: nil 〉.
 Proof with crush.
   unfold try_return_immediate.
@@ -285,8 +277,8 @@ Proof with crush.
 Qed.
 (** ...which, by our reduction rules, eliminates the handler frame from the top of the stack. *)
 Lemma try_return_immediate_s2 : forall Q,
-  〈 (stm_ret exp_const) | (H l1 {}C (stm_ret exp_const)) :: top | Q 〉-->
-  〈 (stm_ret exp_const) | top | Q 〉.
+  〈 (stm_ret exp_const) (* 0 *) | (H l1 {}C (stm_ret exp_const) (* 1 *)) :: top | Q 〉-->
+  〈 (stm_ret exp_const) (* 0 *) | top | Q 〉.
 Proof with crush.
   intro.
   apply step_pop_2...
@@ -297,7 +289,7 @@ Qed.
   expressed using the following fragment:
 #
 <pre><code class="language-effekt">
-def example2() {
+def try_return_throw() {
   try {
     cap.doSomething()
   } with cap : S0 {
@@ -314,7 +306,9 @@ Definition try_return_throw_typ :=
 Definition try_return_throw_param_typ :=
   typ_base.
 Definition try_return_throw :=
-  stm_try {}C try_return_throw_param_typ try_return_throw_typ (stm_throw (blk_bvar 0) exp_const) (stm_ret exp_const).
+  stm_try {}C try_return_throw_param_typ try_return_throw_typ 
+  (stm_throw (blk_bvar 0) exp_const (* () *)) 
+  (stm_ret exp_const (* 0 *)).
 
 (** Naturally, it still returns an Int/[typ_base] though. *)
 Lemma try_return_throw_typing : empty @ {}C ; nil |-stm try_return_throw ~: try_return_throw_typ.
@@ -344,8 +338,8 @@ Qed.
     to that handler and unwinds from there. *)
 Lemma try_return_throw_s1 :
   〈 try_return_throw | top | nil 〉-->
-  〈 (stm_throw (blk_handler l1) exp_const) |
-     (H l1 {}C (stm_ret exp_const)) :: top |
+  〈 (stm_throw (blk_handler l1) exp_const (* () *)) |
+     (H l1 {}C (stm_ret exp_const (* 0 *))) :: top |
      [(l1, bind_sig try_return_throw_param_typ try_return_throw_typ)] 〉.
 Proof with crush.
   unfold try_return_immediate.
@@ -353,17 +347,17 @@ Proof with crush.
 Qed.
 
 Lemma try_return_throw_s2 : forall Q,
-  〈 (stm_throw (blk_handler l1) exp_const) | (H l1 {}C (stm_ret exp_const)) :: top | Q 〉-->
-  〈throw l1 # exp_const | (H l1 {}C (stm_ret exp_const)) :: top • top | Q〉.
+  〈 (stm_throw (blk_handler l1) exp_const (* () *)) | (H l1 {}C (stm_ret exp_const (* 0 *))) :: top | Q 〉-->
+  〈throw l1 # exp_const (* () *) | (H l1 {}C (stm_ret exp_const (* 0 *))) :: top • top | Q〉.
 Proof with crush.
   intro.
   apply step_throw...
 Qed.
 
 Lemma try_return_throw_s3 :
-  〈throw l1 # exp_const | (H l1 {}C (stm_ret exp_const)) :: top • top |
+  〈throw l1 # exp_const (* () *) | (H l1 {}C (stm_ret exp_const (* 0 *))) :: top • top |
      [(l1, bind_sig try_return_throw_param_typ try_return_throw_typ)]〉-->
-  〈 (stm_ret exp_const) | top | [(l1, bind_sig try_return_throw_param_typ try_return_throw_typ)] 〉 .
+  〈 (stm_ret exp_const (* 0 *)) | top | [(l1, bind_sig try_return_throw_param_typ try_return_throw_typ)] 〉 .
 Proof with crush.
   rapply step_handle...
 Qed.
@@ -372,13 +366,13 @@ Qed.
     under the handler block.
 #
 <pre><code class="language-effekt">
-def example3() {
+def try_apply_throw() {
   try {
     val x = cap.doSomething();
-    0
+    x
   } with cap : S0 {
     def doSomething() {
-      0
+      1
     }
   }
 }
@@ -389,8 +383,10 @@ Definition try_apply_throw_param_typ := typ_base.
 Definition try_apply_throw_typ := typ_base.
 Definition try_apply_throw :=
   stm_try {}C try_apply_throw_param_typ try_apply_throw_typ 
-    (stm_val typ_base (stm_throw (blk_bvar 0) exp_const) (stm_ret (exp_bvar 0)))
-    (stm_ret (exp_const)).
+    (stm_val typ_base 
+      (stm_throw (blk_bvar 0) exp_const (* () *)) 
+      (stm_ret (exp_bvar 0) (* x *)))
+    (stm_ret (exp_const) (* 1 *)).
 
 (** Naturally, it returns an Int/[typ_base] again. *)
 Lemma try_apply_throw_typing :
@@ -438,8 +434,10 @@ Qed.
     as before, we shift the try statement onto the stack as a handler frame. *)
 Lemma try_apply_throw_s1 :
   〈 try_apply_throw | top | nil 〉-->
-  〈 (stm_val typ_base (stm_throw (blk_handler l1) (exp_const)) (stm_ret (exp_bvar 0)))
-    | (H l1 {}C (stm_ret exp_const)) :: top
+  〈 (stm_val typ_base 
+      (stm_throw (blk_handler l1) exp_const (* () *)) 
+      (stm_ret (exp_bvar 0) (* x *)))
+    | (H l1 {}C (stm_ret exp_const (* 1 *))) :: top
     | [(l1, bind_sig try_apply_throw_param_typ try_apply_throw_typ)]
    〉.
 Proof with crush.
@@ -449,12 +447,12 @@ Qed.
 
 (** Next, we mark that we are evaluating a binding with a K frame.  *)
 Lemma try_apply_throw_s2 :
-  〈 (stm_val typ_base (stm_throw (blk_handler l1) exp_const) (stm_ret (exp_bvar 0)))
-    | (H l1 {}C (stm_ret exp_const)) :: top
+  〈 (stm_val typ_base (stm_throw (blk_handler l1) exp_const (* () *)) (stm_ret (exp_bvar 0) (* x *)))
+    | (H l1 {}C (stm_ret exp_const (* 1 *))) :: top
     | [(l1, bind_sig try_apply_throw_param_typ try_apply_throw_typ)]
   〉-->
-  〈 (stm_throw (blk_handler l1) exp_const)
-    | (K typ_base (stm_ret (exp_bvar 0))) :: ((H l1 {}C (stm_ret exp_const)) :: top)
+  〈 (stm_throw (blk_handler l1) exp_const (* () *))
+    | (K typ_base (stm_ret (exp_bvar 0) (* x *))) :: ((H l1 {}C (stm_ret exp_const (* 1 *))) :: top)
     | [(l1, bind_sig try_apply_throw_param_typ try_apply_throw_typ)]
   〉.
 Proof with crush.
@@ -465,12 +463,12 @@ Qed.
 (** We throw in the presence of a K frame and a matching H (handler) frame,
     which causes the K frame to be unwound... *)
 Lemma try_apply_throw_s3 :
-  〈 (stm_throw (blk_handler l1) exp_const)
-    | (K typ_base (stm_ret (exp_bvar 0))) :: ((H l1 {}C (stm_ret exp_const)) :: top)
+  〈 (stm_throw (blk_handler l1) exp_const (* () *))
+    | (K typ_base (stm_ret (exp_bvar 0) (* x *))) :: ((H l1 {}C (stm_ret exp_const (* 1 *))) :: top)
     | [(l1, bind_sig try_apply_throw_param_typ try_apply_throw_typ)]
   〉-->
-  〈throw l1 # exp_const
-    | (K typ_base (stm_ret (exp_bvar 0))) :: ((H l1 {}C (stm_ret exp_const)) :: top)
+  〈throw l1 # exp_const (* () *)
+    | (K typ_base (stm_ret (exp_bvar 0) (* x *))) :: ((H l1 {}C (stm_ret exp_const (* 1 *))) :: top)
     • top
     | [(l1, bind_sig try_apply_throw_param_typ try_apply_throw_typ)]
   〉.
@@ -478,30 +476,31 @@ Proof with crush.
   apply step_throw...
 Qed.
 
-(** ... *)
+(** We unwind the stack, building the resumption continuation as we go, denoted by • ...*)
 Lemma try_apply_throw_s4 :
-  〈throw l1 # exp_const
-    | (K typ_base (stm_ret (exp_bvar 0))) :: ((H l1 {}C (stm_ret exp_const)) :: top)
+  〈throw l1 # exp_const (* () *)
+    | (K typ_base (stm_ret (exp_bvar 0) (* x *))) :: ((H l1 {}C (stm_ret exp_const (* 1 *))) :: top)
     • top
     | [(l1, bind_sig try_apply_throw_param_typ try_apply_throw_typ)]
   〉-->
-  〈throw l1 # exp_const
-    | ((H l1 {}C (stm_ret exp_const)) :: top)
-    • (K typ_base (stm_ret (exp_bvar 0))) :: top
+  〈throw l1 # exp_const (* () *)
+    | ((H l1 {}C (stm_ret exp_const (* 1 *))) :: top)
+    • (K typ_base (stm_ret (exp_bvar 0) (* x *))) :: top
     | [(l1, bind_sig try_apply_throw_param_typ try_apply_throw_typ)]
   〉.
 Proof with crush.
   apply step_unwind_1.
 Qed.
 
-(** ... and the matching H frame to be shifted off the frame to be evaluated. *)
+(** ... and when we get to the matching H frame, we shift it off to evaluate the corresponding
+    handler. *)
 Lemma try_apply_throw_s5 :
-  〈throw l1 # exp_const
-    | ((H l1 {}C (stm_ret exp_const)) :: top)
-    • (K typ_base (stm_ret (exp_bvar 0))) :: top
+  〈throw l1 # exp_const (* () *)
+    | ((H l1 {}C (stm_ret exp_const (* 1 *))) :: top)
+    • (K typ_base (stm_ret (exp_bvar 0) (* x *))) :: top
     | [(l1, bind_sig try_apply_throw_param_typ try_apply_throw_typ)]
   〉-->
-  〈 (stm_ret exp_const)
+  〈 (stm_ret exp_const (* 1 *))
     | top
     | [(l1, bind_sig try_apply_throw_param_typ try_apply_throw_typ)]
   〉.
@@ -509,10 +508,11 @@ Proof with crush.
   rapply step_handle...
 Qed.
 
-(** Here is a more complicated example:
+(** Here is a more complicated example, which threads and returns a capability
+    through try/handle frames.
 #
 <pre><code class="language-effekt">
-def example4() {
+def cap_return() {
   try {
     interface S1 {
       def doSomethingElse(): Unit => Int at {cap}
@@ -543,18 +543,28 @@ def example4() {
 #    
 *)
 Definition cap_return_tm :=
+  (* try { ... *)
   (stm_try {}C typ_base typ_base
-           (stm_val (typ_capt (typ_vfun typ_base typ_base) (cset_bvar 0))
+          (* val thunk = ... *)
+          (stm_val (typ_capt (typ_vfun typ_base typ_base) (cset_bvar 0))
+                    (* try { ... *)
                     (stm_try (cset_bvar 0) typ_base typ_base
+                             (* def f() { ... *)
                              (stm_def (cset_bvar 1) (typ_vfun typ_base typ_base)
+                                      (* cap.doSomething() *)
                                       (blk_vabs typ_base (stm_throw (blk_bvar 1) exp_const))
+                             (*} f *)
                                       (stm_ret (exp_box (cset_bvar 2)
                                                         (blk_bvar 0))))
+                    (*} with cap2 : S1 { *)  
                              (stm_ret (exp_box (cset_bvar 1)
                                                (blk_vabs typ_base (stm_ret exp_const)))))
+                    (*}; thunk() *)
                     (stm_vapp (blk_unbox (exp_bvar 0)) exp_const))
-           (stm_ret exp_const))
-.
+  (*} with cap : S0 { ... *) 
+           (stm_ret exp_const)).
+  (*}*)
+
 (* begin hide *)
 Lemma cap_return_typing1 :
   (nil @ (cset_lvar l1) ; (l2, bind_sig typ_base typ_base) :: (l1, bind_sig typ_base typ_base) :: nil
@@ -734,7 +744,7 @@ Qed.
     System C's automatic box inferencing.
 #
 <pre><code class="language-effekt">
-def example5Def {c : S0} {
+def using_def {c : S0} {
   def C() {
     c.doSomething();
     0
@@ -743,7 +753,7 @@ def example5Def {c : S0} {
   0
 }
 
-def example5DefSugar {c : S0} {
+def sugar_def {c : S0} {
   (unbox {(C : () => Int at {c}) => 
     // body here
     0})
@@ -785,23 +795,34 @@ Proof with crush.
   assert (wf_sig nil) by constructor.
   econstructor...
 Qed.
-(*
-(** Finally
-def handleTick(prog : {() => Int} => Int) => Int =
-  val stateFun = try { tick =>
-    val res = prog (tick) in
-    box { prog } ( (s : Int) => res )
-  } with {
-    box { prog } ( (s : Int) => (unbox resume(s))(s + 1)
-  } in
+
+(** Finally, we formalize an example which models local, bounded mutable
+    state.
+#
+<pre><code class="language-effekt">
+interface ExampleCounter {
+  def tick() : Int
+}
+
+def handleTick {prog : {() => Int} => Int} : Int {
+  val stateFun = try {
+    val res = prog {() => counter.tick()};
+    box { prog } {(s : Int) => res}
+  } with counter : ExampleCounter {
+    def tick() {
+      box { prog } {(s : Int) => (unbox resume(s))(s + 1)}
+    }
+  };
   (unbox stateFun)(0)
+}
+</code></pre>
+#
 *)
 Definition handle_tick_term :=
   blk_babs (typ_bfun (typ_exc typ_base typ_base) typ_base)
-    (stm_val (* statefun *)
+    (stm_val
       (typ_capt (typ_vfun typ_base typ_base) (cset_bvar 0))
       (stm_try (cset_bvar 0) typ_base typ_base
-        (** body | tick *)
         (stm_val typ_base (stm_bapp (blk_bvar 1) (cset_bvar 0) (blk_bvar 0))
           (stm_ret (exp_box (cset_bvar 1) (blk_vabs typ_base (stm_ret (exp_bvar 1))))))
         (stm_val
@@ -814,6 +835,11 @@ Definition handle_tick_term :=
       (stm_vapp (blk_unbox (exp_bvar 0)) exp_const)).
 Lemma handle_tick_term_typing :
   exists T, empty @ {}C ; nil |-blk handle_tick_term ~: T.
+Proof.
+Admitted.
+
+(* begin hide *)
+(*
 Proof with notin_simpl; crush; try fsetdec; try fnsetdec; try lsetdec.
   eexists.
   econstructor.
@@ -1179,3 +1205,4 @@ Proof with notin_simpl; crush; try fsetdec; try fnsetdec; try lsetdec.
   all: repeat exact {}.
 Qed.
 *)
+(* end hide *)
