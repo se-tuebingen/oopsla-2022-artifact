@@ -1,4 +1,4 @@
-name: Compiling the proofs
+name: Compile Coq proofs
 
 on:
   push:
