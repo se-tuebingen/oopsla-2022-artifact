@@ -1,10 +1,30 @@
 # Step-By-Step
 
-We will make our artifacts available via Zenodo.
+> **Availability**: We will make our artifacts available via Zenodo.
 
-We provide two artifacts: a mechanized proof of soundness and an implementation of System C.
+We provide two artifacts that support the claims made in the paper: a mechanized proof of soundness and 
+an implementation of System C.
 
-## Claims supported by the artifact
+The [GETTING-STARTED.md](./GETTING-STARTED.md) guide explains how to set up each of the 
+two artifacts. Here, we describe in more detail, how the artifacts support the claims.
+
+## Coq Proofs: Claims supported by the artifact
+
+In Section 1.5, we claim to provide
+
+> A full mechanization of the calculus, as well as proofs of the progress and preservation in
+the Coq theorem prover (Section 3.5.4).
+
+This mechanization can be found in the folder [coq](./coq). We wrote a detailed
+guide on how the proofs correspond to the paper, which can be found at:
+
+  <https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/>
+
+### Definitions
+
+We propose the reviewers visit the documentation of the [Coq Definitions](https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Definitions.html) and compare them with the paper.
+
+### Theorems
 
 In Section 3, we claim that System C satisfies standard Progress and
 Preservation theorems (respectively Theorem 3.2 and 3.4), as well as Lemma 3.6,
@@ -20,7 +40,10 @@ TODO: link more theorems.
 Note that our mechanization uses abstract machine semantics, as we explained in
 the paper and detailed in Appendix A.4. This means that the mechanized
 statements of theorems and lemmas differ slightly from those in the paper. We
-explain the differences in the above pages as necessary.
+explain the differences in the above pages as necessary. The definition of the
+abstract machine in Coq is documented at:
+
+  <https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Definitions.html#abstract-machine>
 
 Our implementation is also slightly stronger than the exact calculus we present
 in the paper, as it supports type polymorphism.
