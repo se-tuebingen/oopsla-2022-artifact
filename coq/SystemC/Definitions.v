@@ -129,7 +129,7 @@ with stm : Type :=
   | stm_vapp : blk -> exp -> stm                        (* block application (to value arguments) *)
   | stm_bapp : blk -> cap -> blk -> stm                 (* block application (to block arguments) *)
   | stm_try : cap -> vtyp -> vtyp -> stm -> stm -> stm  (* handlers *)
-  | stm_throw : blk -> exp -> stm                       (* performing an effect *)
+  | stm_perform : blk -> exp -> stm                       (* performing an effect *)
   | stm_reset : label -> cap -> stm -> stm -> stm       (* runtime delimiter *)
 
 (** **** Differences from the paper:
@@ -215,7 +215,7 @@ with open_es_rec (k : nat) (f : exp) (s : stm) {struct s} : stm :=
   | stm_bapp b C g => stm_bapp (open_eb_rec k f b) C (open_eb_rec k f g)
   | stm_try C T1 T b h => stm_try C T1 T (open_es_rec k f b) (open_es_rec (S k) f h)
   | stm_reset l C b h => stm_reset l C (open_es_rec k f b) (open_es_rec (S k) f h)
-  | stm_throw b e => stm_throw (open_eb_rec k f b) (open_ee_rec k f e)
+  | stm_perform b e => stm_perform (open_eb_rec k f b) (open_ee_rec k f e)
   end
 with open_eb_rec (k : nat) (f : exp) (b : blk) {struct b} : blk :=
   match b with
@@ -263,7 +263,7 @@ with open_bs_rec (k : nat) (f : blk) (s : stm) {struct s} : stm :=
   | stm_bapp b C1 g => stm_bapp (open_bb_rec k f b) C1 (open_bb_rec k f g)
   | stm_try C1 T1 T b h => stm_try C1 T1 T (open_bs_rec (S k) f b) (open_bs_rec (S k) f h)
   | stm_reset l C1 b h => stm_reset l C1 (open_bs_rec k f b) (open_bs_rec (S k) f h)
-  | stm_throw b e => stm_throw (open_bb_rec k f b) (open_be_rec k f e)
+  | stm_perform b e => stm_perform (open_bb_rec k f b) (open_be_rec k f e)
   end
 with open_bb_rec (k : nat) (f : blk) (b : blk) {struct b} : blk :=
   match b with
@@ -295,7 +295,7 @@ with open_cs_rec (k : nat) (f : blk) (C : cap) (s : stm) {struct s} : stm :=
   | stm_bapp b C1 g => stm_bapp (open_cb_rec k f C b) (open_cset k C C1) (open_cb_rec k f C g)
   | stm_try C1 T1 T b h => stm_try (open_cset k C C1) (open_cvt_rec k C T1) (open_cvt_rec k C T) (open_cs_rec (S k) f C b) (open_cs_rec (S k) f C h)
   | stm_reset l C1 b h => stm_reset l (open_cset k C C1) (open_cs_rec k f C b) (open_cs_rec (S k) f C h)
-  | stm_throw b e => stm_throw (open_cb_rec k f C b) (open_ce_rec k f C e)
+  | stm_perform b e => stm_perform (open_cb_rec k f C b) (open_ce_rec k f C e)
   end
 
 with open_cb_rec (k : nat) (f : blk) (C : cap) (b : blk) {struct b} : blk :=
@@ -344,7 +344,7 @@ with open_ts_rec (k : nat) (U : vtyp) (s : stm) {struct s} : stm :=
   | stm_try C1 T1 T b h => stm_try C1 (open_tvt_rec k U T1) (open_tvt_rec k U T)
                                       (open_ts_rec k U b) (open_ts_rec k U h)
   | stm_reset l C1 b h => stm_reset l C1 (open_ts_rec k U b) (open_ts_rec k U h)
-  | stm_throw b e => stm_throw (open_tb_rec k U b) (open_te_rec k U e)
+  | stm_perform b e => stm_perform (open_tb_rec k U b) (open_te_rec k U e)
   end
 with open_tb_rec (k : nat) (U : vtyp) (b : blk) {struct b} : blk :=
   match b with
@@ -470,7 +470,7 @@ with stmt : stm -> Prop :=
   | stmt_throw : forall b e,
       block b ->
       expr e ->
-      stmt (stm_throw b e)
+      stmt (stm_perform b e)
 
 with block : blk -> Prop :=
   | block_var : forall x,
@@ -584,7 +584,7 @@ with subst_es (z : atom) (f : exp) (s : stm) {struct s} : stm :=
   | stm_bapp b C g => stm_bapp (subst_eb z f b) C (subst_eb z f g)
   | stm_try C T1 T b h => stm_try C T1 T (subst_es z f b) (subst_es z f h)
   | stm_reset l C b h => stm_reset l C (subst_es z f b) (subst_es z f h)
-  | stm_throw b e => stm_throw (subst_eb z f b) (subst_ee z f e)
+  | stm_perform b e => stm_perform (subst_eb z f b) (subst_ee z f e)
   end
 with subst_eb (z : atom) (f : exp) (b : blk) {struct b} : blk :=
   match b with
@@ -614,7 +614,7 @@ with subst_bs (z : atom) (f : blk) (s : stm) {struct s} : stm :=
   | stm_bapp b C1 g => stm_bapp (subst_bb z f b) C1 (subst_bb z f g)
   | stm_try C T1 T b h => stm_try C T1 T (subst_bs z f b) (subst_bs z f h)
   | stm_reset l C b h => stm_reset l C (subst_bs z f b) (subst_bs z f h)
-  | stm_throw b e => stm_throw (subst_bb z f b) (subst_be z f e)
+  | stm_perform b e => stm_perform (subst_bb z f b) (subst_be z f e)
   end
 with subst_bb (z : atom) (f : blk) (b : blk) {struct b} : blk :=
   match b with
@@ -660,7 +660,7 @@ with subst_cs (z : atom) (f : blk) (C : cap) (s : stm) {struct s} : stm :=
   | stm_bapp b C1 g => stm_bapp (subst_cb z f C b) (subst_cset z C C1) (subst_cb z f C g)
   | stm_try C1 T1 T b h => stm_try (subst_cset z C C1) (subst_cvt z C T1) (subst_cvt z C T) (subst_cs z f C b) (subst_cs z f C h)
   | stm_reset l C1 b h => stm_reset l (subst_cset z C C1) (subst_cs z f C b) (subst_cs z f C h)
-  | stm_throw b e => stm_throw (subst_cb z f C b) (subst_ce z f C e)
+  | stm_perform b e => stm_perform (subst_cb z f C b) (subst_ce z f C e)
   end
 
 with subst_cb (z : atom) (f : blk) (C : cap) (b : blk) {struct b} : blk :=
@@ -714,7 +714,7 @@ with subst_ts (Z : atom) (U : vtyp) (s : stm) {struct s} : stm :=
                                     (subst_ts Z U b)
                                     (subst_ts Z U h)
   | stm_reset l C b h => stm_reset l C (subst_ts Z U b) (subst_ts Z U h)
-  | stm_throw b e => stm_throw (subst_tb Z U b) (subst_te Z U e)
+  | stm_perform b e => stm_perform (subst_tb Z U b) (subst_te Z U e)
   end
 with subst_tb (Z : atom) (U : vtyp) (b : blk) {struct b} : blk :=
   match b with
@@ -1067,7 +1067,7 @@ with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
   | typing_throw : forall E R Q b e T T1,
       E @ R ; Q |-blk b ~: (typ_eff T1 T) ->
       E ; Q |-exp e ~: T1 ->
-      E @ R ; Q |-stm (stm_throw b e) ~: T
+      E @ R ; Q |-stm (stm_perform b e) ~: T
 
 where "E @ R ; Q |-stm s ~: T" := (styping E R Q s T).
 
@@ -1147,7 +1147,7 @@ Inductive machine_redex : stm -> Prop :=
       machine_redex (stm_reset l C b s)
   | redex_throw : forall l e,
       evalue e ->
-      machine_redex (stm_throw (blk_handler l) e).
+      machine_redex (stm_perform (blk_handler l) e).
 
 (**
  ** #<a name="semantics-trivial"></a># Trivial Reduction
@@ -1227,12 +1227,12 @@ Inductive sred : stm -> stm -> Prop :=
 
   | sred_throw_1 : forall b b' e,
       b -->b b' ->
-      stm_throw b e -->s stm_throw b' e
+      stm_perform b e -->s stm_perform b' e
 
   | sred_throw_2 : forall b e e',
       bvalue b ->
       e -->e e' ->
-      stm_throw b e -->s stm_throw b e'
+      stm_perform b e -->s stm_perform b e'
 
 where "b1 -->s b2" := (sred b1 b2)
 .
@@ -1406,7 +1406,7 @@ Inductive step : state -> state -> Prop :=
 (** (try), switch to search mode *)
   | step_throw : forall Q l v c,
        evalue v ->
-      〈 stm_throw (blk_handler l) v | c | Q 〉-->
+      〈 stm_perform (blk_handler l) v | c | Q 〉-->
       〈throw l # v | c • top | Q 〉
 
 (** (unwind) *)

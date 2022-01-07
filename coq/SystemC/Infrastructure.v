@@ -33,7 +33,7 @@ with fv_es (s : stm) {struct s} : atoms :=
   | stm_bapp b C g => (fv_eb b) `union` (fv_eb g)
   | stm_try C T1 T b g => (fv_es b) `union` (fv_es g)
   | stm_reset l C b g => (fv_es b) `union` (fv_es g)
-  | stm_throw b e => fv_eb b `union` fv_ee e
+  | stm_perform b e => fv_eb b `union` fv_ee e
   end
 with fv_eb (b : blk) {struct b} : atoms :=
   match b with
@@ -64,7 +64,7 @@ with fv_bs (s : stm) {struct s} : atoms :=
   | stm_bapp b C1 g => (fv_bb b) `union` (fv_bb g)
   | stm_try C T1 T b g => (fv_bs b) `union` (fv_bs g)
   | stm_reset l C b g => (fv_bs b) `union` (fv_bs g)
-  | stm_throw b e => fv_bb b `union` fv_be e
+  | stm_perform b e => fv_bb b `union` fv_be e
   end
 with fv_bb (b : blk) {struct b} : atoms :=
   match b with
@@ -111,7 +111,7 @@ with fv_cs (s : stm) {struct s} : atoms :=
   | stm_bapp b C1 g => (fv_cb b) `union` (cset_fvars C1) `union` (fv_cb g)
   | stm_try C1 T1 T b g => (fv_cvt T1) `union` (fv_cvt T) `union` (cset_fvars C1) `union` (fv_cs b) `union` (fv_cs g)
   | stm_reset l C1 b g => (cset_fvars C1) `union` (fv_cs b) `union` (fv_cs g)
-  | stm_throw b e => fv_cb b `union` fv_ce e
+  | stm_perform b e => fv_cb b `union` fv_ce e
   end
 
 with fv_cb (b : blk) {struct b} : atoms :=
@@ -158,7 +158,7 @@ with fv_ts (s : stm) {struct s} : atoms :=
   | stm_bapp b C g => (fv_tb b) `union` (fv_tb g)
   | stm_try C T1 T b g => (fv_tvt T1) `union` (fv_tvt T) `union` (fv_ts b) `union` (fv_ts g)
   | stm_reset l C b g => (fv_ts b) `union` (fv_ts g)
-  | stm_throw b e => fv_tb b `union` fv_te e
+  | stm_perform b e => fv_tb b `union` fv_te e
   end
 with fv_tb (b : blk) {struct b} : atoms :=
   match b with

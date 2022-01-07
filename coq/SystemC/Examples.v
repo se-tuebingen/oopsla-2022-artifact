@@ -320,7 +320,7 @@ Definition try_return_throw_param_typ :=
   typ_base.
 Definition try_return_throw :=
   stm_try {}C try_return_throw_param_typ try_return_throw_typ 
-  (stm_throw (blk_bvar 0) exp_const (* () *)) 
+  (stm_perform (blk_bvar 0) exp_const (* () *)) 
   (stm_ret exp_const (* 0 *)).
 
 (** Naturally, it still returns an Int/[typ_base] though. *)
@@ -351,7 +351,7 @@ Qed.
     to that handler and unwinds from there. *)
 Lemma try_return_throw_s1 :
   〈 try_return_throw | top | nil 〉-->
-  〈 (stm_throw (blk_handler l1) exp_const (* () *)) |
+  〈 (stm_perform (blk_handler l1) exp_const (* () *)) |
      (H l1 {}C (stm_ret exp_const (* 0 *))) :: top |
      [(l1, bind_sig try_return_throw_param_typ try_return_throw_typ)] 〉.
 Proof with crush.
@@ -360,7 +360,7 @@ Proof with crush.
 Qed.
 
 Lemma try_return_throw_s2 : forall Q,
-  〈 (stm_throw (blk_handler l1) exp_const (* () *)) | (H l1 {}C (stm_ret exp_const (* 0 *))) :: top | Q 〉-->
+  〈 (stm_perform (blk_handler l1) exp_const (* () *)) | (H l1 {}C (stm_ret exp_const (* 0 *))) :: top | Q 〉-->
   〈throw l1 # exp_const (* () *) | (H l1 {}C (stm_ret exp_const (* 0 *))) :: top • top | Q〉.
 Proof with crush.
   intro.
@@ -400,7 +400,7 @@ Definition try_apply_throw_typ := typ_base.
 Definition try_apply_throw :=
   stm_try {}C try_apply_throw_param_typ try_apply_throw_typ 
     (stm_val typ_base 
-      (stm_throw (blk_bvar 0) exp_const (* () *)) 
+      (stm_perform (blk_bvar 0) exp_const (* () *)) 
       (stm_ret (exp_bvar 0) (* x *)))
     (stm_ret (exp_const) (* 1 *)).
 
@@ -451,7 +451,7 @@ Qed.
 Lemma try_apply_throw_s1 :
   〈 try_apply_throw | top | nil 〉-->
   〈 (stm_val typ_base 
-      (stm_throw (blk_handler l1) exp_const (* () *)) 
+      (stm_perform (blk_handler l1) exp_const (* () *)) 
       (stm_ret (exp_bvar 0) (* x *)))
     | (H l1 {}C (stm_ret exp_const (* 1 *))) :: top
     | [(l1, bind_sig try_apply_throw_param_typ try_apply_throw_typ)]
@@ -463,11 +463,11 @@ Qed.
 
 (** Next, we mark that we are evaluating a binding with a K frame.  *)
 Lemma try_apply_throw_s2 :
-  〈 (stm_val typ_base (stm_throw (blk_handler l1) exp_const (* () *)) (stm_ret (exp_bvar 0) (* x *)))
+  〈 (stm_val typ_base (stm_perform (blk_handler l1) exp_const (* () *)) (stm_ret (exp_bvar 0) (* x *)))
     | (H l1 {}C (stm_ret exp_const (* 1 *))) :: top
     | [(l1, bind_sig try_apply_throw_param_typ try_apply_throw_typ)]
   〉-->
-  〈 (stm_throw (blk_handler l1) exp_const (* () *))
+  〈 (stm_perform (blk_handler l1) exp_const (* () *))
     | (K typ_base (stm_ret (exp_bvar 0) (* x *))) :: ((H l1 {}C (stm_ret exp_const (* 1 *))) :: top)
     | [(l1, bind_sig try_apply_throw_param_typ try_apply_throw_typ)]
   〉.
@@ -479,7 +479,7 @@ Qed.
 (** We throw in the presence of a K frame and a matching H (handler) frame,
     which causes the K frame to be unwound... *)
 Lemma try_apply_throw_s3 :
-  〈 (stm_throw (blk_handler l1) exp_const (* () *))
+  〈 (stm_perform (blk_handler l1) exp_const (* () *))
     | (K typ_base (stm_ret (exp_bvar 0) (* x *))) :: ((H l1 {}C (stm_ret exp_const (* 1 *))) :: top)
     | [(l1, bind_sig try_apply_throw_param_typ try_apply_throw_typ)]
   〉-->
@@ -571,7 +571,7 @@ Definition cap_return_tm :=
                              (* def f() { ... *)
                              (stm_def (cset_bvar 1) (typ_vfun typ_base typ_base)
                                       (* cap.doSomething() *)
-                                      (blk_vabs typ_base (stm_throw (blk_bvar 1) exp_const))
+                                      (blk_vabs typ_base (stm_perform (blk_bvar 1) exp_const))
                              (*} f *)
                                       (stm_ret (exp_box (cset_bvar 2)
                                                         (blk_bvar 0))))
@@ -587,7 +587,7 @@ Definition cap_return_tm :=
 (* begin hide *)
 Lemma cap_return_typing1 :
   (nil @ (cset_lvar l1) ; (l2, bind_sig typ_base typ_base) :: (l1, bind_sig typ_base typ_base) :: nil
-                          |-blk (blk_vabs typ_base (stm_throw (blk_handler l1) exp_const))
+                          |-blk (blk_vabs typ_base (stm_perform (blk_handler l1) exp_const))
                                ~: (typ_vfun typ_base typ_base)).
 Proof with crush.
   Require Import SystemC.Soundness.
