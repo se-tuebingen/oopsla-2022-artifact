@@ -36,7 +36,7 @@ parent: Proofs
       substituting a block into a statement preserves statement-typing).
 
 </li>
-<li> <i>Plugging</i>. Lemma 3.4 in the paper is proven (in a variation) by <span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#unwind_step"><span class="id" title="lemma">unwind_step</span></a></span>.
+<li> <i>Plugging</i>. Lemma 3.6 in the paper is proven (in a variation) by <span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#unwind_step"><span class="id" title="lemma">unwind_step</span></a></span>.
 
 </li>
 <li> <i>Preservation</i>. We show type preservation of reducing statements (<span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#preservation_stmt"><span class="id" title="lemma">preservation_stmt</span></a></span>)
@@ -71,6 +71,8 @@ parent: Proofs
     This lemma roughly corresponds to Lemma 3.6 in the paper. 
 </div>
 <div class="code">
+
+<br/>
 <span class="id" title="keyword">Lemma</span> <a name="unwind_step"><span class="id" title="lemma">unwind_step</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">L</span> <span class="id" title="var">Q</span> <span class="id" title="var">x</span> <span class="id" title="var">C</span> <span class="id" title="var">T1</span> <span class="id" title="var">T2</span> <span class="id" title="var">k</span>,<br/>
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#wf_vtyp"><span class="id" title="inductive">wf_vtyp</span></a> <a class="idref" href="Top.SystemC.Definitions.html#empty"><span class="id" title="abbreviation">empty</span></a> <a class="idref" href="Top.SystemC.Soundness.html#T1"><span class="id" title="variable">T1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
 &nbsp;&nbsp;<a class="idref" href="Top.SystemC.Definitions.html#wf_cap"><span class="id" title="inductive">wf_cap</span></a> <a class="idref" href="Top.SystemC.Definitions.html#empty"><span class="id" title="abbreviation">empty</span></a> <a class="idref" href="Top.SystemC.Soundness.html#C"><span class="id" title="variable">C</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a><br/>
@@ -120,7 +122,7 @@ Helper lemma showing that plug doesn't introduce binders.
 
 <div class="paragraph"> </div>
 
-    Further more, the pure reductions for expressions (<span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#preservation_expr"><span class="id" title="lemma">preservation_expr</span></a></span>) and
+    Furthermore, the pure reductions for expressions (<span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#preservation_expr"><span class="id" title="lemma">preservation_expr</span></a></span>) and
     blocks (<span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#preservation_block"><span class="id" title="lemma">preservation_block</span></a></span>) also preserve types, correspondingly. 
 </div>
 <div class="code">
@@ -155,15 +157,15 @@ Helper lemma showing that plug doesn't introduce binders.
 <div class="doc">
 <a name="lab181"></a><h1 class="section"><a name="progress"></a> Progress</h1>
 
-    Like with preservation, for progress, we have two lemmas:
+    Like with preservation, we have two lemmas for progress:
 
 <div class="paragraph"> </div>
 
 <ul class="doclist">
-<li> <span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#progress_stmt"><span class="id" title="lemma">progress_stmt</span></a></span> shows that a well-typed statement can take a step
+<li> <span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#progress_stmt"><span class="id" title="lemma">progress_stmt</span></a></span> shows that a well-typed statement can take a step.
 
 </li>
-<li> <span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#progress_step"><span class="id" title="lemma">progress_step</span></a></span> shows that a well-typed machine can take a step 
+<li> <span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#progress_step"><span class="id" title="lemma">progress_step</span></a></span> shows that a well-typed machine can take a step. 
 </li>
 </ul>
 

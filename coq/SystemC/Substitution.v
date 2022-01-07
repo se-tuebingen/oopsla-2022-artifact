@@ -222,7 +222,7 @@ Qed.
 
 
 (**
- * Substitution
+ * #<a name="substitution"></a># Substitution
  ****************************************)
 
 (** We show the standard property that substitution preserves typing. *)

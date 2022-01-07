@@ -7,7 +7,9 @@ nav_order: 2
 
 
 ## Section 2 -- Global Capabilities
+
 ```effekt
+// PREAMBLE
 interface Exc { def throw(msg: String): Unit }
 interface Console { def println[A](a: A): Unit }
 interface Time { def now(): Int }
@@ -15,6 +17,7 @@ interface Time { def now(): Int }
 // console and time are "global" -- that is, module wide capabilities
 def globalCapabilities { console: Console } { time: Time }: Unit {
 
+// EXAMPLES
   def sayTime() {
     console.println("The current time is: " ++ show(time.now()))
   }
@@ -69,11 +72,16 @@ def globalCapabilities { console: Console } { time: Time }: Unit {
   val b4 = { () => n(3) };
   val r = repeater { b };
 
+// POSTAMBLE
   ()
 }
 ```
 
 #### Support Code for Running Examples
+
+The above examples can be run. First, we define a block which passes appropriate
+capabilities to the examples:
+
 ```effekt
 def run[T] { prog : {Console} {Time} => T }: T {
   try {
@@ -85,7 +93,9 @@ def run[T] { prog : {Console} {Time} => T }: T {
   }
 }
 ```
-We can run the above examples
+
+With the above definition, we can now run the examples:
+
 ```effekt:repl
 run {globalCapabilities}
 ```
@@ -93,8 +103,11 @@ run {globalCapabilities}
 ## Section 2 -- Local Capabilities and Effect Handlers
 
 ```effekt
+// PREAMBLE
 interface Stopwatch { def elapsed(): Int }
 def localCapabilities { console: Console } { time: Time }: Unit {
+
+// EXAMPLES
   try { console.println("hello"); exc.throw("world"); console.println("done") }
   with exc: Exc {
     def throw(msg: String) { console.println(msg ++ "!") }
@@ -102,17 +115,24 @@ def localCapabilities { console: Console } { time: Time }: Unit {
 
   // uncomment the following example to see a type error:
   // try { return (box exc) } with exc: Exc { def throw(msg: String) { () } };
+  
+// POSTAMBLE
   ()
 }
 ```
+
 Again, we can run the above examples:
+
 ```effekt:repl
 run {localCapabilities}
 ```
 
 ## Example 2.1
+
 ```effekt
+// PREAMBLE
 interface FileHandle { def readByte(pos: Int): Int }
+// EXAMPLES
 def withFile[T](path: String) { prog: {FileHandle} => T }: T {
   try { prog {fh} } with fh: FileHandle {
     def readByte(pos: Int) { resume(pos + 42) }
@@ -129,14 +149,19 @@ def fileExample() {
   }
 }
 ```
+
 Running the example will print 92 (0 + 42 + 42 + 10).
+
 ```effekt:repl
 fileExample()
 ```
 
 ## Effect Handlers
+
 ```effekt
+// PREAMBLE
 def effectHandlers { console: Console } { time: Time }: Unit {
+// EXAMPLES
   val before = time.now();
   try {
     def report(t: Int) { console.println(show(t) ++ "ms") }
@@ -150,8 +175,10 @@ def effectHandlers { console: Console } { time: Time }: Unit {
       resume(time.now() - before)
     }
   }
+// POSTAMBLE
 }
 ```
+
 ```effekt:repl
 run {effectHandlers}
 ```

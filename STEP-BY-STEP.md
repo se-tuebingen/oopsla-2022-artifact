@@ -22,20 +22,23 @@ guide on how the proofs correspond to the paper, which can be found at:
 
 ### Definitions
 
-We propose the reviewers visit the documentation of the [Coq Definitions](https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Definitions.html) and compare them with the paper.
+We propose the reviewers visit the documentation of the 
+[Coq Definitions](https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Definitions.html)
+and compare them with the paper.
 
 ### Theorems
 
 In Section 3, we claim that System C satisfies standard Progress and
-Preservation theorems (respectively Theorem 3.2 and 3.4), as well as Lemma 3.6,
-an additional continuation safety lemma.
+Preservation theorems.
 
 These claims correspond to the following definitions in our mechanization:
-- Lemma 3.6 - [unwind_step](https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Soundness.html#unwind_step)
-- Theorem 3.2 - [Preservation](https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Soundness.html#preservation)
-- Theorem 3.4 - [Progress](https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Soundness.html#progress)
+- Theorem 3.2 - [Preservation](https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Soundness.html#preservation).
+- Theorem 3.4 - [Progress](https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Soundness.html#progress).
+- Lemma 3.5 - [styping_through_subst_cs](https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Substitution.html#substitution).
+- Lemma 3.6 - [unwind_step](https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Soundness.html#unwind_step).
 
-TODO: link more theorems.
+We also present Lemma 3.3, which is proven in the paper, in Appendix A.3.
+In the mechanization, we instead require that Lemma 3.3 holds by [definition](https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Definitions.html#stacks).
   
 Note that our mechanization uses abstract machine semantics, as we explained in
 the paper and detailed in Appendix A.4. This means that the mechanized
@@ -52,50 +55,48 @@ in the paper, as it supports type polymorphism.
 
 In Section 1.5, we claim to provide...
 
-> An evaluation in terms of an **implementation** (Section 4) and several **small case studies**. We
-submit an executable version of all **examples from this paper** as supplementary material.
+> An evaluation in terms of an **implementation** (Section 4) and several **small case studies**.
 
-The implementation is provided in terms of an interactive website,
+We submit this implementation, an executable version of **all System C examples
+from this paper** and the case studies as supplementary material.
+
+The implementation is provided in terms of an interactive website:
 
   <https://se-tuebingen.github.io/oopsla-2022-artifact/tutorial/index.html>
 
-all examples from the paper can be found at:
+All examples from the paper can be found at:
 
   <https://se-tuebingen.github.io/oopsla-2022-artifact/paper.html>
   
-and the additional case studies are located at:
+The additional case studies are located at:
 
   <https://se-tuebingen.github.io/oopsla-2022-artifact/casestudies.html>
 
-Our implementation shows that...
+Footnote 3, page 5 we claim (paraphrasing):
 
-TODO: well, what does it actually show?
-- capabilities can be hidden from the user and inferred by the type system
-- wasn't it also supposed to show that System C is pragmatic/simple/usable? Do
-  we claim that in the paper?
-- ...
+> The capture sets highlighted in blue are inferred by the type checker and displayed by the IDE.
+
+Footnote 4, page 6 we claim:
+
+> In our implementation of System C, we infer almost all necessary boxing and unboxing operations. However, in the paper, for exposition we refrain from doing so.
+
+The examples we provide are interactive - they can be typechecked, edited and
+ran. They lack capture sets which were highlighted in blue in the paper -
+typechecking the examples will indeed display capture sets corresponding to the ones from the paper.
+Moreover, removing `box` and `unbox` from the examples will keep them typecheckable.
 
 As we point out in the paper (Section 4), our implementation of System C extends
 the formal calculus with type polymorphism, mutable state and objects.
 
-TODO
-
-Footnote 4, page 6 we claim:
-
-> In our implementation of System C, we infer almost all necessary boxing and unboxing operations. However, in the paper, for exposition we refrain from doing so
-
-TODO
-
 ### Suggested Steps for Evaluation
 
-1. We suggest to familiarize yourself with [the interactive implemention](https://se-tuebingen.github.io/oopsla-2022-artifact/).
-2. The examples in the paper can be found in [the examples section](https://se-tuebingen.github.io/oopsla-2022-artifact/paper.html).
-
-The snippets with the examples are interactive -- they can be typechecked and
-edited, and, if it makes sense, ran. Note that examples not expressed in System
-C cannot be found on the website. The exact examples we presented in our paper
-are sometimes surrounded by additional code in order to make the entire snippet
-self-contained; this is explicitly pointed out next to the appropriate snippets
-and explained on this page.
-
-TODO: modify the examples as explained above.
+We suggest that the reviewers:
+1. Familiarize themselves with [the interactive implemention](https://se-tuebingen.github.io/oopsla-2022-artifact/).
+2. Inspect [the examples section](https://se-tuebingen.github.io/oopsla-2022-artifact/paper.html),
+   which contains examples from the paper. To verify that we indeed infer the capture sets we claim to infer, we suggest
+   typechecking Example 2.1 from [Section 2](https://se-tuebingen.github.io/oopsla-2022-artifact/paper/section2.html#example-21).
+   To verify that we infer `box`/`unbox` operations, we suggest removing either or both keywords in the above example and
+   re-typechecking it. We then suggest replacing `fileA` with `fileB` on the line that originally contained `return box`,
+   to verify that we indeed reject ill-typed examples.
+3. Inspect [the case studies](https://se-tuebingen.github.io/oopsla-2022-artifact/casestudies.html),
+   verifying that they type check and run.

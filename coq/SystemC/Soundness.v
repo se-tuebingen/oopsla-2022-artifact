@@ -17,7 +17,7 @@ Require Import Coq.Program.Tactics.
       For instance [etyping_through_subst_ee] shows that substituting an expression in
       an expression preserves expression-typing, and [styping_through_subst_bs] shows that
       substituting a block into a statement preserves statement-typing).
-    - _Plugging_. Lemma 3.4 in the paper is proven (in a variation) by [unwind_step].
+    - _Plugging_. Lemma 3.6 in the paper is proven (in a variation) by [unwind_step].
     - _Preservation_. We show type preservation of reducing statements ([preservation_stmt])
       and machine states ([preservation_step]).
     - _Progress_. We show type progress for statements ([progress_stmt])
@@ -206,6 +206,7 @@ Qed.
     is well-typed.
 
     This lemma roughly corresponds to Lemma 3.6 in the paper. *)
+
 Lemma unwind_step : forall L Q x C T1 T2 k,
   wf_vtyp empty T1 ->
   wf_cap empty C ->
@@ -316,7 +317,7 @@ Qed.
     - [preservation_stmt] shows that reducing statement regardless of the context preserves the type.
     - [preservation_step] shows that stepping from one state to another preserves the typability of the machine state.
 
-    Further more, the pure reductions for expressions ([preservation_expr]) and
+    Furthermore, the pure reductions for expressions ([preservation_expr]) and
     blocks ([preservation_block]) also preserve types, correspondingly. *)
 
 Lemma preservation_block : forall E R Q b b' S1,
@@ -565,11 +566,10 @@ Qed.
 
 
 (** * #<a name="progress"></a># Progress
-    Like with preservation, for progress, we have two lemmas:
+    Like with preservation, we have two lemmas for progress:
 
-    - [progress_stmt] shows that a well-typed statement can take a step
-    - [progress_step] shows that a well-typed machine can take a step *)
-
+    - [progress_stmt] shows that a well-typed statement can take a step.
+    - [progress_step] shows that a well-typed machine can take a step. *)
 
 
 (** ** Canonical forms
