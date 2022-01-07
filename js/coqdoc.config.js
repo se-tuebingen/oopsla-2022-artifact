@@ -2,8 +2,11 @@ var coqdocjs = coqdocjs || {};
 
 coqdocjs.repl = {
     // specific to this paper
-    "E" : "Γ",
-    "Q" : "Ξ",
+    // "E" : "Γ",
+    // "Q" : "Ξ",
+    // "btyp" : "σ",
+    // "vtyp" : "τ",
+    // "cap" : "𝒞",
     "--->": "⟶",
 
     "forall": "∀",
