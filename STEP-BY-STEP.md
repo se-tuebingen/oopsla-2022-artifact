@@ -50,6 +50,23 @@ in the paper, as it supports type polymorphism.
 
 ## Implementation
 
+In Section 1.5, we claim to provide...
+
+> An evaluation in terms of an **implementation** (Section 4) and several **small case studies**. We
+submit an executable version of all **examples from this paper** as supplementary material.
+
+The implementation is provided in terms of an interactive website,
+
+  <https://se-tuebingen.github.io/oopsla-2022-artifact/tutorial/index.html>
+
+all examples from the paper can be found at:
+
+  <https://se-tuebingen.github.io/oopsla-2022-artifact/paper.html>
+  
+and the additional case studies are located at:
+
+  <https://se-tuebingen.github.io/oopsla-2022-artifact/casestudies.html>
+
 Our implementation shows that...
 
 TODO: well, what does it actually show?
@@ -61,7 +78,15 @@ TODO: well, what does it actually show?
 As we point out in the paper (Section 4), our implementation of System C extends
 the formal calculus with type polymorphism, mutable state and objects.
 
-## Suggested Steps for Evaluation
+TODO
+
+Footnote 4, page 6 we claim:
+
+> In our implementation of System C, we infer almost all necessary boxing and unboxing operations. However, in the paper, for exposition we refrain from doing so
+
+TODO
+
+### Suggested Steps for Evaluation
 
 1. We suggest to familiarize yourself with [the interactive implemention](https://se-tuebingen.github.io/oopsla-2022-artifact/).
 2. The examples in the paper can be found in [the examples section](https://se-tuebingen.github.io/oopsla-2022-artifact/paper.html).
