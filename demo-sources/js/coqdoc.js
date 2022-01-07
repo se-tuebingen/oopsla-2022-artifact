@@ -41,7 +41,7 @@ function baseReplace(s) {
 }
 
 function replaceAllNumbersBySubscripts(s) {
-  s.replace(/\d/g, function(d){
+  return s.replace(/\d/g, function(d){
     if (coqdocjs.subscr.hasOwnProperty(d)) {
       return coqdocjs.subscr[d];
     } else {
