@@ -15,21 +15,6 @@ function toArray(nl){
 
 (function(){
 
-function buildRegex() {
-  const replacements = coqdocjs.repl;
-  var keys = []
-  for (var key in replacements) {
-    if (replacements.hasOwnProperty(key)) {
-      keys.push(key)
-    }
-  }
-  const rx = keys.join("|")
-  console.log(rx)
-}
-
-buildRegex()
-
-
 const replacement = coqdocjs.repl;
 
 function baseReplace(s) {
