@@ -434,7 +434,7 @@ Proof with eauto 5 using styping_weaken_restriction, wf_vtyp_from_sig_binds.
          (fun H => specialize (H x ltac:(notin_solve)) as StmOpenCs).
         apply styping_regular in StmOpenCs as (Wf & _).
         inversion Wf; subst.
-        inversion select (wf_btyp _ (typ_exc _ _)); subst...
+        inversion select (wf_btyp _ (typ_eff _ _)); subst...
       }
       assert (wf_vtyp empty T2). {
         inversion H0; subst.
@@ -443,7 +443,7 @@ Proof with eauto 5 using styping_weaken_restriction, wf_vtyp_from_sig_binds.
          (fun H => specialize (H x ltac:(notin_solve)) as StmOpenCs).
         apply styping_regular in StmOpenCs as (Wf & _).
         inversion Wf; subst.
-        inversion select (wf_btyp _ (typ_exc _ _)); subst...
+        inversion select (wf_btyp _ (typ_eff _ _)); subst...
       }
       inversion H0; subst...
       apply typ_step with (T := T) (R := cset_union C (cset_lvar l))...
@@ -463,8 +463,8 @@ Proof with eauto 5 using styping_weaken_restriction, wf_vtyp_from_sig_binds.
         rewrite_env (map (subst_bbind x (cset_lvar l)) empty ++ empty).
         replace T with (subst_cvt x (cset_lvar l) T).
         replace (cset_union C (cset_lvar l)) with (subst_cset x (cset_lvar l) (cset_union C (cset_fvar x))).
-        eapply styping_through_subst_cs with (U := typ_exc T2 T1) (R := cset_union C (cset_fvar x))...
-        rewrite_env ([(x, bind_blk (typ_exc T2 T1) tracked)] ++ empty).
+        eapply styping_through_subst_cs with (U := typ_eff T2 T1) (R := cset_union C (cset_fvar x))...
+        rewrite_env ([(x, bind_blk (typ_eff T2 T1) tracked)] ++ empty).
         srewrite_env (nil ++ [(l, bind_sig T2 T1)] ++ Q).
         eapply styping_weaken_signature...
         econstructor...
@@ -633,7 +633,7 @@ Qed.
     we also have canonical forms for those *)
 Lemma canonical_form_exc : forall b R Q T1 T,
   bvalue b ->
-  empty @ R ; Q |-blk b ~: (typ_exc T1 T) ->
+  empty @ R ; Q |-blk b ~: (typ_eff T1 T) ->
   exists l, b = blk_handler l /\ Signatures.binds l (bind_sig T1 T) Q.
 Proof.
   intros * Val Typ.

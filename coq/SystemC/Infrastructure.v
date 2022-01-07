@@ -90,7 +90,7 @@ with fv_cbt (S1 : btyp) {struct S1} : atoms :=
   match S1 with
   | typ_vfun T1 T2 => (fv_cvt T1) `union` (fv_cvt T2)
   | typ_bfun S1 T => (fv_cbt S1) `union` (fv_cvt T)
-  | typ_exc T1 T => (fv_cvt T1) `union` (fv_cvt T)
+  | typ_eff T1 T => (fv_cvt T1) `union` (fv_cvt T)
   | typ_tfun T => (fv_cbt T)
   end.
 
@@ -138,7 +138,7 @@ with fv_tbt (S1 : btyp) {struct S1} : atoms :=
   match S1 with
   | typ_vfun T1 T2 => (fv_tvt T1) `union` (fv_tvt T2)
   | typ_bfun S1 T => (fv_tbt S1) `union` (fv_tvt T)
-  | typ_exc T1 T => (fv_tvt T1) `union` (fv_tvt T)
+  | typ_eff T1 T => (fv_tvt T1) `union` (fv_tvt T)
   | typ_tfun T => (fv_tbt T)
   end.
 

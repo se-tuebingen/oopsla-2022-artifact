@@ -82,7 +82,7 @@ with btyp : Type :=
   | typ_vfun : vtyp -> vtyp -> btyp    (* function types with value arguments *)
   | typ_bfun : btyp -> vtyp -> btyp    (* function types with tracked block arguments *)
   | typ_tfun : btyp -> btyp            (* type abstractions *)
-  | typ_exc  : vtyp -> vtyp -> btyp    (* capability types *)
+  | typ_eff  : vtyp -> vtyp -> btyp    (* capability types *)
 .
 
 (** **** Differences from the paper:
@@ -97,7 +97,7 @@ with btyp : Type :=
     Since in the calculus function arguments are independent of each other, we do not
     expect any theoretical complications in the setting of a full multi-arity representation.
 
-    Finally, type constructor [typ_exc T1 T2] is a block type that represents capabilities with an effect
+    Finally, type constructor [typ_eff T1 T2] is a block type that represents capabilities with an effect
     signature from [T1] to [T2]. To simplify the presentation, in the paper, this is represented
     as a function type [T1 -> T2]; this can be seen in rule TRY in Figure 2. *)
 
@@ -242,7 +242,7 @@ with open_cbt_rec (k : nat) (C : cap) (S1 : btyp)  {struct S1} : btyp :=
   | typ_vfun T1 T2 => typ_vfun (open_cvt_rec k C T1) (open_cvt_rec k C T2)
   | typ_bfun S1 T => typ_bfun (open_cbt_rec k C S1) (open_cvt_rec (S k) C T)
   | typ_tfun T => typ_tfun (open_cbt_rec k C T)
-  | typ_exc T1 T => typ_exc (open_cvt_rec k C T1) (open_cvt_rec k C T)
+  | typ_eff T1 T => typ_eff (open_cvt_rec k C T1) (open_cvt_rec k C T)
   end.
 
 
@@ -323,7 +323,7 @@ with open_tbt_rec (k : nat) (U : vtyp) (S1 : btyp) {struct S1} : btyp :=
   | typ_vfun T1 T2 => typ_vfun (open_tvt_rec k U T1) (open_tvt_rec k U T2)
   | typ_bfun S1 T => typ_bfun (open_tbt_rec k U S1) (open_tvt_rec k U T)
   | typ_tfun T => typ_tfun (open_tbt_rec (S k) U T)
-  | typ_exc T1 T => typ_exc (open_tvt_rec k U T1) (open_tvt_rec k U T)
+  | typ_eff T1 T => typ_eff (open_tvt_rec k U T1) (open_tvt_rec k U T)
   end.
 
 (* Opening types in terms *)
@@ -412,7 +412,7 @@ with btype : btyp -> Prop :=
   | type_exc : forall T1 T,
       vtype T1 ->
       vtype T ->
-      btype (typ_exc T1 T)
+      btype (typ_eff T1 T)
 .
 
 Inductive expr : exp -> Prop :=
@@ -640,7 +640,7 @@ with subst_cbt (z : atom) (C : cap) (S1 : btyp) {struct S1} : btyp :=
   | typ_vfun T1 T2 => typ_vfun (subst_cvt z C T1) (subst_cvt z C T2)
   | typ_bfun S1 T => typ_bfun (subst_cbt z C S1) (subst_cvt z C T)
   | typ_tfun T => typ_tfun (subst_cbt z C T)
-  | typ_exc T1 T => typ_exc (subst_cvt z C T1) (subst_cvt z C T)
+  | typ_eff T1 T => typ_eff (subst_cvt z C T1) (subst_cvt z C T)
   end.
 
 Fixpoint subst_ce (z : atom) (f : blk) (C : cap) (e : exp) {struct e} : exp :=
@@ -687,7 +687,7 @@ with subst_tbt (z : atom) (U : vtyp) (S1 : btyp) {struct S1} : btyp :=
   | typ_vfun T1 T2 => typ_vfun (subst_tvt z U T1) (subst_tvt z U T2)
   | typ_bfun S1 T => typ_bfun (subst_tbt z U S1) (subst_tvt z U T)
   | typ_tfun T => typ_tfun (subst_tbt z U T)
-  | typ_exc T1 T => typ_exc (subst_tvt z U T1) (subst_tvt z U T)
+  | typ_eff T1 T => typ_eff (subst_tvt z U T1) (subst_tvt z U T)
   end.
 
 
@@ -784,10 +784,10 @@ with  wf_btyp : env -> btyp -> Prop :=
       (forall X : atom, X `notin` L ->
         wf_btyp ([(X, bind_typ)] ++ E) (open_tbt T X)) ->
       wf_btyp E (typ_tfun T)
-  | wf_typ_exc : forall E T1 T,
+  | wf_typ_eff : forall E T1 T,
       wf_vtyp E T1 ->
       wf_vtyp E T ->
-      wf_btyp E (typ_exc T1 T).
+      wf_btyp E (typ_eff T1 T).
 
 
 (** An environment E is well-formed, denoted [(wf_env E)], if each
@@ -965,7 +965,7 @@ with btyping : env -> cap -> sig -> blk -> btyp -> Prop :=
       cset_references_lvar l R ->
       (* It has the correct type *)
       Signatures.binds l (bind_sig T1 T) Q ->
-      E @ R ; Q |-blk blk_handler l ~: (typ_exc T1 T)
+      E @ R ; Q |-blk blk_handler l ~: (typ_eff T1 T)
 
 where "E @ R ; Q |-blk b ~: S" := (btyping E R Q b S)
 
@@ -1028,7 +1028,7 @@ with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
 
       (* E, f : (Exc @ {*}) @ C union f |- h : T *)
       (forall f : atom, f `notin` L ->
-        ([(f, bind_blk (typ_exc T2 T1) tracked)] ++ E) @ (cset_union C (cset_fvar f)) ; Q
+        ([(f, bind_blk (typ_eff T2 T1) tracked)] ++ E) @ (cset_union C (cset_fvar f)) ; Q
           |-stm (open_cs b f (cset_fvar f)) ~: T) ->
 
       (* E, x : T1, k : (T2 -> T @ C) @ C |- h : T *)
@@ -1042,7 +1042,7 @@ with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
 
 (** **** Differences from the paper:
     As mentioned above, handling statements are annotated with a capture set [C].
-    Also, we use the special type constructor [typ_exc] instead of a function type.
+    Also, we use the special type constructor [typ_eff] instead of a function type.
     Otherwise, the definition is a straightforward translation to Coq in locally nameless. *)
 
 (** The following rule for [typing_reset] is a variation of [typing_try], not binding the capability
@@ -1065,7 +1065,7 @@ with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
       E @ R ; Q |-stm (stm_reset l C b h) ~: T
 
   | typing_throw : forall E R Q b e T T1,
-      E @ R ; Q |-blk b ~: (typ_exc T1 T) ->
+      E @ R ; Q |-blk b ~: (typ_eff T1 T) ->
       E ; Q |-exp e ~: T1 ->
       E @ R ; Q |-stm (stm_throw b e) ~: T
 
