@@ -23,7 +23,9 @@ parent: Proofs
 </div>
 
 <div class="doc">
-This file contains some worked examples in Coq for System C. 
+<a name="lab184"></a><h1 class="section"><a name="examples"></a>  Examples</h1>
+
+   This file contains some worked examples in Coq for System C. 
 <div class="paragraph"> </div>
 
  As System C is concerned with tracking <i>effectful</i> computation,
@@ -47,10 +49,14 @@ interface S0 {
 <span class="id" title="keyword">Parameter</span> <a name="S0"><span class="id" title="axiom">S0</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#btyp"><span class="id" title="inductive">btyp</span></a>.<br/>
 <span class="id" title="keyword">Parameter</span> <a name="S0Wf"><span class="id" title="axiom">S0Wf</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#wf_btyp"><span class="id" title="inductive">wf_btyp</span></a> <a class="idref" href="Top.SystemC.Definitions.html#empty"><span class="id" title="abbreviation">empty</span></a> <a class="idref" href="Top.SystemC.Examples.html#S0"><span class="id" title="axiom">S0</span></a>.<br/>
 <span class="id" title="keyword">Parameter</span> <a name="S0Type"><span class="id" title="axiom">S0Type</span></a> : <a class="idref" href="Top.SystemC.Definitions.html#btype"><span class="id" title="inductive">btype</span></a> <a class="idref" href="Top.SystemC.Examples.html#S0"><span class="id" title="axiom">S0</span></a>.<br/>
+
+<br/>
 </div>
 
 <div class="doc">
-Here is an example of a function which takes a block argument f of type <span class="inlinecode"><a class="idref" href="Top.SystemC.Examples.html#S0"><span class="id" title="axiom">S0</span></a></span> and boxes it.
+<a name="lab185"></a><h2 class="section"><a name="examples-id"></a>  Identity on blocks</h2>
+
+   Here is an example of a function which takes a block argument f of type <span class="inlinecode"><a class="idref" href="Top.SystemC.Examples.html#S0"><span class="id" title="axiom">S0</span></a></span> and boxes it.
     In System C, we could define this using the following:
 
 <pre><code class="language-effekt">
@@ -90,7 +96,9 @@ def show_typ() { val id_typ = id; () }
 </div>
 
 <div class="doc">
-Next, we model a simple try-catch expression which simply returns a value.
+<a name="lab186"></a><h2 class="section"><a name="examples-try"></a>  Effectful Handlers</h2>
+
+   Next, we model a simple try-catch expression which simply returns a value.
     This, written in our language, looks like:
 
 <pre><code class="language-effekt">
@@ -174,6 +182,11 @@ Now, the try expression then reduces to returning a value directly out of a hand
 </div>
 
 <div class="doc">
+<a name="lab187"></a><h2 class="section"><a name="examples-try-invoke"></a>  Invoking a handler</h2>
+
+  
+<div class="paragraph"> </div>
+
   Similarly, next we model a try statement which actually throws something.  In System C, this can be
   expressed using the following fragment:
 
@@ -240,7 +253,9 @@ The reduction steps for this expression are a bit more complicated.  First, a th
 </div>
 
 <div class="doc">
-This example is a little more complicated.  Here, we throw while evaluating a value-binder
+<a name="lab188"></a><h2 class="section"><a name="examples-try-invoke-2"></a>  Invoking a handler, redux</h2>
+
+   This example is a little more complicated.  Here, we throw while evaluating a value-binder
     under the handler block.
 
 <pre><code class="language-effekt">
@@ -373,7 +388,9 @@ We unwind the stack, building the resumption continuation as we go, denoted by â
 </div>
 
 <div class="doc">
-Here is a more complicated example, which threads and returns a capability
+<a name="lab189"></a><h2 class="section"><a name="examples-capability-thread"></a>  Capability threading</h2>
+
+   Here is a more complicated example, which threads and returns a capability
     through try/handle frames.
 
 <pre><code class="language-effekt">
@@ -448,7 +465,9 @@ Naturally, it is also well-typed.
 </div>
 
 <div class="doc">
-Definitions can be desugared at some cost into block applications
+<a name="lab190"></a><h2 class="section"><a name="examples-sugar"></a>  Desugaring block definitions</h2>
+
+   Definitions can be desugared at some cost into block applications
     and boxes.  Note that we insert an <tt>unbox</tt> to work around
     System C's automatic box inferencing.
 
@@ -504,7 +523,9 @@ def sugar_def {c : S0} {
 </div>
 
 <div class="doc">
-Finally, we formalize an example which models local, bounded mutable
+<a name="lab191"></a><h2 class="section"><a name="examples-mutable-state"></a>  Local Mutable State</h2>
+
+   Finally, we formalize an example which models local, bounded mutable
     state.
 
 <pre><code class="language-effekt">

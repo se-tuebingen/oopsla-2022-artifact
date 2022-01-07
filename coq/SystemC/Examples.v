@@ -10,6 +10,9 @@ Require Import Coq.Program.Tactics.
 Require Import SystemC.Lemmas.
 Require Import Signatures.
 
+(**
+  * #<a name="examples"></a>#  Examples
+  **********************************************************)
 (** This file contains some worked examples in Coq for System C. *)
 
 (** As System C is concerned with tracking _effectful_ computation,
@@ -149,6 +152,10 @@ Ltac solve_wf_cap_cset_fvar :=
     end;
     eexists; binds_dec.
 (* end hide *)
+
+(**
+  ** #<a name="examples-id"></a>#  Identity on blocks
+  **********************************************************)
 (** Here is an example of a function which takes a block argument f of type [S0] and boxes it.
     In System C, we could define this using the following:
 #
@@ -204,6 +211,9 @@ Proof with crush.
 Qed.
 
 
+(**
+  ** #<a name="examples-try"></a>#  Effectful Handlers
+  **********************************************************)
 (** Next, we model a simple try-catch expression which simply returns a value.
     This, written in our language, looks like:
 #
@@ -285,6 +295,9 @@ Proof with crush.
 Qed.
 
 (**
+  ** #<a name="examples-try-invoke"></a>#  Invoking a handler
+  **********************************************************)
+(**
   Similarly, next we model a try statement which actually throws something.  In System C, this can be
   expressed using the following fragment:
 #
@@ -362,6 +375,9 @@ Proof with crush.
   rapply step_handle...
 Qed.
 
+(**
+  ** #<a name="examples-try-invoke-2"></a>#  Invoking a handler, redux
+  **********************************************************)
 (** This example is a little more complicated.  Here, we throw while evaluating a value-binder
     under the handler block.
 #
@@ -508,6 +524,9 @@ Proof with crush.
   rapply step_handle...
 Qed.
 
+(**
+  ** #<a name="examples-capability-thread"></a>#  Capability threading
+  **********************************************************)
 (** Here is a more complicated example, which threads and returns a capability
     through try/handle frames.
 #
@@ -739,6 +758,9 @@ Proof with crush.
   constructor...
 Qed.
 
+(**
+  ** #<a name="examples-sugar"></a>#  Desugaring block definitions
+  **********************************************************)
 (** Definitions can be desugared at some cost into block applications
     and boxes.  Note that we insert an <<unbox>> to work around
     System C's automatic box inferencing.
@@ -796,6 +818,9 @@ Proof with crush.
   econstructor...
 Qed.
 
+(**
+  ** #<a name="examples-mutable-state"></a>#  Local Mutable State
+  **********************************************************)
 (** Finally, we formalize an example which models local, bounded mutable
     state.
 #

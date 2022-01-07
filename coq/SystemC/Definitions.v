@@ -46,7 +46,7 @@ Require Export Coq.Program.Equality.
     Please note that we base our proofs on a
     #<a href="https://www.cis.upenn.edu/~plclub/popl08-tutorial/code/coqdoc/Fsub_Definitions.html">locally nameless representation</a>#.
 
-    In consequence, there are always two types of variables, free variables
+    Consequently there are always two kinds of variables, free variables
     (such as [typ_fvar]) and locally bound variables (such as [typ_bvar]).
 
     Capture sets [cap] are records, containing sets of free variables, sets of bound variables, and sets of labels.
@@ -68,11 +68,14 @@ Inductive vtyp : Type :=
   | typ_fvar : atom -> vtyp         (* (free) value-type variables *)
   | typ_bvar : nat -> vtyp          (* (bound) value-type variables *)
 
-(** **** Differences to the paper
+(** **** Differences from the paper:
     In the mechanization, we also additionally support
-    value-type polymorphism. Hence, the constructors for type variables ([typ_bvar] and [typ_fvar]),
-    which are not present in the paper. Also, we only include one base type [typ_base] instead
-    of separate base types (as in the paper). *)
+    value-type polymorphism, inherited from System F.
+    This requires additional constructors for type variables ([typ_bvar] and [typ_fvar]),
+    which are not present in the paper. 
+    
+    Finally, for simplicity, we only include one base type [typ_base] instead
+    of multiple separate base types (as in the paper). *)
 
 (** *** Block Types *)
 with btyp : Type :=
@@ -82,9 +85,9 @@ with btyp : Type :=
   | typ_exc  : vtyp -> vtyp -> btyp    (* capability types *)
 .
 
-(** **** Differences to the paper
+(** **** Differences from the paper:
     In the paper, we formalize multi-arity function types.
-    Since this is akward to work with in Coq, here, we only mechanize single arity
+    This is awkward to work with in Coq so here we only mechanize single arity
     function types.
 
     We include two type constructors, [typ_vfun] for function types with value arguments
@@ -94,9 +97,9 @@ with btyp : Type :=
     Since in the calculus function arguments are independent of each other, we do not
     expect any theoretical complications in the setting of a full multi-arity representation.
 
-    Type constructor [typ_exc T1 T2] is a block type that represents capabilities with an effect
+    Finally, type constructor [typ_exc T1 T2] is a block type that represents capabilities with an effect
     signature from [T1] to [T2]. To simplify the presentation, in the paper, this is represented
-    as a function type [T1 -> T2] as for instance can be seen in rule TRY in Figure 2. *)
+    as a function type [T1 -> T2]; this can be seen in rule TRY in Figure 2. *)
 
 
 
@@ -115,8 +118,8 @@ Inductive exp : Type :=
   | exp_const : exp               (* primitives *)
   | exp_box : cap -> blk -> exp   (* box introduction *)
 
-(** **** Differences to the paper
-    Besides only having one primitive value, expressions are precisely as in the paper. *)
+(** **** Differences from the paper:
+    Expressions are formalized with only one primitive value, [exp_const]. *)
 
 (** *** Statements *)
 with stm : Type :=
@@ -129,7 +132,7 @@ with stm : Type :=
   | stm_throw : blk -> exp -> stm                       (* performing an effect *)
   | stm_reset : label -> cap -> stm -> stm -> stm       (* runtime delimiter *)
 
-(** **** Differences to the paper
+(** **** Differences from the paper:
     Similar to the syntax of types, in the mechanization we have two different
     forms of application (instead of multi-arity). [stm_vapp] takes the block to call
     and an expression (value argument), while [stm_bapp] takes the block to call,
@@ -145,7 +148,6 @@ with stm : Type :=
     That is, the capture annotion [C] corresponds to the capture set on the continuation [k].
     This can also be seen in Figure 2, rule TRY, but without an explicit annotation on the [stm_try].
     Types [T1] and [T2] are also explicitly annotated, which is not the case in the paper.
-
 
     Like in Figure 3 of the paper, we also include the syntax for runtime delimiters [stm_reset C T1 T2] that model
     statements of the form
@@ -165,7 +167,7 @@ with blk : Type :=
   | blk_tapp : blk -> vtyp -> blk   (* value type application *)
   | blk_handler : label -> blk      (* runtime capability *)
 .
-(** **** Differences to the paper
+(** **** Differences from the paper:
     Again, as for statements and block types, we have two different forms
     of abstraction. [blk_vabs] to abstract over values and [blk_babs] to abstract
     over (tracked) blocks.
@@ -873,7 +875,7 @@ Inductive etyping : env -> sig -> exp -> vtyp -> Prop :=
 
 where "E ; Q |-exp e ~: T" := (etyping E Q e T)
 
-(** **** Differences to the paper
+(** **** Differences from the paper:
     The three rules directly correspond to rules LIT, VAR, and BOXINTRO in
     the paper. As can be seen (all) typing judgements in Coq make wellformedness
     conditions explicit, which are left implicit in the paper. *)
@@ -920,7 +922,7 @@ with btyping : env -> cap -> sig -> blk -> btyp -> Prop :=
       E @ R ; Q |-blk (blk_babs S1 s) ~: (typ_bfun S1 T2)
 
 
-(** **** Differences to the paper
+(** **** Differences from the paper:
     Note that we build in subsumption on blocks (rule BSUB in the paper)
     into the rules as additional premises, instead of having one additional
     rule. This allows us to omit having to prove inversion of subeffecting.
@@ -1005,7 +1007,7 @@ with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
       E @ C ; Q |-blk b2 ~: S1 ->
       E @ R ; Q |-stm (stm_bapp b1 C b2) ~: (open_cvt T2 C)
 
-(** **** Differences to the paper
+(** **** Differences from the paper:
     The rules correspond to the paper with the following mapping:
     - <<RET>> maps to [typing_ret]
     - <<VAL>> maps to [typing_val]
@@ -1038,7 +1040,7 @@ with styping : env -> cap -> sig -> stm -> vtyp -> Prop :=
 
       E @ R ; Q |-stm (stm_try C T2 T1 b h) ~: T
 
-(** **** Differences to the paper
+(** **** Differences from the paper:
     As mentioned above, handling statements are annotated with a capture set [C].
     Also, we use the special type constructor [typ_exc] instead of a function type.
     Otherwise, the definition is a straightforward translation to Coq in locally nameless. *)

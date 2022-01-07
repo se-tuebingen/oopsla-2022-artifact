@@ -108,7 +108,7 @@ This file contains the definitions for System C. We include snippets of the pape
 
 <div class="paragraph"> </div>
 
-    In consequence, there are always two types of variables, free variables
+    Consequently there are always two kinds of variables, free variables
     (such as <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_fvar"><span class="id" title="constructor">typ_fvar</span></a></span>) and locally bound variables (such as <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_bvar"><span class="id" title="constructor">typ_bvar</span></a></span>).
 
 <div class="paragraph"> </div>
@@ -145,12 +145,17 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab119"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab119"></a><h4 class="section">Differences from the paper:</h4>
 
     In the mechanization, we also additionally support
-    value-type polymorphism. Hence, the constructors for type variables (<span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_bvar"><span class="id" title="constructor">typ_bvar</span></a></span> and <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_fvar"><span class="id" title="constructor">typ_fvar</span></a></span>),
-    which are not present in the paper. Also, we only include one base type <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a></span> instead
-    of separate base types (as in the paper). 
+    value-type polymorphism, inherited from System F.
+    This requires additional constructors for type variables (<span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_bvar"><span class="id" title="constructor">typ_bvar</span></a></span> and <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_fvar"><span class="id" title="constructor">typ_fvar</span></a></span>),
+    which are not present in the paper. 
+
+<div class="paragraph"> </div>
+
+    Finally, for simplicity, we only include one base type <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_base"><span class="id" title="constructor">typ_base</span></a></span> instead
+    of multiple separate base types (as in the paper). 
 <div class="paragraph"> </div>
 
 <a name="lab120"></a><h3 class="section">Block Types</h3>
@@ -168,10 +173,10 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab121"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab121"></a><h4 class="section">Differences from the paper:</h4>
 
     In the paper, we formalize multi-arity function types.
-    Since this is akward to work with in Coq, here, we only mechanize single arity
+    This is awkward to work with in Coq so here we only mechanize single arity
     function types.
 
 <div class="paragraph"> </div>
@@ -187,9 +192,9 @@ This file contains the definitions for System C. We include snippets of the pape
 
 <div class="paragraph"> </div>
 
-    Type constructor <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_exc"><span class="id" title="constructor">typ_exc</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T2"><span class="id" title="variable">T2</span></a></span> is a block type that represents capabilities with an effect
+    Finally, type constructor <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_exc"><span class="id" title="constructor">typ_exc</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T2"><span class="id" title="variable">T2</span></a></span> is a block type that represents capabilities with an effect
     signature from <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a></span> to <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T2"><span class="id" title="variable">T2</span></a></span>. To simplify the presentation, in the paper, this is represented
-    as a function type <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a></span> <span class="inlinecode">→</span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T2"><span class="id" title="variable">T2</span></a></span> as for instance can be seen in rule TRY in Figure 2. 
+    as a function type <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T1"><span class="id" title="variable">T1</span></a></span> <span class="inlinecode">→</span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#T2"><span class="id" title="variable">T2</span></a></span>; this can be seen in rule TRY in Figure 2. 
 <div class="paragraph"> </div>
 
 
@@ -220,9 +225,9 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab124"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab124"></a><h4 class="section">Differences from the paper:</h4>
 
-    Besides only having one primitive value, expressions are precisely as in the paper. 
+    Expressions are formalized with only one primitive value, <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#exp_const"><span class="id" title="constructor">exp_const</span></a></span>. 
 <div class="paragraph"> </div>
 
 <a name="lab125"></a><h3 class="section">Statements</h3>
@@ -242,7 +247,7 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab126"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab126"></a><h4 class="section">Differences from the paper:</h4>
 
     Similar to the syntax of types, in the mechanization we have two different
     forms of application (instead of multi-arity). <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#stm_vapp"><span class="id" title="constructor">stm_vapp</span></a></span> takes the block to call
@@ -292,7 +297,7 @@ This file contains the definitions for System C. We include snippets of the pape
 </div>
 
 <div class="doc">
-<a name="lab128"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab128"></a><h4 class="section">Differences from the paper:</h4>
 
     Again, as for statements and block types, we have two different forms
     of abstraction. <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#blk_vabs"><span class="id" title="constructor">blk_vabs</span></a></span> to abstract over values and <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#blk_babs"><span class="id" title="constructor">blk_babs</span></a></span> to abstract
@@ -470,7 +475,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab134"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab134"></a><h4 class="section">Differences from the paper:</h4>
 
     The three rules directly correspond to rules LIT, VAR, and BOXINTRO in
     the paper. As can be seen (all) typing judgements in Coq make wellformedness
@@ -527,7 +532,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab136"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab136"></a><h4 class="section">Differences from the paper:</h4>
 
     Note that we build in subsumption on blocks (rule BSUB in the paper)
     into the rules as additional premises, instead of having one additional
@@ -649,7 +654,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab140"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab140"></a><h4 class="section">Differences from the paper:</h4>
 
     The rules correspond to the paper with the following mapping:
 <ul class="doclist">
@@ -701,7 +706,7 @@ Note on presentation: we use Gamma for E, and Xi for Q, both in the paper and in
 </div>
 
 <div class="doc">
-<a name="lab142"></a><h4 class="section">Differences to the paper</h4>
+<a name="lab142"></a><h4 class="section">Differences from the paper:</h4>
 
     As mentioned above, handling statements are annotated with a capture set <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.C"><span class="id" title="variable">C</span></a></span>.
     Also, we use the special type constructor <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#typ_exc"><span class="id" title="constructor">typ_exc</span></a></span> instead of a function type.
