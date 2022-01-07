@@ -32,28 +32,36 @@ buildRegex()
 
 const replacement = coqdocjs.repl;
 
-function replace(s) {
-
-  var m;
-  // do something with ticks
-  if (m = s.match(/^(.+)'/)) {
-    return replace(m[1])+"'";
-  // split into index and number and replace with index
-  } else if (m = s.match(/^([A-Za-z]+)_?(\d+)$/)) {
-    return replace(m[1])+m[2].replace(/\d/g, function(d){
-      if (coqdocjs.subscr.hasOwnProperty(d)) {
-        return coqdocjs.subscr[d];
-      } else {
-        return d;
-      }
-    });
-  } else if (replacement.hasOwnProperty(s)){
+function baseReplace(s) {
+  if (replacement.hasOwnProperty(s)) {
     return replacement[s]
   } else {
-    return s;
+    return s
   }
 }
 
+function replaceAllNumbersBySubscripts(s) {
+  s.replace(/\d/g, function(d){
+    if (coqdocjs.subscr.hasOwnProperty(d)) {
+      return coqdocjs.subscr[d];
+    } else {
+      return d;
+    }
+  });
+}
+
+function replace(s) {
+  var m;
+  // ignore ticks and replace on the left
+  if (m = s.match(/^(.+)([']+)/)) {
+    return replace(m[1]) + m[2];
+  // split into index and number and replace with index
+  } else if (m = s.match(/^([A-Za-z]+)_?(\d+)$/)) {
+    return baseReplace(m[1]) + replaceAllNumbersBySubscripts(m[2])
+  } else {
+    return baseReplace(s);
+  }
+}
 
 
 function replInTextNodes() {
