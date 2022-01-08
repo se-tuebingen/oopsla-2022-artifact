@@ -22,3 +22,7 @@ In file [Definitions](Top.SystemC.Definitions.html), you can inspect the Coq def
 
 ## Main Theorems
 File [Soundness](Top.SystemC.Soundness.html) lists the main theorems, like progress and preservation. File [Substitution](Top.SystemC.Substitution.html) contains lemmas about context weakening as well as the standard substitution lemmas.
+
+## Examples
+File [Examples](Top.SystemC.Examples.html) gives a few worked examples of typed terms and their reductions in System C's abstract machine model, in particular
+to show that meaningful terms can be encoded in our Coq formalism of System C.
