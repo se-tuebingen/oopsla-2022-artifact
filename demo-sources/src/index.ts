@@ -118,7 +118,7 @@ function processCode() {
     if (opts.language != "effekt") return;
       
     // strip prefix whitespace
-    code.textContent = code.textContent.replace(/^[\n\s]*/, "");
+    code.textContent = code.textContent.replace(/^[\n]*/, "");
 
     if (opts.repl) { code.classList.add('repl') }
 
