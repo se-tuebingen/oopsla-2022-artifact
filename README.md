@@ -2,11 +2,17 @@
 
 This artifact is available on [Zenodo](https://zenodo.org/badge/latestdoi/412428588).
 
-This GitHub repository constitutes the artifact for our paper
+This document describes the artifact for our paper
 
 > Effects, Capabilities, and Boxes: From Scope-based Reasoning to Type-based Reasoning and Back.
 > Jonathan Immanuel Brachthäuser, Philipp Schuster, Edward Lee, Aleksander Boruch-Gruszecki.
 > Conditionally accepteed at OOPSLA 2022.
+
+For your convenience, please consider either viewing the artifact's Github repo, or the website hosted on Github (links below), which contain the same information as this PDF.
+
+  <https://se-tuebingen.github.io/oopsla-2022-artifact/>
+
+  <https://github.com/se-tuebingen/oopsla-2022-artifact/>
 
 ## Overview
 
