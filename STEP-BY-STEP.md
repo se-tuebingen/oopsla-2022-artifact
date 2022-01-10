@@ -83,7 +83,7 @@ Footnote 4, page 6 we claim:
 The examples we provide are interactive - they can be typechecked, edited and
 ran. Similar to the paper, in our IDE implementation, inferred capture sets are highlighted in blue.
 That is, typechecking the examples (and inferring capture sets) will indeed display capture sets corresponding to the ones from the paper.
-Moreover, removing explicit `box` and `unbox` from the examples will keep them typecheckable.
+Moreover, in almost all the cases, removing explicit `box` and `unbox` from the examples will keep them typecheckable.
 
 As we point out in the paper (Section 4), our implementation of System C extends
 the formal calculus with type polymorphism, mutable state, and objects. Mutable state is illustrated in an additional [case study](https://se-tuebingen.github.io/oopsla-2022-artifact/casestudies/regions.html).
