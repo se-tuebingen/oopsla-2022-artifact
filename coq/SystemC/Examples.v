@@ -860,11 +860,6 @@ Definition handle_tick_term :=
       (stm_vapp (blk_unbox (exp_bvar 0)) exp_const)).
 Lemma handle_tick_term_typing :
   exists T, empty @ {}C ; nil |-blk handle_tick_term ~: T.
-Proof.
-Admitted.
-
-(* begin hide *)
-(*
 Proof with notin_simpl; crush; try fsetdec; try fnsetdec; try lsetdec.
   eexists.
   econstructor.
@@ -1229,5 +1224,3 @@ Proof with notin_simpl; crush; try fsetdec; try fnsetdec; try lsetdec.
   Unshelve.
   all: repeat exact {}.
 Qed.
-*)
-(* end hide *)
