@@ -1,5 +1,7 @@
 # Artifact for the OOPSLA 2022 paper 'Effects, Capabilities, and Boxes'
 
+[![DOI](https://zenodo.org/badge/412428588.svg)](https://zenodo.org/badge/latestdoi/412428588)
+
 This github repository constitutes the artifact for our paper
 
 > Effects, Capabilities, and Boxes: From Scope-based Reasoning to Type-based Reasoning and Back.
