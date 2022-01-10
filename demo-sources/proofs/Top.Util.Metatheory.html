@@ -1,0 +1,170 @@
+---
+layout: coqdoc
+parent: Proofs
+---
+<h1 class="libtitle">Top.Util.Metatheory</h1>
+
+<div class="code">
+</div>
+
+<div class="doc">
+Library for programming languages metatheory.
+
+<div class="paragraph"> </div>
+
+    Authors: Brian Aydemir and Arthur Charguéraud, with help from
+    Aaron Bohannon, Benjamin Pierce, Jeffrey Vaughan, Dimitrios
+    Vytiniotis, Stephanie Weirich, and Steve Zdancewic. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab104"></a><h1 class="section">Notations</h1>
+
+<div class="paragraph"> </div>
+
+ Decidable equality on atoms and natural numbers may be written
+        using natural notation. 
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Notation</span> <a name="ac583684be6c78db043e056aebaaf865"><span class="id" title="notation">&quot;</span></a>x == y" :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.Util.Atom.html#AtomImpl.eq_atom_dec"><span class="id" title="axiom">eq_atom_dec</span></a> <span class="id" title="var">x</span> <span class="id" title="var">y</span>) (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 67) : <span class="id" title="var">metatheory_scope</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Notation</span> <a name="a36479bc374aebea0ebc7cf03fd6f5ee"><span class="id" title="notation">&quot;</span></a>i === j" :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Arith.Peano_dec.html#eq_nat_dec"><span class="id" title="abbreviation">Peano_dec.eq_nat_dec</span></a> <span class="id" title="var">i</span> <span class="id" title="var">j</span>) (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 67) : <span class="id" title="var">metatheory_scope</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Common set operations may be written using infix notation. 
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Notation</span> <a name="c92914db0a86f2562eff329be5a29633"><span class="id" title="notation">&quot;</span></a>E `union` F" :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.Util.Atom.html#AtomSet.F.union"><span class="id" title="axiom">AtomSet.F.union</span></a> <span class="id" title="var">E</span> <span class="id" title="var">F</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 69, <span class="id" title="tactic">right</span> <span class="id" title="keyword">associativity</span>, <span class="id" title="var">format</span> "E  `union`  '/' F")<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="id" title="var">set_scope</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Notation</span> <a name="bf0d2458f35b3545d1644e38b3a2d91e"><span class="id" title="notation">&quot;</span></a>x `in` E" :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.Util.Atom.html#AtomSet.F.In"><span class="id" title="axiom">AtomSet.F.In</span></a> <span class="id" title="var">x</span> <span class="id" title="var">E</span>) (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 69) : <span class="id" title="var">set_scope</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Notation</span> <a name="afed8734a485685888dccb4f977f99dd"><span class="id" title="notation">&quot;</span></a>x `notin` E" :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">¬</span></a> <a class="idref" href="Top.Util.Atom.html#AtomSet.F.In"><span class="id" title="axiom">AtomSet.F.In</span></a> <span class="id" title="var">x</span> <span class="id" title="var">E</span>) (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 69) : <span class="id" title="var">set_scope</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Notation</span> <a name="2b54d178328f2868eaef1004f007ea76"><span class="id" title="notation">&quot;</span></a>E `subset` F" :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.Util.Atom.html#AtomSet.F.Subset"><span class="id" title="definition">AtomSet.F.Subset</span></a> <span class="id" title="var">E</span> <span class="id" title="var">F</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 68)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="id" title="var">set_scope</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Notation</span> <a name="8600e6cd272f23cfbe04ddcc87257afd"><span class="id" title="notation">&quot;</span></a>E `remove` x" :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.Util.Atom.html#AtomSet.F.remove"><span class="id" title="axiom">AtomSet.F.remove</span></a> <span class="id" title="var">x</span> <span class="id" title="var">E</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 68)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="id" title="var">set_scope</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The empty set may be written similarly to informal practice. 
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Notation</span> <a name="0a1b312427021aedeeb9d59198d8ee69"><span class="id" title="notation">&quot;</span></a>{}" :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="Top.Util.Atom.html#AtomSet.F.empty"><span class="id" title="axiom">AtomSet.F.empty</span></a>) : <span class="id" title="var">metatheory_scope</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+It is useful to have an abbreviation for constructing singleton
+        sets. 
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Notation</span> <a name="singleton"><span class="id" title="abbreviation">singleton</span></a> := (<a class="idref" href="Top.Util.Atom.html#AtomSet.F.singleton"><span class="id" title="axiom">AtomSet.F.singleton</span></a>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Open the notation scopes declared above. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab105"></a><h1 class="section">Tactic for working with cofinite quantification</h1>
+
+<div class="paragraph"> </div>
+
+ Consider a rule <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a></span> (equivalently, hypothesis, constructor, lemma,
+        etc.) of the form <span class="inlinecode">(<span class="id" title="keyword">∀</span></span> <span class="inlinecode"><a class="idref" href="Top.Util.Atom.html#L"><span class="id" title="variable">L</span></a></span> <span class="inlinecode">...,</span> <span class="inlinecode">...</span> <span class="inlinecode">→</span> <span class="inlinecode">(<span class="id" title="keyword">∀</span></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.y"><span class="id" title="variable">y</span></a>,</span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.y"><span class="id" title="variable">y</span></a></span> <span class="inlinecode">`<span class="id" title="var">notin</span>`</span> <span class="inlinecode"><a class="idref" href="Top.Util.Atom.html#L"><span class="id" title="variable">L</span></a></span> <span class="inlinecode">→</span>
+        <span class="inlinecode"><a class="idref" href="Top.Util.FSetDecide.html#P"><span class="id" title="variable">P</span></a>)</span> <span class="inlinecode">→</span> <span class="inlinecode">...</span> <span class="inlinecode">→</span> <span class="inlinecode"><a class="idref" href="Top.Util.ListFacts.html#Q"><span class="id" title="variable">Q</span></a>)</span>, where <span class="inlinecode"><a class="idref" href="Top.Util.ListFacts.html#Q"><span class="id" title="variable">Q</span></a></span>'s outermost constructor is not a
+        <span class="inlinecode"><span class="id" title="keyword">∀</span></span>.  There may be multiple hypotheses of with the indicated
+        form in <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a></span>.
+
+<div class="paragraph"> </div>
+
+        The tactic <span class="inlinecode">(<span class="id" title="var">pick</span></span> <span class="inlinecode"><span class="id" title="tactic">fresh</span></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.x"><span class="id" title="variable">x</span></a></span> <span class="inlinecode"><span class="id" title="var">and</span></span> <span class="inlinecode"><span class="id" title="tactic">apply</span></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a>)</span> applies <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a></span> to the current
+        goal, instantiating <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a></span>'s first argument (i.e., <span class="inlinecode"><a class="idref" href="Top.Util.Atom.html#L"><span class="id" title="variable">L</span></a></span>) with the
+        finite set of atoms <span class="inlinecode"><span class="id" title="var">L'</span></span>.  In each new subgoal arising from a
+        hypothesis of the form <span class="inlinecode">(<span class="id" title="keyword">∀</span></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.y"><span class="id" title="variable">y</span></a>,</span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.y"><span class="id" title="variable">y</span></a></span> <span class="inlinecode">`<span class="id" title="var">notin</span>`</span> <span class="inlinecode"><a class="idref" href="Top.Util.Atom.html#L"><span class="id" title="variable">L</span></a></span> <span class="inlinecode">→</span> <span class="inlinecode"><a class="idref" href="Top.Util.FSetDecide.html#P"><span class="id" title="variable">P</span></a>)</span>, the atom
+        <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.y"><span class="id" title="variable">y</span></a></span> is introduced as <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.x"><span class="id" title="variable">x</span></a></span>, and <span class="inlinecode">(<a class="idref" href="Top.SystemC.CaptureSets.html#Props.y"><span class="id" title="variable">y</span></a></span> <span class="inlinecode">`<span class="id" title="var">notin</span>`</span> <span class="inlinecode"><a class="idref" href="Top.Util.Atom.html#L"><span class="id" title="variable">L</span></a>)</span> is introduced using
+        a generated name.
+
+<div class="paragraph"> </div>
+
+        If we view <span class="inlinecode"><a class="idref" href="Top.SystemC.Definitions.html#H"><span class="id" title="constructor">H</span></a></span> as a rule that uses cofinite quantification, the
+        tactic can be read as picking a sufficiently fresh atom to open a
+        term with.  
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Tactic Notation</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"pick" "fresh" <span class="id" title="var">ident</span>(<span class="id" title="var">atom_name</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"excluding" <span class="id" title="keyword">constr</span>(<span class="id" title="var">L</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"and" "apply" <span class="id" title="keyword">constr</span>(<span class="id" title="var">H</span>) :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <span class="id" title="var">L</span> := <span class="id" title="var">beautify_fset</span> <span class="id" title="var">L</span> <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">first</span> [<span class="id" title="tactic">apply</span> (@<span class="id" title="var">H</span> <span class="id" title="var">L</span>) | <span class="id" title="tactic">eapply</span> (@<span class="id" title="var">H</span> <span class="id" title="var">L</span>)];<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="keyword">goal</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| |- <span class="id" title="keyword">∀</span> <span class="id" title="var">_</span>, <span class="id" title="var">_</span> <a class="idref" href="Top.Util.Metatheory.html#afed8734a485685888dccb4f977f99dd"><span class="id" title="notation">`</span></a><a class="idref" href="Top.Util.Metatheory.html#afed8734a485685888dccb4f977f99dd"><span class="id" title="notation">notin</span></a><a class="idref" href="Top.Util.Metatheory.html#afed8734a485685888dccb4f977f99dd"><span class="id" title="notation">`</span></a> <span class="id" title="var">_</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="var">_</span> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <span class="id" title="var">Fr</span> := <span class="id" title="tactic">fresh</span> "Fr" <span class="id" title="tactic">in</span> <span class="id" title="tactic">intros</span> <span class="id" title="var">atom_name</span> <span class="id" title="var">Fr</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| |- <span class="id" title="keyword">∀</span> <span class="id" title="var">_</span>, <span class="id" title="var">_</span> <a class="idref" href="Top.Util.Metatheory.html#afed8734a485685888dccb4f977f99dd"><span class="id" title="notation">`</span></a><a class="idref" href="Top.Util.Metatheory.html#afed8734a485685888dccb4f977f99dd"><span class="id" title="notation">notin</span></a><a class="idref" href="Top.Util.Metatheory.html#afed8734a485685888dccb4f977f99dd"><span class="id" title="notation">`</span></a> <span class="id" title="var">_</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">→</span></a> <span class="id" title="var">_</span> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">fail</span> 1 "because" <span class="id" title="var">atom_name</span> "is already defined"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">_</span> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">idtac</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab106"></a><h1 class="section">Automation</h1>
+
+<div class="paragraph"> </div>
+
+ These hints should discharge many of the freshness and inequality
+        goals that arise in programming language metatheory proofs, in
+        particular those arising from cofinite quantification. 
+</div>
+<div class="code">
+
+<br/>
+</div>

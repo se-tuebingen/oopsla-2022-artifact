@@ -1,0 +1,111 @@
+---
+layout: coqdoc
+parent: Proofs
+---
+<h1 class="libtitle">Top.Util.Nat</h1>
+
+<div class="code">
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Helpers, defining a set of natural numbers. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Module</span> <span class="id" title="keyword">Type</span> <a name="NATSET"><span class="id" title="module">NATSET</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Declare Module</span> <a name="NATSET.OT"><span class="id" title="module">OT</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Structures.OrderedTypeEx.html#UsualOrderedType"><span class="id" title="module">UsualOrderedType</span></a> <span class="id" title="keyword">with</span> <span class="id" title="keyword">Definition</span> <span class="id" title="var">t</span> := <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Parameter</span> <a name="NATSET.eq_nat_dec"><span class="id" title="axiom">eq_nat_dec</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span> : <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a>, <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">{</span></a><a class="idref" href="Top.Util.Nat.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="Top.Util.Nat.html#y"><span class="id" title="variable">y</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">}</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">+</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">{</span></a><a class="idref" href="Top.Util.Nat.html#x"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Logic.html#a0a5068f83a704fcfbda8cd473a6cfea"><span class="id" title="notation">≠</span></a> <a class="idref" href="Top.Util.Nat.html#y"><span class="id" title="variable">y</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">}</span></a>.<br/>
+<span class="id" title="keyword">End</span> <a class="idref" href="Top.Util.Nat.html#NATSET"><span class="id" title="module">NATSET</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The implementation of the above interface is hidden for
+    documentation purposes. 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Module</span> <a name="NatSetImpl"><span class="id" title="module">NatSetImpl</span></a> : <a class="idref" href="Top.Util.Nat.html#NATSET"><span class="id" title="module">NATSET</span></a>.<br/>
+<span class="id" title="keyword">End</span> <a class="idref" href="Top.Util.Nat.html#NatSetImpl"><span class="id" title="module">NatSetImpl</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Defining a set of Natural Numbers. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Module</span> <a name="NatSet"><span class="id" title="module">NatSet</span></a> : <a class="idref" href="Top.Util.FiniteSets.html#S"><span class="id" title="module">FiniteSets.S</span></a> <span class="id" title="keyword">with</span> <span class="id" title="keyword">Module</span> <span class="id" title="var">E</span> := <a class="idref" href="Top.Util.Nat.html#NatSetImpl.OT"><span class="id" title="module">NatSetImpl.OT</span></a> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="Top.Util.FiniteSets.html#Make"><span class="id" title="module">FiniteSets.Make</span></a> <a class="idref" href="Top.Util.Nat.html#NatSetImpl.OT"><span class="id" title="module">NatSetImpl.OT</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The type <span class="inlinecode"><a class="idref" href="Top.Util.Nat.html#nats"><span class="id" title="abbreviation">nats</span></a></span> is the type of finite sets of <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a></span>s. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Notation</span> <a name="nats"><span class="id" title="abbreviation">nats</span></a> := <a class="idref" href="Top.Util.Nat.html#t"><span class="id" title="axiom">NatSet.F.t</span></a>.<br/>
+<span class="id" title="keyword">Notation</span> <a name="848efb4c948b9a6292c23ceb48fa2d40"><span class="id" title="notation">&quot;</span></a>{}N" :=<br/>
+&nbsp;&nbsp;<a class="idref" href="Top.Util.Nat.html#empty"><span class="id" title="axiom">NatSet.F.empty</span></a> : <span class="id" title="var">metatheory_scope</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+We instantiate two modules which provide useful lemmas and tactics
+    work working with finite sets of atoms. 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Module</span> <a name="NatSetDecide"><span class="id" title="module">NatSetDecide</span></a> := <a class="idref" href="Top.Util.FSetDecide.html#Decide"><span class="id" title="module">FSetDecide.Decide</span></a> <a class="idref" href="Top.Util.Nat.html#NatSet.F"><span class="id" title="module">NatSet.F</span></a>.<br/>
+<span class="id" title="keyword">Module</span> <a name="NatSetNotin"><span class="id" title="module">NatSetNotin</span></a>  := <a class="idref" href="Top.Util.FSetNotin.html#Notin"><span class="id" title="module">FSetNotin.Notin</span></a>   <a class="idref" href="Top.Util.Nat.html#NatSet.F"><span class="id" title="module">NatSet.F</span></a>.<br/>
+<span class="id" title="keyword">Module</span> <a name="NatSetFacts"><span class="id" title="module">NatSetFacts</span></a>  := <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.FSets.FSetFacts.html#Facts"><span class="id" title="module">FSetFacts.Facts</span></a> <a class="idref" href="Top.Util.Nat.html#NatSet.F"><span class="id" title="module">NatSet.F</span></a>.<br/>
+<span class="id" title="keyword">Module</span> <a name="NatSetProperties"><span class="id" title="module">NatSetProperties</span></a> := <a class="idref" href="http://coq.inria.fr/distrib/V8.10.2/stdlib//Coq.FSets.FSetProperties.html#Properties"><span class="id" title="module">FSetProperties.Properties</span></a> <a class="idref" href="Top.Util.Nat.html#NatSet.F"><span class="id" title="module">NatSet.F</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab51"></a><h2 class="section">Tactics for working with finite sets of nats</h2>
+
+<div class="paragraph"> </div>
+
+ The tactic <span class="inlinecode"><span class="id" title="var">fnsetdec</span></span> is a general purpose decision procedure
+    for solving facts about finite sets of atoms. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The tactic <span class="inlinecode"><span class="id" title="var">notin_simpl</span></span> simplifies all hypotheses of the form <span class="inlinecode">(~</span>
+    <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.x"><span class="id" title="variable">x</span></a></span> <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a>)</span>, where <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a></span> is constructed from the empty set, singleton
+    sets, and unions. 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The tactic <span class="inlinecode"><span class="id" title="var">notin_solve</span></span>, solves goals of the form <span class="inlinecode">(~</span> <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#X.In"><span class="id" title="axiom">In</span></a></span> <span class="inlinecode"><a class="idref" href="Top.SystemC.CaptureSets.html#Props.x"><span class="id" title="variable">x</span></a></span> <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a>)</span>,
+    where <span class="inlinecode"><a class="idref" href="Top.Util.FSetNotin.html#F"><span class="id" title="variable">F</span></a></span> is constructed from the empty set, singleton sets, and
+    unions.  The goal must be provable from hypothesis of the form
+    simplified by <span class="inlinecode"><span class="id" title="var">notin_simpl</span></span>. 
+</div>
+<div class="code">
+
+<br/>
+</div>

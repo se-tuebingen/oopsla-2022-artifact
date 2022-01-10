@@ -1,0 +1,135 @@
+name: Release Artifacts
+
+on:
+  push:
+    # branches: [ main ] # for now, build always
+    tags:
+    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+jobs:
+  # This job is almost like ci-demo.yml, but optimizes the website to run locally
+  build-website:
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/demo-sources/Gemfile
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+
+    - name: Install JavaScript Dependencies
+      working-directory: demo-sources
+      run: npm install
+
+    - name: Run Webpack to bundle JS files (Monaco and compiler)
+      working-directory: demo-sources
+      run: webpack
+
+    - name: Build page
+      working-directory: demo-sources
+      run: bundle exec jekyll build
+
+    - name: Copy scripts
+      working-directory: demo-sources
+      run: cp scripts/* _site/
+
+    - name: Zip built website
+      working-directory: demo-sources
+      run: mv _site website; zip -r website.zip website
+
+    - name: Save zip file
+      uses: actions/upload-artifact@v1
+      with:
+        name: website
+        path: demo-sources/website.zip
+
+  compile-proofs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: coq-community/docker-coq-action@v1
+      with:
+        opam_file: "coq/proofs.opam"
+        coq_version: "8.10"
+        before_script: |
+          startGroup "Workaround permission issue"
+          sudo chown -R coq:coq ./coq  # <--
+          endGroup
+        # Don't use OPAM to install, but make.
+        script: |
+          startGroup "Build project"
+          cd coq; ls -lah; make clean; make -j2
+          endGroup
+
+    - name: Revert permissions
+      # to avoid a warning at cleanup time
+      if: ${{ always() }}
+      run: sudo chown -R 1001:116 coq
+
+    - name: Zip compiled proofs
+      run: zip -r compiled-proofs.zip coq
+
+    - name: Save zip file
+      uses: actions/upload-artifact@v1
+      with:
+        name: compiled-proofs
+        path: compiled-proofs.zip
+
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [build-website, compile-proofs]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Download website artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: website
+          path: distribution/
+
+      - name: Download proofs
+        uses: actions/download-artifact@v1
+        with:
+          name: compiled-proofs
+          path: distribution/
+
+      - name: Create Release      
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_name: Prerelease ${{ github.ref }}
+          tag_name: ${{ github.ref }}
+          body: Automatic release for ${{ github.ref }}
+          draft: false
+          prerelease: true
+
+      - name: Upload website artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./distribution/website.zip
+          asset_name: website.zip
+          asset_content_type: application/gzip
+
+      - name: Upload compiled proofs
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./distribution/compiled-proofs.zip
+          asset_name: compiled-proofs.zip
+          asset_content_type: application/gzip

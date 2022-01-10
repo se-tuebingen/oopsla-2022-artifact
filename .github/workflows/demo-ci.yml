@@ -1,0 +1,43 @@
+name: Build and Deploy Demo Website
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-website:
+
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/demo-sources/Gemfile
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+
+    - name: Install JavaScript Dependencies
+      working-directory: demo-sources
+      run: npm install
+
+    - name: Run Webpack to bundle JS files (Monaco and compiler)
+      working-directory: demo-sources
+      run: webpack --output-public-path /oopsla-2022-artifact/dist/
+
+    - name: Build page
+      working-directory: demo-sources
+      run: bundle exec jekyll build --baseurl /oopsla-2022-artifact
+
+    # - name: Copy coq documentation
+    #  run: cp -r coq/html demo-sources/_site/proofs
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.6
+      with:
+        branch: gh-pages # The branch the action should deploy to.
+        folder: demo-sources/_site # the folder that should be deployed

@@ -1,0 +1,75 @@
+div.source {
+  background: rgba(0,0,0, 0.03);
+  padding: 1em;
+}
+
+.id[repl]:before{ content: attr(repl); }
+
+.id[repl] .hidden { font-size: 0; }
+
+#coqdoc {
+
+  a[href]:hover, [clickable]:hover{
+    background-color: rgba(0,0,0,0.1);
+    cursor: pointer;
+  }
+
+  img {
+    display: block;
+    max-width: 80%;
+    margin: 1em auto;
+  }
+
+  img.fig {
+    box-shadow: 4px 4px 6px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+  }
+
+  div.paragraph {
+    margin-top: 0.5em;
+  }
+
+  .inlinecode, .code, #main pre {
+    font-family: monospace;
+    font-size: 14px;
+
+    a {
+      // reset text color in code links.
+      color: #5c5962;
+    }
+  }
+
+  // Syntax Highlighting
+  .code a {
+    background-image: none;
+  }
+
+  .id[type="constructor"], .id[type="projection"], .id[type="method"],
+  .id[title="constructor"], .id[title="projection"], .id[title="method"]  {
+      color: #A30E16;
+  }
+
+  .id[type="var"], .id[type="variable"],
+  .id[title="var"], .id[title="variable"] {
+      color: inherit;
+  }
+
+  .id[type="definition"], .id[type="record"], .id[type="class"], .id[type="instance"], .id[type="inductive"], .id[type="library"],
+  .id[title="definition"], .id[title="record"], .id[title="class"], .id[title="instance"], .id[title="inductive"], .id[title="library"] {
+      color: #A6650F;
+  }
+
+  .id[type="lemma"],
+  .id[title="lemma"]{
+      color: #188B0C;
+  }
+
+  .id[type="keyword"], .id[type="notation"], .id[type="abbreviation"],
+  .id[title="keyword"], .id[title="notation"], .id[title="abbreviation"]{
+  color : #2874AE;
+  }
+
+  .comment {
+    color: #808080;
+  }
+}
