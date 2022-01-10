@@ -1,12 +1,9 @@
 # Step-By-Step
 
-> **Availability**: We will make our artifacts available via Zenodo.
-
 We provide two artifacts that support the claims made in the paper: a mechanized proof of soundness and 
 an implementation of System C.
 
-The [GETTING-STARTED.md](./GETTING-STARTED.md) guide explains how to set up each of the 
-two artifacts. Here, we describe in more detail, how the artifacts support the claims.
+Here, we describe in more detail, how the artifacts support the claims.
 
 ## Coq Proofs: Claims supported by the artifact
 
@@ -15,7 +12,7 @@ In Section 1.5, we claim to provide
 > A full mechanization of the calculus, as well as proofs of the progress and preservation in
 the Coq theorem prover (Section 3.5.4).
 
-This mechanization can be found in the folder [coq](./coq). We wrote a detailed
+This mechanization can be found in the folder `coq`. We wrote a detailed
 guide on how the proofs correspond to the paper, which can be found at:
 
   <https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/>
@@ -32,6 +29,7 @@ In Section 3, we claim that System C satisfies standard Progress and
 Preservation theorems.
 
 These claims correspond to the following definitions in our mechanization:
+
 - Theorem 3.2 - [Preservation](https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Soundness.html#preservation).
 - Theorem 3.4 - [Progress](https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Soundness.html#progress).
 - Lemma 3.5 - [styping_through_subst_cs](https://se-tuebingen.github.io/oopsla-2022-artifact/proofs/Top.SystemC.Substitution.html#substitution).

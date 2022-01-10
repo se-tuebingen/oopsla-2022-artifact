@@ -4,7 +4,7 @@
 For the kick-the-tires phase, please perform the following steps, which should not require more than 1-2 minutes:
 
 1. Visit the prepared [artifact website](https://se-tuebingen.github.io/oopsla-2022-artifact/).
-   It is hosted on github and will not reveal any information to us.
+   It is hosted on GitHub and will not reveal any information to us.
 
    (If you want to be sure, you can use a proxy and check the `network` tab in the developer tools. It should only load files from the same website and should not make any additional connections).
 
@@ -17,7 +17,7 @@ For the kick-the-tires phase, please perform the following steps, which should n
 3. Visit the [tutorial page](https://se-tuebingen.github.io/oopsla-2022-artifact/tutorial/index.html#editors)
    and click the `typecheck and run` button on the right. The compiler will be loaded, the example will be type checked. Hover over `println` and check that it shows the type signature.
    Replace the call to `println` with `1 + ""` to introduce a type error and click `typecheck`
-   (or <Cmd>+Enter / <Ctrl>+Enter). A type error should be visible.
+   (or \<Cmd\>+Enter / \<Ctrl\>+Enter). A type error should be visible.
 
 
 #### Optional Alternative: Running the Website Locally
@@ -45,7 +45,7 @@ http-server -p 8000
 
 ### Kick-the-tires: Coq Proofs
 We believe it is not strictly necessary to compile the Coq proofs yourself. Instead,
-we have set up continuous integration (github action) to compile the proofs.
+we have set up continuous integration (GitHub action) to compile the proofs.
 As an alternative, we also provide a `Dockerfile` that should simplify compiling
 the proofs on your own machine.
 
@@ -66,9 +66,9 @@ should look like
 ```
 <><> Processing actions <><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 Processing  1/2: [proofs: sh coq_makefile -f _CoqProject -o Makefile]
-+ /bin/sh "-c" "coq_makefile -f _CoqProject -o Makefile" (CWD=/home/coq/.opam/4.05.0/.opam-switch/build/proofs.dev)
++ /bin/sh "-c" "coq_makefile -f _CoqProject -o Makefile" (CWD=...)
 Processing  1/2: [proofs: make]
-+ /usr/bin/make "-j2" (CWD=/home/coq/.opam/4.05.0/.opam-switch/build/proofs.dev)
++ /usr/bin/make "-j2" (CWD=...)
 - COQDEP VFILES
 - COQC Util/Taktiks.v
 - COQC Util/FSetNotin.v
@@ -80,6 +80,7 @@ Processing  1/2: [proofs: make]
 - COQC Util/Label.v
 ...
 ```
+
 </details>
 
 #### Alternative 2: Locally compile Coq proofs
