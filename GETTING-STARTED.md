@@ -57,9 +57,7 @@ To check validity of the proofs, you may visit the [github action](https://githu
 
 For the CI run that corresponds to this release, please visit:
 
-<https://github.com/se-tuebingen/oopsla-2022-artifact/runs/4701644774?check_suite_focus=true#step:4:379>
-
-TODO WE NEED TO UPDATE THE LINK
+<https://github.com/se-tuebingen/oopsla-2022-artifact/runs/4761043827?check_suite_focus=true#step:4:381>
 
 <details>
 To manually navigate to this run, you may select the `build` job and expand `Run coq-community/docker-coq-action@v1`, and finally expand `Build`. You should see the output of `coqc`, which
