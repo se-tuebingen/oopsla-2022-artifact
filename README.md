@@ -8,7 +8,7 @@ This document describes the artifact for our paper
 > Jonathan Immanuel Brachthäuser, Philipp Schuster, Edward Lee, Aleksander Boruch-Gruszecki.
 > Conditionally accepteed at OOPSLA 2022.
 
-For your convenience, please consider either viewing the artifact's Github repo, or the website hosted on Github (links below), which contain the same information as this PDF.
+For your convenience, please consider either viewing the artifact's GitHub repo, or the website hosted on GitHub (links below), which contain the same information as this PDF.
 
   <https://se-tuebingen.github.io/oopsla-2022-artifact/>
 
@@ -22,7 +22,7 @@ The artifact consists of two parts:
 2. `demo-sources/`: A website featuring an implementation of System C with examples that can be typechecked, edited, and run.
 
 While the repository contains the sources of the website (and for archival purposes we submit the built website as a compressed archive), we do not propose to
-build the website yourself. Instead, we use github-pages (branch [`gh-pages`](https://github.com/se-tuebingen/oopsla-2022-artifact/tree/gh-pages)) to host the artifact, which is made available at:
+build the website yourself. Instead, we use GitHub pages (branch [`gh-pages`](https://github.com/se-tuebingen/oopsla-2022-artifact/tree/gh-pages)) to host the artifact, which is made available at:
 
   <https://se-tuebingen.github.io/oopsla-2022-artifact/>
 

@@ -53,31 +53,31 @@ Additionally, for the reviewers convenience, we also provide the compiled proofs
 
 #### Alternative 1: Checkout the CI build
 
-To check validity of the proofs, you may visit the [github action](https://github.com/se-tuebingen/oopsla-2022-artifact/actions/workflows/proof-ci.yml) page that contains successful compilation runs of Coq.
+To check validity of the proofs, you may visit the [GitHub action](https://github.com/se-tuebingen/oopsla-2022-artifact/actions/workflows/proof-ci.yml) page that contains successful compilation runs of Coq.
 
 For the CI run that corresponds to this release, please visit:
 
-<https://github.com/se-tuebingen/oopsla-2022-artifact/runs/4761043827?check_suite_focus=true#step:4:381>
+<https://github.com/se-tuebingen/oopsla-2022-artifact/runs/4767147656?check_suite_focus=true#step:4:409>
 
 <details>
-To manually navigate to this run, you may select the `build` job and expand `Run coq-community/docker-coq-action@v1`, and finally expand `Build`. You should see the output of `coqc`, which
-should look like
+To manually navigate to this run, you may select the `build` job and expand `Run coq-community/docker-coq-action@v1`, and finally expand `Build project`.
+In a few lines, you should see the output of `make` running `coqc`, which should look like:
 
 ```
-<><> Processing actions <><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-Processing  1/2: [proofs: sh coq_makefile -f _CoqProject -o Makefile]
-+ /bin/sh "-c" "coq_makefile -f _CoqProject -o Makefile" (CWD=...)
-Processing  1/2: [proofs: make]
-+ /usr/bin/make "-j2" (CWD=...)
-- COQDEP VFILES
-- COQC Util/Taktiks.v
-- COQC Util/FSetNotin.v
-- COQC Util/ListFacts.v
-- COQC Util/FSetDecide.v
-- COQC Util/AdditionalTactics.v
-- COQC Util/FiniteSets.v
-- COQC Util/Atom.v
-- COQC Util/Label.v
+  coq_makefile -f _CoqProject  -o Makefile.coq
+  make[1]: Entering directory '/github/workspace/coq'
+  COQDEP VFILES
+  make[1]: Nothing to be done for 'Makefile'.
+  make[1]: Leaving directory '/github/workspace/coq'
+  make[1]: Entering directory '/github/workspace/coq'
+  COQC Util/Taktiks.v
+  COQC Util/FSetNotin.v
+  COQC Util/ListFacts.v
+  COQC Util/FSetDecide.v
+  COQC Util/AdditionalTactics.v
+  COQC Util/FiniteSets.v
+  COQC Util/Atom.v
+  COQC Util/Label.v
 ...
 ```
 
