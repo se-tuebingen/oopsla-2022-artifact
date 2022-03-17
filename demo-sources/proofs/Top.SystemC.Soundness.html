@@ -13,7 +13,7 @@ parent: Proofs
   The source of this file can be found on
   <a href="{{site.github}}/blob/main/coq/SystemC/Soundness.v">Github</a>.
 </div>
- 
+
 </div>
 <div class="code">
 
@@ -36,7 +36,7 @@ parent: Proofs
       substituting a block into a statement preserves statement-typing).
 
 </li>
-<li> <i>Plugging</i>. Lemma 3.6 in the paper is proven (in a variation) by <span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#unwind_step"><span class="id" title="lemma">unwind_step</span></a></span>.
+<li> <i>Plugging</i>. Lemma 4.6 in the paper is proven (in a variation) by <span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#unwind_step"><span class="id" title="lemma">unwind_step</span></a></span>.
 
 </li>
 <li> <i>Preservation</i>. We show type preservation of reducing statements (<span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#preservation_stmt"><span class="id" title="lemma">preservation_stmt</span></a></span>)
@@ -68,7 +68,7 @@ parent: Proofs
 
 <div class="paragraph"> </div>
 
-    This lemma roughly corresponds to Lemma 3.6 in the paper. 
+    This lemma roughly corresponds to Lemma 4.6 in the paper.
 </div>
 <div class="code">
 
@@ -84,7 +84,7 @@ parent: Proofs
 </div>
 
 <div class="doc">
-Helper lemma showing that plug doesn't introduce binders. 
+Helper lemma showing that plug doesn't introduce binders.
 </div>
 <div class="code">
 <span class="id" title="keyword">Lemma</span> <a name="plugging"><span class="id" title="lemma">plugging</span></a> : <span class="id" title="keyword">∀</span> (<span class="id" title="var">x</span> : <a class="idref" href="Top.Util.Atom.html#AtomImpl.atom"><span class="id" title="axiom">atom</span></a>) <span class="id" title="var">k</span> <span class="id" title="var">C</span> <span class="id" title="var">Q</span> <span class="id" title="var">T1</span> <span class="id" title="var">T2</span>,<br/>
@@ -106,7 +106,7 @@ Helper lemma showing that plug doesn't introduce binders.
 
 <div class="paragraph"> </div>
 
-    In consequence, the preservation Theorem 3.4 from the paper, maps to two
+    In consequence, the preservation Theorem 4.4 from the paper, maps to two
     separate theorems in the mechanization:
 
 <div class="paragraph"> </div>
@@ -123,7 +123,7 @@ Helper lemma showing that plug doesn't introduce binders.
 <div class="paragraph"> </div>
 
     Furthermore, the pure reductions for expressions (<span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#preservation_expr"><span class="id" title="lemma">preservation_expr</span></a></span>) and
-    blocks (<span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#preservation_block"><span class="id" title="lemma">preservation_block</span></a></span>) also preserve types, correspondingly. 
+    blocks (<span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#preservation_block"><span class="id" title="lemma">preservation_block</span></a></span>) also preserve types, correspondingly.
 </div>
 <div class="code">
 
@@ -165,7 +165,7 @@ Helper lemma showing that plug doesn't introduce binders.
 <li> <span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#progress_stmt"><span class="id" title="lemma">progress_stmt</span></a></span> shows that a well-typed statement can take a step.
 
 </li>
-<li> <span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#progress_step"><span class="id" title="lemma">progress_step</span></a></span> shows that a well-typed machine can take a step. 
+<li> <span class="inlinecode"><a class="idref" href="Top.SystemC.Soundness.html#progress_step"><span class="id" title="lemma">progress_step</span></a></span> shows that a well-typed machine can take a step.
 </li>
 </ul>
 
@@ -173,7 +173,7 @@ Helper lemma showing that plug doesn't introduce binders.
 
 <a name="lab182"></a><h2 class="section">Canonical forms</h2>
 
-    We start by proving the usual canonical forms lemmas. 
+    We start by proving the usual canonical forms lemmas.
 </div>
 <div class="code">
 
@@ -206,7 +206,7 @@ Helper lemma showing that plug doesn't introduce binders.
 
 <div class="doc">
 Note that due to the slightly different representation of capability-types,
-    we also have canonical forms for those 
+    we also have canonical forms for those
 </div>
 <div class="code">
 <span class="id" title="keyword">Lemma</span> <a name="canonical_form_exc"><span class="id" title="lemma">canonical_form_exc</span></a> : <span class="id" title="keyword">∀</span> <span class="id" title="var">b</span> <span class="id" title="var">R</span> <span class="id" title="var">Q</span> <span class="id" title="var">T1</span> <span class="id" title="var">T</span>,<br/>
