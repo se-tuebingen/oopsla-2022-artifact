@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Section 4
+title: Section 5
 parent: Paper Examples
-nav_order: 3
+nav_order: 4
 ---
 
-## Section 4.2 -- Mutable State
+## Section 5.2 -- Mutable State
 ```effekt
 // PREAMBLE
 interface State[S] {
@@ -55,10 +55,10 @@ def regions2() {
 regions2()
 ```
 
-## Example 4.1
-See the [scheduler case study](.../casestudies/scheduler.html)
+## Example 5.1
+See the [scheduler case study](../casestudies/scheduler.html)
 
-## Section 4.4 -- Effect Handlers and Object Orientation
+## Section 5.4 -- Effect Handlers and Object Orientation
 Similar examples can be found in the [regions case study](../casestudies/regions.html#regions).
 
 The definition below allows running the examples.
