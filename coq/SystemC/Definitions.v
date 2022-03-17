@@ -72,8 +72,8 @@ Inductive vtyp : Type :=
     In the mechanization, we also additionally support
     value-type polymorphism, inherited from System F.
     This requires additional constructors for type variables ([typ_bvar] and [typ_fvar]),
-    which are not present in the paper. 
-    
+    which are not present in the paper.
+
     Finally, for simplicity, we only include one base type [typ_base] instead
     of multiple separate base types (as in the paper). *)
 
