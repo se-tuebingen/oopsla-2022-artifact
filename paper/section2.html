@@ -1,132 +1,35 @@
-<!DOCTYPE html> <html lang="en-US"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=Edge"> <title>Section 2 - System C</title> <link rel="shortcut icon" href="/oopsla-2022-artifact/favicon.ico" type="image/x-icon"> <link rel="stylesheet" href="/oopsla-2022-artifact/assets/css/just-the-docs-default.css"> <link rel="stylesheet" href="/oopsla-2022-artifact/highlight/styles/github-gist.css"> <script type="text/javascript" src="/oopsla-2022-artifact/assets/js/just-the-docs.js"></script> <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Begin Jekyll SEO tag v2.7.1 --> <title>Section 2 | System C</title> <meta name="generator" content="Jekyll v4.0.1" /> <meta property="og:title" content="Section 2" /> <meta property="og:locale" content="en_US" /> <meta name="description" content="This is the artifact acompanying the paper ‘Effects, Capabilities, and Boxes’." /> <meta property="og:description" content="This is the artifact acompanying the paper ‘Effects, Capabilities, and Boxes’." /> <meta property="og:site_name" content="System C" /> <meta name="twitter:card" content="summary" /> <meta property="twitter:title" content="Section 2" /> <script type="application/ld+json"> {"headline":"Section 2","description":"This is the artifact acompanying the paper ‘Effects, Capabilities, and Boxes’.","url":"/oopsla-2022-artifact/paper/section2.html","@type":"WebPage","@context":"https://schema.org"}</script> <!-- End Jekyll SEO tag --> </head> <body> <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"> <symbol id="svg-link" viewBox="0 0 24 24"> <title>Link</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"> <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path> </svg> </symbol> <symbol id="svg-search" viewBox="0 0 24 24"> <title>Search</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"> <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line> </svg> </symbol> <symbol id="svg-menu" viewBox="0 0 24 24"> <title>Menu</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"> <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line> </svg> </symbol> <symbol id="svg-arrow-right" viewBox="0 0 24 24"> <title>Expand</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"> <polyline points="9 18 15 12 9 6"></polyline> </svg> </symbol> <symbol id="svg-doc" viewBox="0 0 24 24"> <title>Document</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"> <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline> </svg> </symbol> </svg> <div class="side-bar"> <div class="site-header"> <a href="/oopsla-2022-artifact/" class="site-title lh-tight"> System C </a> <a href="#" id="menu-button" class="site-button"> <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg> </a> </div> <nav role="navigation" aria-label="Main" id="site-nav" class="site-nav"> <ul class="nav-list"><li class="nav-list-item"><a href="/oopsla-2022-artifact/" class="nav-list-link">Home</a></li><li class="nav-list-item"><a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/oopsla-2022-artifact/tutorial/" class="nav-list-link">Tutorial</a><ul class="nav-list "><li class="nav-list-item "><a href="/oopsla-2022-artifact/intro/" class="nav-list-link">Basics</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/capability/" class="nav-list-link">Capabilities</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/boxing/" class="nav-list-link">Boxing and Unboxing</a></li></ul></li><li class="nav-list-item"><a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/oopsla-2022-artifact/proofs/" class="nav-list-link">Proofs</a><ul class="nav-list "><li class="nav-list-item "><a href="/oopsla-2022-artifact/proofs/Top.SystemC.CaptureSets.html" class="nav-list-link">CaptureSets</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/proofs/Top.SystemC.Definitions.html" class="nav-list-link">Definitions</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/proofs/Top.SystemC.Examples.html" class="nav-list-link">Examples</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/proofs/Top.SystemC.Infrastructure.html" class="nav-list-link">Infrastructure</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/proofs/Top.SystemC.Lemmas.html" class="nav-list-link">Lemmas</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/proofs/Top.SystemC.Soundness.html" class="nav-list-link">Soundness</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/proofs/Top.SystemC.Substitution.html" class="nav-list-link">Substitution</a></li></ul></li><li class="nav-list-item active"><a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/oopsla-2022-artifact/paper.html" class="nav-list-link">Paper Examples</a><ul class="nav-list "><li class="nav-list-item "><a href="/oopsla-2022-artifact/paper/section1.html" class="nav-list-link">Section 1</a></li><li class="nav-list-item active"><a href="/oopsla-2022-artifact/paper/section2.html" class="nav-list-link active">Section 2</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/paper/section4.html" class="nav-list-link">Section 4</a></li></ul></li><li class="nav-list-item"><a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/oopsla-2022-artifact/casestudies.html" class="nav-list-link">Case Studies</a><ul class="nav-list "><li class="nav-list-item "><a href="/oopsla-2022-artifact/casestudies/passthrough.html" class="nav-list-link">Use and Mention</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/casestudies/regions.html" class="nav-list-link">Region-based Local State</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/casestudies/scheduler.html" class="nav-list-link">Scheduling (with continuations and mutable cells)</a></li></ul></li></ul> </nav> <footer class="site-footer"> This artifact uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll. </footer> </div> <div class="main" id="top"> <div id="main-header" class="main-header"> </div> <div id="main-content-wrap" class="main-content-wrap"> <nav aria-label="Breadcrumb" class="breadcrumb-nav"> <ol class="breadcrumb-nav-list"> <li class="breadcrumb-nav-list-item"><a href="/oopsla-2022-artifact/paper.html">Paper Examples</a></li> <li class="breadcrumb-nav-list-item"><span>Section 2</span></li> </ol> </nav> <div id="main-content" class="main-content" role="main"> <h2 id="section-2--global-capabilities"> <a href="#section-2--global-capabilities" class="anchor-heading" aria-labelledby="section-2--global-capabilities"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Section 2 – Global Capabilities </h2><pre><code class="language-effekt">// PREAMBLE
-interface Exc { def throw(msg: String): Unit }
-interface Console { def println[A](a: A): Unit }
-interface Time { def now(): Int }
+<!DOCTYPE html> <html lang="en-US"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=Edge"> <title>Section 2 - System C</title> <link rel="shortcut icon" href="/oopsla-2022-artifact/favicon.ico" type="image/x-icon"> <link rel="stylesheet" href="/oopsla-2022-artifact/assets/css/just-the-docs-default.css"> <link rel="stylesheet" href="/oopsla-2022-artifact/highlight/styles/github-gist.css"> <script type="text/javascript" src="/oopsla-2022-artifact/assets/js/just-the-docs.js"></script> <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Begin Jekyll SEO tag v2.8.0 --> <title>Section 2 | System C</title> <meta name="generator" content="Jekyll v4.0.1" /> <meta property="og:title" content="Section 2" /> <meta property="og:locale" content="en_US" /> <meta name="description" content="This is the artifact acompanying the paper ‘Effects, Capabilities, and Boxes’." /> <meta property="og:description" content="This is the artifact acompanying the paper ‘Effects, Capabilities, and Boxes’." /> <meta property="og:site_name" content="System C" /> <meta property="og:type" content="website" /> <meta name="twitter:card" content="summary" /> <meta property="twitter:title" content="Section 2" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"WebPage","description":"This is the artifact acompanying the paper ‘Effects, Capabilities, and Boxes’.","headline":"Section 2","url":"/oopsla-2022-artifact/paper/section2.html"}</script> <!-- End Jekyll SEO tag --> </head> <body> <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"> <symbol id="svg-link" viewBox="0 0 24 24"> <title>Link</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"> <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path> </svg> </symbol> <symbol id="svg-search" viewBox="0 0 24 24"> <title>Search</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"> <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line> </svg> </symbol> <symbol id="svg-menu" viewBox="0 0 24 24"> <title>Menu</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"> <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line> </svg> </symbol> <symbol id="svg-arrow-right" viewBox="0 0 24 24"> <title>Expand</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"> <polyline points="9 18 15 12 9 6"></polyline> </svg> </symbol> <symbol id="svg-doc" viewBox="0 0 24 24"> <title>Document</title> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"> <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline> </svg> </symbol> </svg> <div class="side-bar"> <div class="site-header"> <a href="/oopsla-2022-artifact/" class="site-title lh-tight"> System C </a> <a href="#" id="menu-button" class="site-button"> <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg> </a> </div> <nav role="navigation" aria-label="Main" id="site-nav" class="site-nav"> <ul class="nav-list"><li class="nav-list-item"><a href="/oopsla-2022-artifact/" class="nav-list-link">Home</a></li><li class="nav-list-item"><a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/oopsla-2022-artifact/tutorial/" class="nav-list-link">Tutorial</a><ul class="nav-list "><li class="nav-list-item "><a href="/oopsla-2022-artifact/intro/" class="nav-list-link">Basics</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/capability/" class="nav-list-link">Capabilities</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/boxing/" class="nav-list-link">Boxing and Unboxing</a></li></ul></li><li class="nav-list-item"><a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/oopsla-2022-artifact/proofs/" class="nav-list-link">Proofs</a><ul class="nav-list "><li class="nav-list-item "><a href="/oopsla-2022-artifact/proofs/Top.SystemC.CaptureSets.html" class="nav-list-link">CaptureSets</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/proofs/Top.SystemC.Definitions.html" class="nav-list-link">Definitions</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/proofs/Top.SystemC.Examples.html" class="nav-list-link">Examples</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/proofs/Top.SystemC.Infrastructure.html" class="nav-list-link">Infrastructure</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/proofs/Top.SystemC.Lemmas.html" class="nav-list-link">Lemmas</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/proofs/Top.SystemC.Soundness.html" class="nav-list-link">Soundness</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/proofs/Top.SystemC.Substitution.html" class="nav-list-link">Substitution</a></li></ul></li><li class="nav-list-item active"><a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/oopsla-2022-artifact/paper.html" class="nav-list-link">Paper Examples</a><ul class="nav-list "><li class="nav-list-item active"><a href="/oopsla-2022-artifact/paper/section2.html" class="nav-list-link active">Section 2</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/paper/section3.html" class="nav-list-link">Section 3</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/paper/section5.html" class="nav-list-link">Section 5</a></li></ul></li><li class="nav-list-item"><a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="/oopsla-2022-artifact/casestudies.html" class="nav-list-link">Case Studies</a><ul class="nav-list "><li class="nav-list-item "><a href="/oopsla-2022-artifact/casestudies/passthrough.html" class="nav-list-link">Use and Mention</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/casestudies/regions.html" class="nav-list-link">Region-based Local State</a></li><li class="nav-list-item "><a href="/oopsla-2022-artifact/casestudies/scheduler.html" class="nav-list-link">Scheduling (with continuations and mutable cells)</a></li></ul></li></ul> </nav> <footer class="site-footer"> This artifact uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll. </footer> </div> <div class="main" id="top"> <div id="main-header" class="main-header"> </div> <div id="main-content-wrap" class="main-content-wrap"> <nav aria-label="Breadcrumb" class="breadcrumb-nav"> <ol class="breadcrumb-nav-list"> <li class="breadcrumb-nav-list-item"><a href="/oopsla-2022-artifact/paper.html">Paper Examples</a></li> <li class="breadcrumb-nav-list-item"><span>Section 2</span></li> </ol> </nav> <div id="main-content" class="main-content" role="main"> <h3 id="section-2--introduction"> <a href="#section-2--introduction" class="anchor-heading" aria-labelledby="section-2--introduction"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Section 2 – Introduction </h3><pre><code class="language-effekt">interface Exc { def throw(msg: String): Unit }
+type File { FileHandle(id: Int) }
 
-// console and time are "global" -- that is, module wide capabilities
-def globalCapabilities { console: Console } { time: Time }: Unit {
+def eachLine(file: File) { f: String =&gt; Unit }: Unit { () }
+def open(path: String) {exc:Exc}: File { FileHandle(0) }
 
-// EXAMPLES
-  def sayTime() {
-    console.println("The current time is: " ++ show(time.now()))
-  }
-
-  // other blocks closing only over console or time
-  def sayHello() { console.println("Hello!") }
-  def currentTime() { time.now() }
-
-  def repeat(n: Int) { f: () =&gt; Unit }: Unit {
-    if (n == 0) { () } else { f(); repeat(n - 1) {f} }
-  }
-
-  repeat(3) { () =&gt; console.println("Hello!") };
-  repeat(3) { () =&gt; sayTime() };
-
-  def parallelWrong { f: () =&gt; Unit } { g: () =&gt; Unit }: Unit { () }
-
-  // this wrong definition admits the following call:
-  parallelWrong
-    { () =&gt; console.println("Hello, ") }
-    { () =&gt; console.println("world!") };
-
-  // "correct" specification
-  def parallel(f: () =&gt; Unit at {}, g: () =&gt; Unit at {}): Unit { () }
-
-  // try commenting out the below call to see type errors
-  // parallel(
-  //   box { () =&gt; console.println("Hello, ") },
-  //   box { () =&gt; console.println("world!") });
-
-  // same here, this is illtyped:
-  // val firstClassWrong = box {} { () =&gt; console.println("Hello, ") };
-
-  val firstClassInfer = box { () =&gt; sayTime() };
-
-  def sayTimeThrice(): Unit { repeat(3) { () =&gt; sayTime() } }
-
-
-  // 2.1.4 Capability Polymorphism
-  def repeater { f: () =&gt; Unit }: (Int) =&gt; Unit at { f }
-  { return box { (n: Int) =&gt; repeat(n) {f} } }
-
-  val repeatTime = repeater { sayTime };
-
-  // some more variants illustrating closure and capability sets
-  val b = sayTime;
-
-  val n = repeater { () =&gt; sayTime() };
-  val n1 = repeater { sayTime };
-  val b2 : () =&gt; Unit at {console, time} = box { () =&gt; (unbox n)(3) };
-  val b3 = n(3);
-  val b4 = { () =&gt; n(3) };
-  val r = repeater { b };
-
-// POSTAMBLE
-  ()
+def process(path: String) {exc1: Exc}: Unit {
+  def abort(): Unit { exc1.throw("processing aborted") }
+  try { eachLine(open(path){exc2}) { (line: String) =&gt; abort() } }
+  with exc2: Exc { def throw(msg: String) { () }}
 }
-</code></pre><h4 id="support-code-for-running-examples"> <a href="#support-code-for-running-examples" class="anchor-heading" aria-labelledby="support-code-for-running-examples"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Support Code for Running Examples </h4> <p>The above examples can be run. First, we define a block which passes appropriate capabilities to the examples:</p><pre><code class="language-effekt">def run[T] { prog : {Console} {Time} =&gt; T }: T {
+</code></pre><h3 id="section-22--effect-safety"> <a href="#section-22--effect-safety" class="anchor-heading" aria-labelledby="section-22--effect-safety"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Section 2.2 – Effect Safety </h3> <p>We can express the example of rethrowing exceptions in System C as follows:</p><pre><code class="language-effekt">def rethrow
+    {f: String =&gt; String}
+    {p: {Exc} =&gt; Unit}
+    {outerExc: Exc}: Unit {
+      try { p {exc} }
+      with exc: Exc {
+        def throw(msg: String) { outerExc.throw(f(msg)) }
+      }
+}
+</code></pre><pre><code class="language-effekt">interface Info { def get(): String }
+def prependInfo {prog: {Exc} =&gt; Unit} {info: Info} {exc: Exc}: Unit {
+  rethrow { (msg: String) =&gt; info.get() ++ " " ++ msg } {prog} {exc}
+}
+</code></pre><pre><code class="language-effekt">def runExample() {
   try {
-    prog {console} {time}
-  } with console: Console {
-    def println[A](msg: A) { println(msg); resume(()) }
-  } with time: Time {
-    def now() { resume(timestamp()) }
+    prependInfo { {exc: Exc} =&gt; exc.throw("Boom!") } {info} {exc}
+  } with exc: Exc {
+    def throw(msg: String) { println(msg) }
+  } with info: Info {
+    def get() { resume("[INFO]") }
   }
 }
-</code></pre><p>With the above definition, we can now run the examples:</p><pre><code class="language-effekt:repl">run {globalCapabilities}
-</code></pre><h2 id="section-2--local-capabilities-and-effect-handlers"> <a href="#section-2--local-capabilities-and-effect-handlers" class="anchor-heading" aria-labelledby="section-2--local-capabilities-and-effect-handlers"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Section 2 – Local Capabilities and Effect Handlers </h2><pre><code class="language-effekt">// PREAMBLE
-interface Stopwatch { def elapsed(): Int }
-def localCapabilities { console: Console } { time: Time }: Unit {
-
-// EXAMPLES
-  try { console.println("hello"); exc.throw("world"); console.println("done") }
-  with exc: Exc {
-    def throw(msg: String) { console.println(msg ++ "!") }
-  };
-
-  // uncomment the following example to see a type error:
-  // try { return (box exc) } with exc: Exc { def throw(msg: String) { () } };
-  
-// POSTAMBLE
-  ()
-}
-</code></pre><p>Again, we can run the above examples:</p><pre><code class="language-effekt:repl">run {localCapabilities}
-</code></pre><h2 id="example-21"> <a href="#example-21" class="anchor-heading" aria-labelledby="example-21"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Example 2.1 </h2><pre><code class="language-effekt">// PREAMBLE
-interface FileHandle { def readByte(pos: Int): Int }
-// EXAMPLES
-def withFile[T](path: String) { prog: {FileHandle} =&gt; T }: T {
-  try { prog {fh} } with fh: FileHandle {
-    def readByte(pos: Int) { resume(pos + 42) }
-  }
-}
-def fileExample() {
-  withFile("A.txt") { {fileA: FileHandle} =&gt;
-    val offsetReader : Int =&gt; Int at {fileA} =
-      withFile("B.txt") { {fileB: FileHandle} =&gt;
-        val offset = fileB.readByte(0);
-        return box { (pos: Int) =&gt; fileA.readByte(pos + offset) }
-      };
-      (unbox offsetReader)(10)
-  }
-}
-</code></pre><p>Running the example will print 92 (0 + 42 + 42 + 10).</p><pre><code class="language-effekt:repl">fileExample()
-</code></pre><h2 id="effect-handlers"> <a href="#effect-handlers" class="anchor-heading" aria-labelledby="effect-handlers"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Effect Handlers </h2><pre><code class="language-effekt">// PREAMBLE
-def effectHandlers { console: Console } { time: Time }: Unit {
-// EXAMPLES
-  val before = time.now();
-  try {
-    def report(t: Int) { console.println(show(t) ++ "ms") }
-    report(watch.elapsed());
-    report(watch.elapsed());
-    report(watch.elapsed())
-  } with watch: Stopwatch {
-    def elapsed() {
-      // we can observe the capture of `resume` by boxing it:
-      val k = box resume;
-      resume(time.now() - before)
-    }
-  }
-// POSTAMBLE
-}
-</code></pre><pre><code class="language-effekt:repl">run {effectHandlers}
+</code></pre><pre><code class="language-effekt:repl">runExample()
 </code></pre></div> </div> </div> <script src="/oopsla-2022-artifact/highlight/highlight.pack.js"></script> <script src="/oopsla-2022-artifact/dist/app.bundle.js"></script> </body> </html>
